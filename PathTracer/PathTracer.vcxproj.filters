@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CudaCompile Include="kernel.cu" />
+    <CudaCompile Include="Sphere.cu">
+      <Filter>Hittables</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Lambertian.cu">
+      <Filter>Materials</Filter>
+    </CudaCompile>
+    <CudaCompile Include="HittableList.cu">
+      <Filter>Hittables</Filter>
+    </CudaCompile>
+    <CudaCompile Include="DiffuseLight.cu">
+      <Filter>Materials</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Metal.cu">
+      <Filter>Materials</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Dieletric.cu">
+      <Filter>Materials</Filter>
+    </CudaCompile>
+    <CudaCompile Include="SDFHittable.cu">
+      <Filter>Hittables</Filter>
+    </CudaCompile>
+    <CudaCompile Include="DistortedSphere.cu">
+      <Filter>Hittables\SDF Hittables</Filter>
+    </CudaCompile>
+    <CudaCompile Include="PlaneHittable.cu">
+      <Filter>Hittables</Filter>
+    </CudaCompile>
+    <CudaCompile Include="RectangularPlane.cu">
+      <Filter>Hittables\Plane Hittables</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Rotation.cu">
+      <Filter>Hittables\Modifier Hittables</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Translation.cu">
+      <Filter>Hittables\Modifier Hittables</Filter>
+    </CudaCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="Hittable.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="Sphere.h">
+      <Filter>Hittables</Filter>
+    </ClInclude>
+    <ClInclude Include="Lambertian.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="HittableList.h">
+      <Filter>Hittables</Filter>
+    </ClInclude>
+    <ClInclude Include="DiffuseLight.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Metal.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Dielectric.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="SDFHittable.h">
+      <Filter>Hittables</Filter>
+    </ClInclude>
+    <ClInclude Include="DistortedSphere.h">
+      <Filter>Hittables\SDF Hittables</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaneHittable.h">
+      <Filter>Hittables</Filter>
+    </ClInclude>
+    <ClInclude Include="RectangularPlane.h">
+      <Filter>Hittables\Plane Hittables</Filter>
+    </ClInclude>
+    <ClInclude Include="Rotation.h">
+      <Filter>Hittables\Modifier Hittables</Filter>
+    </ClInclude>
+    <ClInclude Include="Translation.h">
+      <Filter>Hittables\Modifier Hittables</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Hittables">
+      <UniqueIdentifier>{fa2bd790-3cdd-4c08-90be-8ccd04bf2d6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Materials">
+      <UniqueIdentifier>{ee2cb41b-890c-4b1a-b416-9b792e51de81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hittables\SDF Hittables">
+      <UniqueIdentifier>{acc3ef09-e14f-450d-bfac-1e8dd4b9f2f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hittables\Plane Hittables">
+      <UniqueIdentifier>{95705f51-3824-457c-a82d-1246b25e14af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hittables\Modifier Hittables">
+      <UniqueIdentifier>{7ca8c0b5-5c4e-4f30-b334-13ab192cfe76}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

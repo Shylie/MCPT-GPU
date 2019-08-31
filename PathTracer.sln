@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PathTracer", "PathTracer\PathTracer.vcxproj", "{DD6F00BD-5C01-44D9-8398-8CB24A15DB74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathTracerNET", "PathTracerNET\PathTracerNET.csproj", "{4598CA0A-79B2-445F-B4AB-2323907A7149}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DD6F00BD-5C01-44D9-8398-8CB24A15DB74}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{DD6F00BD-5C01-44D9-8398-8CB24A15DB74}.Debug|x64.ActiveCfg = Debug|x64
+		{DD6F00BD-5C01-44D9-8398-8CB24A15DB74}.Debug|x64.Build.0 = Debug|x64
+		{DD6F00BD-5C01-44D9-8398-8CB24A15DB74}.Debug|x86.ActiveCfg = Debug|x64
+		{DD6F00BD-5C01-44D9-8398-8CB24A15DB74}.Release|Any CPU.ActiveCfg = Release|x64
+		{DD6F00BD-5C01-44D9-8398-8CB24A15DB74}.Release|x64.ActiveCfg = Release|x64
+		{DD6F00BD-5C01-44D9-8398-8CB24A15DB74}.Release|x64.Build.0 = Release|x64
+		{DD6F00BD-5C01-44D9-8398-8CB24A15DB74}.Release|x86.ActiveCfg = Release|x64
+		{4598CA0A-79B2-445F-B4AB-2323907A7149}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4598CA0A-79B2-445F-B4AB-2323907A7149}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4598CA0A-79B2-445F-B4AB-2323907A7149}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4598CA0A-79B2-445F-B4AB-2323907A7149}.Debug|x64.Build.0 = Debug|Any CPU
+		{4598CA0A-79B2-445F-B4AB-2323907A7149}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4598CA0A-79B2-445F-B4AB-2323907A7149}.Debug|x86.Build.0 = Debug|Any CPU
+		{4598CA0A-79B2-445F-B4AB-2323907A7149}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4598CA0A-79B2-445F-B4AB-2323907A7149}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4598CA0A-79B2-445F-B4AB-2323907A7149}.Release|x64.ActiveCfg = Release|Any CPU
+		{4598CA0A-79B2-445F-B4AB-2323907A7149}.Release|x64.Build.0 = Release|Any CPU
+		{4598CA0A-79B2-445F-B4AB-2323907A7149}.Release|x86.ActiveCfg = Release|Any CPU
+		{4598CA0A-79B2-445F-B4AB-2323907A7149}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {35D8720C-6246-4CA2-A86F-A19F1C09311D}
+	EndGlobalSection
+EndGlobal
