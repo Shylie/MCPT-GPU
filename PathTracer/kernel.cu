@@ -197,15 +197,15 @@ void renderChunked(int width, int height, int samples, const char* fname, Camera
 
 extern "C"
 {
-	API void RenderScene(int width, int height, int samples, const char* fname, float lfx, float lfy, float lfz, float lax, float lay, float laz, float upx, float upy, float upz, float vfov, float aspect, Hittable* scene)
+	API void RenderScene(int width, int height, int samples, const char* fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, Hittable* scene)
 	{
-		Camera cam = Camera(Vec3(lfx, lfy, lfz), Vec3(lax, lay, laz), Vec3(upx, upy, upz), vfov, aspect);
+		Camera cam = Camera(lookFrom, lookAt, vup, vfov, aspect);
 		render(width, height, samples, fname, cam, scene->GetPtrGPU());
 	}
 
-	API void RenderSceneChunked(int width, int height, int samples, const char* fname, float lfx, float lfy, float lfz, float lax, float lay, float laz, float upx, float upy, float upz, float vfov, float aspect, Hittable* scene)
+	API void RenderSceneChunked(int width, int height, int samples, const char* fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, Hittable* scene)
 	{
-		Camera cam = Camera(Vec3(lfx, lfy, lfz), Vec3(lax, lay, laz), Vec3(upx, upy, upz), vfov, aspect);
+		Camera cam = Camera(lookFrom, lookAt, vup, vfov, aspect);
 		renderChunked(width, height, samples, fname, cam, scene->GetPtrGPU());
 	}
 
@@ -219,9 +219,9 @@ extern "C"
 		return new HittableList(numHittables, temp);
 	}
 
-	API Hittable* ConstructTranslation(float dx, float dy, float dz, Hittable* hittable)
+	API Hittable* ConstructTranslation(Vec3 offset, Hittable* hittable)
 	{
-		return new Translation(Vec3(dx, dy, dz), hittable->GetPtrGPU());
+		return new Translation(offset, hittable->GetPtrGPU());
 	}
 
 	API Hittable* ConstructRotation(float theta, Alignment alignment, Hittable* hittable)
@@ -229,9 +229,9 @@ extern "C"
 		return new Rotation(theta, alignment, hittable->GetPtrGPU());
 	}
 
-	API Hittable* ConstructSphere(float cx, float cy, float cz, float radius, Material* mat)
+	API Hittable* ConstructSphere(Vec3 center, float radius, Material* mat)
 	{
-		return new Sphere(Vec3(cx, cy, cz), radius, mat->GetPtrGPU());
+		return new Sphere(center, radius, mat->GetPtrGPU());
 	}
 
 	API Hittable* ConstructRectangularPlane(float a1, float a2, float b1, float b2, float k, Alignment alignment, bool autoNormal, bool invertNormal, Material* mat)
@@ -239,9 +239,9 @@ extern "C"
 		return new RectangularPlane(a1, a2, b1, b2, k, alignment, autoNormal, invertNormal, mat->GetPtrGPU());
 	}
 
-	API Hittable* ConstructDistortedSphere(float cx, float cy, float cz, float radius, float frequency, float amplitude, Material* mat)
+	API Hittable* ConstructDistortedSphere(Vec3 center, float radius, float frequency, float amplitude, Material* mat)
 	{
-		return new DistortedSphere(Vec3(cx, cy, cz), radius, frequency, amplitude, mat->GetPtrGPU());
+		return new DistortedSphere(center, radius, frequency, amplitude, mat->GetPtrGPU());
 	}
 
 	API Material* ConstructLambertian(float r, float g, float b)
@@ -272,5 +272,106 @@ extern "C"
 	API void DestroyMaterial(Material* ptr)
 	{
 		delete ptr;
+	}
+
+	typedef API struct _CVec3
+	{
+		float X;
+		float Y;
+		float Z;
+	} CVec3;
+
+	API float V3Length(Vec3 vec) { return vec.Length(); }
+	API float V3LengthSquared(Vec3 vec) { return vec.LengthSquared(); }
+	API CVec3 V3Normalized(Vec3 vec) 
+	{ 
+		Vec3 temp = vec.Normalized();
+
+		CVec3 result;
+		result.X = temp.X;
+		result.Y = temp.Y;
+		result.Z = temp.Z;
+		return result;
+	}
+	API float V3Dot(Vec3 va, Vec3 vb) { return Vec3::Dot(va, vb); }
+	API CVec3 V3Cross(Vec3 va, Vec3 vb) 
+	{
+		Vec3 temp = Vec3::Cross(va, vb);
+
+		CVec3 result;
+		result.X = temp.X;
+		result.Y = temp.Y;
+		result.Z = temp.Z;
+		return result;
+	}
+	API CVec3 V3OpNegate(Vec3 vec)
+	{
+		Vec3 temp = -vec;
+
+		CVec3 result;
+		result.X = temp.X;
+		result.Y = temp.Y;
+		result.Z = temp.Z;
+		return result;
+	}
+	API CVec3 V3OpAdd(Vec3 va, Vec3 vb)
+	{
+		Vec3 temp = va + vb;
+
+		CVec3 result;
+		result.X = temp.X;
+		result.Y = temp.Y;
+		result.Z = temp.Z;
+		return result;
+	}
+	API CVec3 V3OpSub(Vec3 va, Vec3 vb)
+	{
+		Vec3 temp = va - vb;
+
+		CVec3 result;
+		result.X = temp.X;
+		result.Y = temp.Y;
+		result.Z = temp.Z;
+		return result;
+	}
+	API CVec3 V3OpMul(Vec3 va, Vec3 vb)
+	{
+		Vec3 temp = va * vb;
+
+		CVec3 result;
+		result.X = temp.X;
+		result.Y = temp.Y;
+		result.Z = temp.Z;
+		return result;
+	}
+	API CVec3 V3OpDiv(Vec3 va, Vec3 vb)
+	{
+		Vec3 temp = va / vb;
+
+		CVec3 result;
+		result.X = temp.X;
+		result.Y = temp.Y;
+		result.Z = temp.Z;
+		return result;
+	}
+	API CVec3 V3OpScalarMul(Vec3 vec, float scalar)
+	{
+		Vec3 temp = vec * scalar;
+
+		CVec3 result;
+		result.X = temp.X;
+		result.Y = temp.Y;
+		result.Z = temp.Z;
+		return result;
+	}
+	API CVec3 V3OpScalarDiv(Vec3 vec, float scalar)
+	{
+		Vec3 temp = vec / scalar;
+
+		CVec3 result;
+		result.X = temp.X;
+		result.Y = temp.Y;
+		result.Z = temp.Z;
+		return result;
 	}
 }

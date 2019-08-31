@@ -57,22 +57,22 @@ namespace PathTracerNET
 			Z = 1 << 2
 		}
 
-		public static void RenderScene(int width, int height, int samples, string fname, float lfx, float lfy, float lfz, float lax, float lay, float laz, float upx, float upy, float upz, float vfov, float aspect, PTObject scene)
+		public static void RenderScene(int width, int height, int samples, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, PTObject scene)
 		{
 			if (scene.Kind != PTObjectKind.Hittable)
 			{
 				throw new ArgumentException("Invalid PTObjectKind.", nameof(scene));
 			}
-			RenderScene(width, height, samples, fname + ".ppm", lfx, lfy, lfz, lax, lay, laz, upx, upy, upz, vfov, aspect, scene.ptr);
+			RenderScene(width, height, samples, fname + ".ppm", lookFrom, lookAt, vup, vfov, aspect, scene.ptr);
 		}
 
-		public static void RenderSceneChunked(int width, int height, int samples, string fname, float lfx, float lfy, float lfz, float lax, float lay, float laz, float upx, float upy, float upz, float vfov, float aspect, PTObject scene)
+		public static void RenderSceneChunked(int width, int height, int samples, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, PTObject scene)
 		{
 			if (scene.Kind != PTObjectKind.Hittable)
 			{
 				throw new ArgumentException("Invalid PTObjectKind.", nameof(scene));
 			}
-			RenderSceneChunked(width, height, samples, fname + ".ppm", lfx, lfy, lfz, lax, lay, laz, upx, upy, upz, vfov, aspect, scene.ptr);
+			RenderSceneChunked(width, height, samples, fname + ".ppm", lookFrom, lookAt, vup, vfov, aspect, scene.ptr);
 		}
 
 		public static PTObject HittableList(params PTObject[] ptObjects)
@@ -84,10 +84,10 @@ namespace PathTracerNET
 			return new PTObject(ConstructHittableList(ptObjects.Length, ptObjects.Select(pto => pto.ptr).ToArray()), PTObjectKind.Hittable, ptObjects);
 		}
 		
-		public static PTObject Translation(float dx, float dy, float dz, PTObject hittable)
+		public static PTObject Translation(Vec3 offset, PTObject hittable)
 		{
 			if (hittable.Kind != PTObjectKind.Hittable) throw new ArgumentException("Invalid PTObjectKind.", nameof(hittable));
-			return new PTObject(ConstructTranslation(dx, dy, dz, hittable.ptr), PTObjectKind.Hittable, hittable);
+			return new PTObject(ConstructTranslation(offset, hittable.ptr), PTObjectKind.Hittable, hittable);
 		}
 
 		public static PTObject Rotation(float theta, Alignment alignment, PTObject hittable)
@@ -97,10 +97,10 @@ namespace PathTracerNET
 			return new PTObject(ConstructRotation(theta, alignment, hittable.ptr), PTObjectKind.Hittable, hittable);
 		}
 
-		public static PTObject Sphere(float cx, float cy, float cz, float radius, PTObject material)
+		public static PTObject Sphere(Vec3 center, float radius, PTObject material)
 		{
 			if (material.Kind != PTObjectKind.Material) throw new ArgumentException("Invalid PTObjectKind.", nameof(material));
-			return new PTObject(ConstructSphere(cx, cy, cz, radius, material.ptr), PTObjectKind.Hittable, material);
+			return new PTObject(ConstructSphere(center, radius, material.ptr), PTObjectKind.Hittable, material);
 		}
 
 		public static PTObject RectangularPrism(float x1, float x2, float y1, float y2, float z1, float z2, PTObject material)
@@ -130,10 +130,10 @@ namespace PathTracerNET
 			return new PTObject(ConstructRectangularPlane(a1, a2, b1, b2, k, alignment, autoNormal, invertNormal, material.ptr), PTObjectKind.Hittable, material);
 		}
 
-		public static PTObject DistortedSphere(float cx, float cy, float cz, float radius, float frequency, float amplitude, PTObject material)
+		public static PTObject DistortedSphere(Vec3 center, float radius, float frequency, float amplitude, PTObject material)
 		{
 			if (material.Kind != PTObjectKind.Material) throw new ArgumentException("Invalid PTObjectKind.", nameof(material));
-			return new PTObject(ConstructDistortedSphere(cx, cy, cz, radius, frequency, amplitude, material.ptr), PTObjectKind.Hittable, material);
+			return new PTObject(ConstructDistortedSphere(center, radius, frequency, amplitude, material.ptr), PTObjectKind.Hittable, material);
 		}
 
 		public static PTObject Lambertian(float r, float g, float b)
@@ -157,28 +157,28 @@ namespace PathTracerNET
 		}
 
 		[DllImport("PathTracer.dll")]
-		private static extern void RenderScene(int width, int height, int samples, string fname, float lfx, float lfy, float lfz, float lax, float lay, float laz, float upx, float upy, float upz, float vfov, float aspect, IntPtr scene);
+		private static extern void RenderScene(int width, int height, int samples, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, IntPtr scene);
 
 		[DllImport("PathTracer.dll")]
-		private static extern void RenderSceneChunked(int width, int height, int samples, string fname, float lfx, float lfy, float lfz, float lax, float lay, float laz, float upx, float upy, float upz, float vfov, float aspect, IntPtr scene);
+		private static extern void RenderSceneChunked(int width, int height, int samples, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, IntPtr scene);
 
 		[DllImport("PathTracer.dll")]
 		private static extern IntPtr ConstructHittableList(int numHittables, [MarshalAs(UnmanagedType.LPArray)] IntPtr[] hittables);
 
 		[DllImport("PathTracer.dll")]
-		private static extern IntPtr ConstructTranslation(float dx, float dy, float dz, IntPtr hittable);
+		private static extern IntPtr ConstructTranslation(Vec3 offset, IntPtr hittable);
 
 		[DllImport("PathTracer.dll")]
 		private static extern IntPtr ConstructRotation(float theta, Alignment alignment, IntPtr hittable);
 
 		[DllImport("PathTracer.dll")]
-		private static extern IntPtr ConstructSphere(float cx, float cy, float cz, float radius, IntPtr mat);
+		private static extern IntPtr ConstructSphere(Vec3 center, float radius, IntPtr mat);
 
 		[DllImport("PathTracer.dll")]
 		private static extern IntPtr ConstructRectangularPlane(float a1, float a2, float b1, float b2, float k, Alignment alignment, bool autoNormal, bool invertNormal, IntPtr mat);
 
 		[DllImport("PathTracer.dll")]
-		private static extern IntPtr ConstructDistortedSphere(float cx, float cy, float cz, float radius, float frequency, float amplitude, IntPtr mat);
+		private static extern IntPtr ConstructDistortedSphere(Vec3 center, float radius, float frequency, float amplitude, IntPtr mat);
 
 		[DllImport("PathTracer.dll")]
 		private static extern IntPtr ConstructLambertian(float r, float g, float b);
