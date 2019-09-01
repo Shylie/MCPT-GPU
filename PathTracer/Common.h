@@ -7,7 +7,6 @@
 #define API __declspec(dllimport)
 #endif
 
-#include <host_defines.h>
 #include <cuda_runtime.h>
 #include <iostream>
 #include <fstream>
@@ -30,7 +29,7 @@ __host__ __device__ inline void wangHash(unsigned int* seed)
 	*seed = *seed ^ (*seed >> 15);
 }
 
-enum API Alignment
+enum Alignment
 {
 	None = 0,
 	X = 1 << 0,

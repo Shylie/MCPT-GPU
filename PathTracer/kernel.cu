@@ -274,7 +274,7 @@ extern "C"
 		delete ptr;
 	}
 
-	typedef API struct _CVec3
+	typedef struct _CVec3
 	{
 		float X;
 		float Y;
