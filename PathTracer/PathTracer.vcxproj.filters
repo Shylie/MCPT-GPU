@@ -38,6 +38,9 @@
     <CudaCompile Include="Translation.cu">
       <Filter>Hittables\Modifier Hittables</Filter>
     </CudaCompile>
+    <CudaCompile Include="TriangularPlane.cu">
+      <Filter>Hittables\Plane Hittables</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
@@ -79,6 +82,9 @@
     <ClInclude Include="Translation.h">
       <Filter>Hittables\Modifier Hittables</Filter>
     </ClInclude>
+    <ClInclude Include="TriangularPlane.h">
+      <Filter>Hittables\Plane Hittables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Hittables">
@@ -90,11 +96,11 @@
     <Filter Include="Hittables\SDF Hittables">
       <UniqueIdentifier>{acc3ef09-e14f-450d-bfac-1e8dd4b9f2f2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Hittables\Plane Hittables">
-      <UniqueIdentifier>{95705f51-3824-457c-a82d-1246b25e14af}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Hittables\Modifier Hittables">
       <UniqueIdentifier>{7ca8c0b5-5c4e-4f30-b334-13ab192cfe76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hittables\Plane Hittables">
+      <UniqueIdentifier>{95705f51-3824-457c-a82d-1246b25e14af}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

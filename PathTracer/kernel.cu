@@ -8,6 +8,7 @@
 #include "Sphere.h"
 #include "DistortedSphere.h"
 #include "RectangularPlane.h"
+#include "TriangularPlane.h"
 #include "Translation.h"
 #include "Rotation.h"
 #include "HittableList.h"
@@ -237,6 +238,11 @@ extern "C"
 	API Hittable* ConstructRectangularPlane(float a1, float a2, float b1, float b2, float k, Alignment alignment, bool autoNormal, bool invertNormal, Material* mat)
 	{
 		return new RectangularPlane(a1, a2, b1, b2, k, alignment, autoNormal, invertNormal, mat->GetPtrGPU());
+	}
+
+	API Hittable* ConstructTriangularPlane(float a1, float b1, float a2, float b2, float a3, float b3, float k, Alignment alignment, bool autoNormal, bool invertNormal, Material* mat)
+	{
+		return new TriangularPlane(a1, b1, a2, b2, a3, b3, k, alignment, autoNormal, invertNormal, mat->GetPtrGPU());
 	}
 
 	API Hittable* ConstructDistortedSphere(Vec3 center, float radius, float frequency, float amplitude, Material* mat)
