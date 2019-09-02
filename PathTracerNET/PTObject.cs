@@ -130,6 +130,21 @@ namespace PathTracerNET
 			return new PTObject(ConstructRectangularPlane(a1, a2, b1, b2, k, alignment, autoNormal, invertNormal, material.ptr), PTObjectKind.Hittable, material);
 		}
 
+		public static PTObject TriangularPlane(float a1, float b1, float a2, float b2, float a3, float b3, float k, Alignment alignment, bool autoNormal, bool invertNormal, PTObject material)
+		{
+			if (material.Kind != PTObjectKind.Material) throw new ArgumentException("Invalid PTObjectKind.", nameof(material));
+			switch (alignment)
+			{
+				case Alignment.None:
+				case Alignment.X:
+				case Alignment.Y:
+				case Alignment.Z:
+				case Alignment.X | Alignment.Y | Alignment.Z:
+					throw new ArgumentException("Invalid PTObjectAlignment.", nameof(alignment));
+			}
+			return new PTObject(ConstructTriangularPlane(a1, b1, a2, b2, a3, b3, k, alignment, autoNormal, invertNormal, material.ptr), PTObjectKind.Hittable, material);
+		}
+
 		public static PTObject DistortedSphere(Vec3 center, float radius, float frequency, float amplitude, PTObject material)
 		{
 			if (material.Kind != PTObjectKind.Material) throw new ArgumentException("Invalid PTObjectKind.", nameof(material));
@@ -176,6 +191,9 @@ namespace PathTracerNET
 
 		[DllImport("PathTracer.dll")]
 		private static extern IntPtr ConstructRectangularPlane(float a1, float a2, float b1, float b2, float k, Alignment alignment, bool autoNormal, bool invertNormal, IntPtr mat);
+
+		[DllImport("PathTracer.dll")]
+		private static extern IntPtr ConstructTriangularPlane(float a1, float b1, float a2, float b2, float a3, float b3, float k, Alignment alignment, bool autoNormal, bool invertNormal, IntPtr mat);
 
 		[DllImport("PathTracer.dll")]
 		private static extern IntPtr ConstructDistortedSphere(Vec3 center, float radius, float frequency, float amplitude, IntPtr mat);

@@ -108,6 +108,7 @@
     <CudaCompile Include="SDFHittable.cu" />
     <CudaCompile Include="Sphere.cu" />
     <CudaCompile Include="Translation.cu" />
+    <CudaCompile Include="TriangularPlane.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
@@ -125,6 +126,7 @@
     <ClInclude Include="SDFHittable.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Translation.h" />
+    <ClInclude Include="TriangularPlane.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
