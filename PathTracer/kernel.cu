@@ -126,7 +126,7 @@ __global__ void renderGPU_Chunk(Vec3* cols, int width, int height, int samples, 
 	}
 }
 
-void render(int width, int height, int samples, const char* fname, Camera cam, Hittable** scene)
+bool render(int width, int height, int samples, const char* fname, Camera cam, Hittable** scene)
 {
 	Vec3* src;
 	cudaMalloc(&src, width * height * sizeof(Vec3));
@@ -138,21 +138,24 @@ void render(int width, int height, int samples, const char* fname, Camera cam, H
 
 	renderGPU_All<<<numBlocks, blockSize>>>(src, width, height, samples, cam, scene);
 
-	cudaDeviceSynchronize();
+	if (cudaDeviceSynchronize() != cudaSuccess)
+	{
+		cudaFree(src);
+		return false;
+	}
 
 	cudaMemcpy(dst, src, width * height * sizeof(Vec3), cudaMemcpyKind::cudaMemcpyDeviceToHost);
 	cudaFree(src);
 
 	saveImage(width, height, dst, fname);
+	return true;
 }
 
-void renderChunked(int width, int height, int samples, const char* fname, Camera cam, Hittable** scene)
+bool renderChunked(int width, int height, int samples, int chunkSize, const char* fname, Camera cam, Hittable** scene)
 {
-	const int chunkSize = 64;
-
 	Vec3* dst = new Vec3[width * height];
 
-	dim3 blockSize = dim3(16, 16);
+	dim3 blockSize = dim3(chunkSize / 4, chunkSize / 4);
 	dim3 numBlocks = dim3(4, 4);
 
 	int processed = 0;
@@ -174,7 +177,12 @@ void renderChunked(int width, int height, int samples, const char* fname, Camera
 
 			renderGPU_Chunk<<<numBlocks, blockSize>>>(src, width, height, samples, cam, scene, sx, sx + chunkWidth, sy, sy + chunkWidth);
 
-			cudaDeviceSynchronize();
+			if (cudaDeviceSynchronize() != cudaSuccess)
+			{
+				cudaFree(src);
+				delete[] tmpdst;
+				return false;
+			}
 
 			cudaMemcpy(tmpdst, src, chunkWidth * chunkHeight * sizeof(Vec3), cudaMemcpyKind::cudaMemcpyDeviceToHost);
 			cudaFree(src);
@@ -194,20 +202,22 @@ void renderChunked(int width, int height, int samples, const char* fname, Camera
 	}
 
 	saveImage(width, height, dst, fname);
+
+	return true;
 }
 
 extern "C"
 {
-	API void RenderScene(int width, int height, int samples, const char* fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, Hittable* scene)
+	API bool RenderScene(int width, int height, int samples, const char* fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, Hittable* scene)
 	{
 		Camera cam = Camera(lookFrom, lookAt, vup, vfov, aspect);
-		render(width, height, samples, fname, cam, scene->GetPtrGPU());
+		return render(width, height, samples, fname, cam, scene->GetPtrGPU());
 	}
 
-	API void RenderSceneChunked(int width, int height, int samples, const char* fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, Hittable* scene)
+	API bool RenderSceneChunked(int width, int height, int samples, int chunkSize, const char* fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, Hittable* scene)
 	{
 		Camera cam = Camera(lookFrom, lookAt, vup, vfov, aspect);
-		renderChunked(width, height, samples, fname, cam, scene->GetPtrGPU());
+		return renderChunked(width, height, samples, chunkSize, fname, cam, scene->GetPtrGPU());
 	}
 
 	API Hittable* ConstructHittableList(int numHittables, Hittable** hittables)

@@ -4,7 +4,7 @@ namespace PathTracerNET
 {
 	internal class Program
 	{
-		private const int WIDTH = 1024, HEIGHT = 512, SAMPLES = 500;
+		private const int WIDTH = 1024, HEIGHT = 512, SAMPLES = 250, CHUNK_SIZE = 128;
 
 		private static void Main(string[] args)
 		{
@@ -28,7 +28,14 @@ namespace PathTracerNET
 
 			string fname = (args.Length == 1) ? args[0] : "test";
 
-			PTObject.RenderSceneChunked(WIDTH, HEIGHT, SAMPLES, fname, new Vec3(2f, 1.2f, -2f), new Vec3(-2f, 0f, 2f), new Vec3(0f, 1f, 0f), (float)Math.PI / 3f, (float)WIDTH / HEIGHT, scene);
+			System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+			sw.Start();
+			if (!PTObject.RenderSceneChunked(WIDTH, HEIGHT, SAMPLES, CHUNK_SIZE, fname, new Vec3(2f, 1.2f, -2f), new Vec3(-2f, 0f, 2f), new Vec3(0f, 1f, 0f), (float)Math.PI / 3f, (float)WIDTH / HEIGHT, scene))
+			{
+				Console.WriteLine("\nRendering failed.");
+			}
+			sw.Stop();
+			Console.WriteLine("\n{0} ms", sw.ElapsedMilliseconds);
 
 			scene.Destroy();
 			cube.Destroy();

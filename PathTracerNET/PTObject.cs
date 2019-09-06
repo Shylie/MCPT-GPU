@@ -57,55 +57,59 @@ namespace PathTracerNET
 			Z = 1 << 2
 		}
 
-		public static void RenderScene(int width, int height, int samples, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, PTObject scene)
+		public static bool RenderScene(int width, int height, int samples, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, PTObject scene)
 		{
 			if (scene.Kind != PTObjectKind.Hittable)
 			{
-				throw new ArgumentException("Invalid PTObjectKind.", nameof(scene));
+				throw new ArgumentException("Invalid PTObjectKind: not a Hittable.", nameof(scene));
 			}
-			RenderScene(width, height, samples, fname + ".ppm", lookFrom, lookAt, vup, vfov, aspect, scene.ptr);
+			return RenderScene(width, height, samples, fname + ".ppm", lookFrom, lookAt, vup, vfov, aspect, scene.ptr);
 		}
 
-		public static void RenderSceneChunked(int width, int height, int samples, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, PTObject scene)
+		public static bool RenderSceneChunked(int width, int height, int samples, int chunkSize, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, PTObject scene)
 		{
 			if (scene.Kind != PTObjectKind.Hittable)
 			{
-				throw new ArgumentException("Invalid PTObjectKind.", nameof(scene));
+				throw new ArgumentException("Invalid PTObjectKind: not a Hittable.", nameof(scene));
 			}
-			RenderSceneChunked(width, height, samples, fname + ".ppm", lookFrom, lookAt, vup, vfov, aspect, scene.ptr);
+			if (chunkSize % 4 != 0)
+			{
+				throw new ArgumentException("Invalid chunk size: not a multiple of 4.", nameof(chunkSize));
+			}
+			return RenderSceneChunked(width, height, samples, chunkSize, fname + ".ppm", lookFrom, lookAt, vup, vfov, aspect, scene.ptr);
 		}
 
 		public static PTObject HittableList(params PTObject[] ptObjects)
 		{
 			foreach (PTObject ptObject in ptObjects)
 			{
-				if (ptObject.Kind != PTObjectKind.Hittable) throw new ArgumentException("Invalid PTObjectKind.", nameof(ptObject));
+				if (ptObject.Kind != PTObjectKind.Hittable) throw new ArgumentException("Invalid PTObjectKind: not a Hittable.", nameof(ptObject));
 			}
 			return new PTObject(ConstructHittableList(ptObjects.Length, ptObjects.Select(pto => pto.ptr).ToArray()), PTObjectKind.Hittable, ptObjects);
 		}
 		
 		public static PTObject Translation(Vec3 offset, PTObject hittable)
 		{
-			if (hittable.Kind != PTObjectKind.Hittable) throw new ArgumentException("Invalid PTObjectKind.", nameof(hittable));
+			if (hittable.Kind != PTObjectKind.Hittable) throw new ArgumentException("Invalid PTObjectKind: not a Hittable.", nameof(hittable));
 			return new PTObject(ConstructTranslation(offset, hittable.ptr), PTObjectKind.Hittable, hittable);
 		}
 
 		public static PTObject Rotation(float theta, Alignment alignment, PTObject hittable)
 		{
-			if (hittable.Kind != PTObjectKind.Hittable) throw new ArgumentException("Invalid PTObjectKind.", nameof(hittable));
+			if (hittable.Kind != PTObjectKind.Hittable) throw new ArgumentException("Invalid PTObjectKind: not a Hittable.", nameof(hittable));
 			if (alignment != Alignment.X && alignment != Alignment.Y && alignment != Alignment.Z) throw new ArgumentException("Invalid PTObjectAlignment.", nameof(alignment));
 			return new PTObject(ConstructRotation(theta, alignment, hittable.ptr), PTObjectKind.Hittable, hittable);
 		}
 
 		public static PTObject Sphere(Vec3 center, float radius, PTObject material)
 		{
-			if (material.Kind != PTObjectKind.Material) throw new ArgumentException("Invalid PTObjectKind.", nameof(material));
+			if (material.Kind != PTObjectKind.Material) throw new ArgumentException("Invalid PTObjectKind: not a Material.", nameof(material));
 			return new PTObject(ConstructSphere(center, radius, material.ptr), PTObjectKind.Hittable, material);
 		}
 
 		public static PTObject RectangularPrism(float x1, float x2, float y1, float y2, float z1, float z2, PTObject material)
 		{
-			if (material.Kind != PTObjectKind.Material) throw new ArgumentException("Invalid PTObjectKind.", nameof(material));
+			if (material.Kind != PTObjectKind.Material) throw new ArgumentException("Invalid PTObjectKind: not a Material.", nameof(material));
 			PTObject xyMin = RectangularPlane(x1, x2, y1, y2, z1, Alignment.X | Alignment.Y, false, true, material);
 			PTObject xyMax = RectangularPlane(x1, x2, y1, y1, z2, Alignment.X | Alignment.Y, false, false, material);
 			PTObject xzMin = RectangularPlane(x1, x2, z1, z2, y1, Alignment.X | Alignment.Z, false, true, material);
@@ -117,7 +121,7 @@ namespace PathTracerNET
 
 		public static PTObject RectangularPlane(float a1, float a2, float b1, float b2, float k, Alignment alignment, bool autoNormal, bool invertNormal, PTObject material)
 		{
-			if (material.Kind != PTObjectKind.Material) throw new ArgumentException("Invalid PTObjectKind.", nameof(material));
+			if (material.Kind != PTObjectKind.Material) throw new ArgumentException("Invalid PTObjectKind: not a Material.", nameof(material));
 			switch (alignment)
 			{
 				case Alignment.None:
@@ -132,7 +136,7 @@ namespace PathTracerNET
 
 		public static PTObject TriangularPlane(float a1, float b1, float a2, float b2, float a3, float b3, float k, Alignment alignment, bool autoNormal, bool invertNormal, PTObject material)
 		{
-			if (material.Kind != PTObjectKind.Material) throw new ArgumentException("Invalid PTObjectKind.", nameof(material));
+			if (material.Kind != PTObjectKind.Material) throw new ArgumentException("Invalid PTObjectKind: not a Material.", nameof(material));
 			switch (alignment)
 			{
 				case Alignment.None:
@@ -147,7 +151,7 @@ namespace PathTracerNET
 
 		public static PTObject DistortedSphere(Vec3 center, float radius, float frequency, float amplitude, PTObject material)
 		{
-			if (material.Kind != PTObjectKind.Material) throw new ArgumentException("Invalid PTObjectKind.", nameof(material));
+			if (material.Kind != PTObjectKind.Material) throw new ArgumentException("Invalid PTObjectKind: not a Material.", nameof(material));
 			return new PTObject(ConstructDistortedSphere(center, radius, frequency, amplitude, material.ptr), PTObjectKind.Hittable, material);
 		}
 
@@ -172,10 +176,10 @@ namespace PathTracerNET
 		}
 
 		[DllImport("PathTracer.dll")]
-		private static extern void RenderScene(int width, int height, int samples, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, IntPtr scene);
+		private static extern bool RenderScene(int width, int height, int samples, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, IntPtr scene);
 
 		[DllImport("PathTracer.dll")]
-		private static extern void RenderSceneChunked(int width, int height, int samples, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, IntPtr scene);
+		private static extern bool RenderSceneChunked(int width, int height, int samples, int chunkSize, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, IntPtr scene);
 
 		[DllImport("PathTracer.dll")]
 		private static extern IntPtr ConstructHittableList(int numHittables, [MarshalAs(UnmanagedType.LPArray)] IntPtr[] hittables);
