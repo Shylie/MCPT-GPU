@@ -138,6 +138,12 @@ bool render(int width, int height, int samples, const char* fname, Camera cam, H
 
 	renderGPU_All<<<numBlocks, blockSize>>>(src, width, height, samples, cam, scene);
 
+	if (cudaPeekAtLastError() != cudaSuccess)
+	{
+		cudaFree(src);
+		return false;
+	}
+
 	if (cudaDeviceSynchronize() != cudaSuccess)
 	{
 		cudaFree(src);
@@ -177,10 +183,19 @@ bool renderChunked(int width, int height, int samples, int chunkSize, const char
 
 			renderGPU_Chunk<<<numBlocks, blockSize>>>(src, width, height, samples, cam, scene, sx, sx + chunkWidth, sy, sy + chunkWidth);
 
+			if (cudaPeekAtLastError() != cudaSuccess)
+			{
+				cudaFree(src);
+				delete[] tmpdst;
+				delete dst;
+				return false;
+			}
+
 			if (cudaDeviceSynchronize() != cudaSuccess)
 			{
 				cudaFree(src);
 				delete[] tmpdst;
+				delete dst;
 				return false;
 			}
 
