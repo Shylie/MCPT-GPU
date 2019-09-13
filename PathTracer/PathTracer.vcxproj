@@ -50,11 +50,15 @@
     <EnableManagedIncrementalBuild>
     </EnableManagedIncrementalBuild>
     <OutDir>$(SolutionDir)PathTracerNET\bin\$(Configuration)\</OutDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(VCInstallDir)UnitTest\include;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(VCInstallDir)UnitTest\lib;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <EnableManagedIncrementalBuild>
     </EnableManagedIncrementalBuild>
     <OutDir>$(SolutionDir)PathTracerNET\bin\$(Configuration)\</OutDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(VCInstallDir)UnitTest\include;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(VCInstallDir)UnitTest\lib;</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -127,6 +131,9 @@
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Translation.h" />
     <ClInclude Include="TriangularPlane.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Vec3Tests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

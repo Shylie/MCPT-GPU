@@ -102,5 +102,13 @@
     <Filter Include="Hittables\Plane Hittables">
       <UniqueIdentifier>{95705f51-3824-457c-a82d-1246b25e14af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{8e548c61-600e-43cf-a601-aa0887258efd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Vec3Tests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
