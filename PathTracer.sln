@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PathTracer", "PathTracer\Pa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathTracerNET", "PathTracerNET\PathTracerNET.csproj", "{4598CA0A-79B2-445F-B4AB-2323907A7149}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PathTracerTests", "PathTracerTests\PathTracerTests.vcxproj", "{72F048D0-180B-4D6B-AED8-FA57667F2028}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,14 @@ Global
 		{4598CA0A-79B2-445F-B4AB-2323907A7149}.Release|x64.Build.0 = Release|Any CPU
 		{4598CA0A-79B2-445F-B4AB-2323907A7149}.Release|x86.ActiveCfg = Release|Any CPU
 		{4598CA0A-79B2-445F-B4AB-2323907A7149}.Release|x86.Build.0 = Release|Any CPU
+		{72F048D0-180B-4D6B-AED8-FA57667F2028}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{72F048D0-180B-4D6B-AED8-FA57667F2028}.Debug|x64.ActiveCfg = Debug|x64
+		{72F048D0-180B-4D6B-AED8-FA57667F2028}.Debug|x64.Build.0 = Debug|x64
+		{72F048D0-180B-4D6B-AED8-FA57667F2028}.Debug|x86.ActiveCfg = Debug|x64
+		{72F048D0-180B-4D6B-AED8-FA57667F2028}.Release|Any CPU.ActiveCfg = Release|x64
+		{72F048D0-180B-4D6B-AED8-FA57667F2028}.Release|x64.ActiveCfg = Release|x64
+		{72F048D0-180B-4D6B-AED8-FA57667F2028}.Release|x64.Build.0 = Release|x64
+		{72F048D0-180B-4D6B-AED8-FA57667F2028}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

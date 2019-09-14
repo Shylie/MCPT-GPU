@@ -1,9 +1,9 @@
 #include <CppUnitTest.h>
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-#include "Common.h"
+#include "..\\PathTracer\Common.h"
 
-namespace Tests
+namespace PathTracerTests
 {
 	TEST_CLASS(Vec3Tests)
 	{
@@ -44,7 +44,7 @@ namespace Tests
 		TEST_METHOD(Vec3Length)
 		{
 			const float expected = 5.3851648071345040312507104915403f;
-			
+
 			Vec3 v3(2.0f, 3.0f, 4.0f);
 
 			Assert::AreEqual(expected, v3.Length());
