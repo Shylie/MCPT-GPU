@@ -14,9 +14,9 @@ namespace PathTracerTests
 
 			Vec3 v3;
 
-			Assert::AreEqual(expected, v3.X);
-			Assert::AreEqual(expected, v3.Y);
-			Assert::AreEqual(expected, v3.Z);
+			Assert::AreEqual(expected, v3.X, L"X");
+			Assert::AreEqual(expected, v3.Y, L"Y");
+			Assert::AreEqual(expected, v3.Z, L"Z");
 		}
 
 		TEST_METHOD(Vec3SingleCompCtor)
@@ -25,9 +25,9 @@ namespace PathTracerTests
 
 			Vec3 v3(1.0f);
 
-			Assert::AreEqual(expected, v3.X);
-			Assert::AreEqual(expected, v3.Y);
-			Assert::AreEqual(expected, v3.Z);
+			Assert::AreEqual(expected, v3.X, L"X");
+			Assert::AreEqual(expected, v3.Y, L"Y");
+			Assert::AreEqual(expected, v3.Z, L"Z");
 		}
 
 		TEST_METHOD(Vec3AllCompCtor)
@@ -36,9 +36,9 @@ namespace PathTracerTests
 
 			Vec3 v3(1.0f, 2.0f, 3.0f);
 
-			Assert::AreEqual(expectedX, v3.X);
-			Assert::AreEqual(expectedY, v3.Y);
-			Assert::AreEqual(expectedZ, v3.Z);
+			Assert::AreEqual(expectedX, v3.X, L"X");
+			Assert::AreEqual(expectedY, v3.Y, L"Y");
+			Assert::AreEqual(expectedZ, v3.Z, L"Y");
 		}
 
 		TEST_METHOD(Vec3Length)
@@ -47,7 +47,7 @@ namespace PathTracerTests
 
 			Vec3 v3(2.0f, 3.0f, 4.0f);
 
-			Assert::AreEqual(expected, v3.Length());
+			Assert::AreEqual(expected, v3.Length(), L"Length");
 		}
 
 		TEST_METHOD(Vec3LengthSquared)
@@ -56,7 +56,7 @@ namespace PathTracerTests
 
 			Vec3 v3(2.0f, 3.0f, 4.0f);
 
-			Assert::AreEqual(expected, v3.LengthSquared());
+			Assert::AreEqual(expected, v3.LengthSquared(), L"Length Squared");
 		}
 
 		TEST_METHOD(Vec3Normalized)
@@ -66,9 +66,9 @@ namespace PathTracerTests
 			Vec3 v3(2.0f, 2.0f, 2.0f);
 			Vec3 v3n = v3.Normalized();
 
-			Assert::AreEqual(expected, v3n.X);
-			Assert::AreEqual(expected, v3n.Y);
-			Assert::AreEqual(expected, v3n.Z);
+			Assert::AreEqual(expected, v3n.X, L"X");
+			Assert::AreEqual(expected, v3n.Y, L"Y");
+			Assert::AreEqual(expected, v3n.Z, L"Z");
 		}
 
 		TEST_METHOD(Vec3Dot)
@@ -77,7 +77,7 @@ namespace PathTracerTests
 
 			Vec3 v1(2.0f, 4.0f, 8.0f), v2(3.0f, 5.0f, 9.0f);
 
-			Assert::AreEqual(expected, Vec3::Dot(v1, v2));
+			Assert::AreEqual(expected, Vec3::Dot(v1, v2), L"Dot Product");
 		}
 
 		TEST_METHOD(Vec3Cross)
@@ -87,9 +87,9 @@ namespace PathTracerTests
 			Vec3 v1(2.0f, 4.0f, 8.0f), v2(3.0f, 5.0f, 9.0f);
 			Vec3 cp = Vec3::Cross(v1, v2);
 
-			Assert::AreEqual(expectedX, cp.X);
-			Assert::AreEqual(expectedY, cp.Y);
-			Assert::AreEqual(expectedZ, cp.Z);
+			Assert::AreEqual(expectedX, cp.X, L"X");
+			Assert::AreEqual(expectedY, cp.Y, L"Y");
+			Assert::AreEqual(expectedZ, cp.Z, L"Z");
 		}
 
 		TEST_METHOD(Vec3Negate)
@@ -98,9 +98,9 @@ namespace PathTracerTests
 
 			Vec3 v3(-2.0f, 3.0f, -5.0f);
 
-			Assert::AreEqual(expectedX, (-v3).X);
-			Assert::AreEqual(expectedY, (-v3).Y);
-			Assert::AreEqual(expectedZ, (-v3).Z);
+			Assert::AreEqual(expectedX, (-v3).X, L"X");
+			Assert::AreEqual(expectedY, (-v3).Y, L"Y");
+			Assert::AreEqual(expectedZ, (-v3).Z, L"Z");
 		}
 
 		TEST_METHOD(Vec3AddVec3)
@@ -110,9 +110,9 @@ namespace PathTracerTests
 			Vec3 v1(1.0f, 3.0f, 2.0f), v2(1.0f, 1.0f, 3.0f);
 			Vec3 result = v1 + v2;
 
-			Assert::AreEqual(expectedX, result.X);
-			Assert::AreEqual(expectedY, result.Y);
-			Assert::AreEqual(expectedZ, result.Z);
+			Assert::AreEqual(expectedX, result.X, L"X");
+			Assert::AreEqual(expectedY, result.Y, L"Y");
+			Assert::AreEqual(expectedZ, result.Z, L"Z");
 		}
 
 		TEST_METHOD(Vec3SubVec3)
@@ -122,9 +122,9 @@ namespace PathTracerTests
 			Vec3 v1(3.0f, 5.0f, 8.0f), v2(1.0f, 1.0f, 3.0f);
 			Vec3 result = v1 - v2;
 
-			Assert::AreEqual(expectedX, result.X);
-			Assert::AreEqual(expectedY, result.Y);
-			Assert::AreEqual(expectedZ, result.Z);
+			Assert::AreEqual(expectedX, result.X, L"X");
+			Assert::AreEqual(expectedY, result.Y, L"Y");
+			Assert::AreEqual(expectedZ, result.Z, L"Z");
 		}
 
 		TEST_METHOD(Vec3MulVec3)
@@ -134,9 +134,9 @@ namespace PathTracerTests
 			Vec3 v1(1.0f, 3.0f, 2.0f), v2(2.0f, 3.0f, 2.0f);
 			Vec3 result = v1 * v2;
 
-			Assert::AreEqual(expectedX, result.X);
-			Assert::AreEqual(expectedY, result.Y);
-			Assert::AreEqual(expectedZ, result.Z);
+			Assert::AreEqual(expectedX, result.X, L"X");
+			Assert::AreEqual(expectedY, result.Y, L"Y");
+			Assert::AreEqual(expectedZ, result.Z, L"Z");
 		}
 
 		TEST_METHOD(Vec3DivVec3)
@@ -146,9 +146,9 @@ namespace PathTracerTests
 			Vec3 v1(1.0f, 3.0f, 9.0f), v2(1.0f, 2.0f, 3.0f);
 			Vec3 result = v1 / v2;
 
-			Assert::AreEqual(expectedX, result.X);
-			Assert::AreEqual(expectedY, result.Y);
-			Assert::AreEqual(expectedZ, result.Z);
+			Assert::AreEqual(expectedX, result.X, L"X");
+			Assert::AreEqual(expectedY, result.Y, L"Y");
+			Assert::AreEqual(expectedZ, result.Z, L"Z");
 		}
 
 		TEST_METHOD(Vec3MulFloat)
@@ -160,9 +160,9 @@ namespace PathTracerTests
 
 			Vec3 result = v1 * scalar;
 
-			Assert::AreEqual(expectedX, result.X);
-			Assert::AreEqual(expectedY, result.Y);
-			Assert::AreEqual(expectedZ, result.Z);
+			Assert::AreEqual(expectedX, result.X, L"X");
+			Assert::AreEqual(expectedY, result.Y, L"Y");
+			Assert::AreEqual(expectedZ, result.Z, L"Z");
 		}
 
 		TEST_METHOD(Vec3DivFloat)
@@ -174,9 +174,9 @@ namespace PathTracerTests
 
 			Vec3 result = v1 / scalar;
 
-			Assert::AreEqual(expectedX, result.X);
-			Assert::AreEqual(expectedY, result.Y);
-			Assert::AreEqual(expectedZ, result.Z);
+			Assert::AreEqual(expectedX, result.X, L"X");
+			Assert::AreEqual(expectedY, result.Y, L"Y");
+			Assert::AreEqual(expectedZ, result.Z, L"Z");
 		}
 	};
 }
