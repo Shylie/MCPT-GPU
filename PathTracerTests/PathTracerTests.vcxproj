@@ -16,6 +16,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Ray3Tests.cpp" />
     <ClCompile Include="Vec3Tests.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
