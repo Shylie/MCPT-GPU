@@ -2,9 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <CudaCompile Include="kernel.cu" />
-    <CudaCompile Include="Sphere.cu">
-      <Filter>Hittables</Filter>
-    </CudaCompile>
     <CudaCompile Include="Lambertian.cu">
       <Filter>Materials</Filter>
     </CudaCompile>
@@ -41,14 +38,14 @@
     <CudaCompile Include="TriangularPlane.cu">
       <Filter>Hittables\Plane Hittables</Filter>
     </CudaCompile>
+    <CudaCompile Include="Sphere.cu">
+      <Filter>Hittables\Geometric Hittables</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
     <ClInclude Include="Hittable.h" />
     <ClInclude Include="Material.h" />
-    <ClInclude Include="Sphere.h">
-      <Filter>Hittables</Filter>
-    </ClInclude>
     <ClInclude Include="Lambertian.h">
       <Filter>Materials</Filter>
     </ClInclude>
@@ -86,6 +83,9 @@
       <Filter>Hittables\Plane Hittables</Filter>
     </ClInclude>
     <ClInclude Include="kernel.h" />
+    <ClInclude Include="Sphere.h">
+      <Filter>Hittables\Geometric Hittables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Hittables">
@@ -102,6 +102,9 @@
     </Filter>
     <Filter Include="Hittables\Plane Hittables">
       <UniqueIdentifier>{95705f51-3824-457c-a82d-1246b25e14af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hittables\Geometric Hittables">
+      <UniqueIdentifier>{4960b491-3c44-4122-a803-9f47abe82eaf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
