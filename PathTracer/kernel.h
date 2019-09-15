@@ -138,7 +138,7 @@ bool render(int width, int height, int samples, const char* fname, Camera cam, H
 	dim3 blockSize = dim3(16, 16);
 	dim3 numBlocks = dim3(16, 16);
 
-	renderGPU_All << <numBlocks, blockSize >> > (src, width, height, samples, cam, scene);
+	renderGPU_All<<<numBlocks, blockSize>>>(src, width, height, samples, cam, scene);
 
 	if (cudaPeekAtLastError() != cudaSuccess)
 	{
@@ -183,7 +183,7 @@ bool renderChunked(int width, int height, int samples, int chunkSize, const char
 
 			Vec3* tmpdst = new Vec3[chunkWidth * chunkHeight];
 
-			renderGPU_Chunk << <numBlocks, blockSize >> > (src, width, height, samples, cam, scene, sx, sx + chunkWidth, sy, sy + chunkWidth);
+			renderGPU_Chunk<<<numBlocks, blockSize>>>(src, width, height, samples, cam, scene, sx, sx + chunkWidth, sy, sy + chunkWidth);
 
 			if (cudaPeekAtLastError() != cudaSuccess)
 			{
