@@ -17,7 +17,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ray3Tests.cpp" />
+    <ClCompile Include="RectangularPlaneTests.cpp" />
     <ClCompile Include="SphereTests.cpp" />
+    <ClCompile Include="TriangularPlaneTests.cpp" />
     <ClCompile Include="Vec3Tests.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

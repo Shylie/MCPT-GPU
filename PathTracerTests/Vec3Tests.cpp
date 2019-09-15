@@ -82,7 +82,9 @@ namespace PathTracerTests
 
 		TEST_METHOD(Vec3Cross)
 		{
-			const float expectedX = -4.0f, expectedY = 6.0f, expectedZ = -2.0f;
+			const float expectedX = -4.0f;
+			const float expectedY = 6.0f;
+			const float expectedZ = -2.0f;
 
 			Vec3 v1(2.0f, 4.0f, 8.0f), v2(3.0f, 5.0f, 9.0f);
 			Vec3 cp = Vec3::Cross(v1, v2);
@@ -94,7 +96,9 @@ namespace PathTracerTests
 
 		TEST_METHOD(Vec3Negate)
 		{
-			const float expectedX = 2.0f, expectedY = -3.0f, expectedZ = 5.0f;
+			const float expectedX = 2.0f;
+			const float expectedY = -3.0f;
+			const float expectedZ = 5.0f;
 
 			Vec3 v3(-2.0f, 3.0f, -5.0f);
 
@@ -105,7 +109,9 @@ namespace PathTracerTests
 
 		TEST_METHOD(Vec3AddVec3)
 		{
-			const float expectedX = 2.0f, expectedY = 4.0f, expectedZ = 5.0f;
+			const float expectedX = 2.0f;
+			const float expectedY = 4.0f;
+			const float expectedZ = 5.0f;
 
 			Vec3 v1(1.0f, 3.0f, 2.0f), v2(1.0f, 1.0f, 3.0f);
 			Vec3 result = v1 + v2;
@@ -117,7 +123,9 @@ namespace PathTracerTests
 
 		TEST_METHOD(Vec3SubVec3)
 		{
-			const float expectedX = 2.0f, expectedY = 4.0f, expectedZ = 5.0f;
+			const float expectedX = 2.0f;
+			const float expectedY = 4.0f;
+			const float expectedZ = 5.0f;
 
 			Vec3 v1(3.0f, 5.0f, 8.0f), v2(1.0f, 1.0f, 3.0f);
 			Vec3 result = v1 - v2;
@@ -129,7 +137,9 @@ namespace PathTracerTests
 
 		TEST_METHOD(Vec3MulVec3)
 		{
-			const float expectedX = 2.0f, expectedY = 9.0f, expectedZ = 4.0f;
+			const float expectedX = 2.0f;
+			const float expectedY = 9.0f; 
+			const float expectedZ = 4.0f;
 
 			Vec3 v1(1.0f, 3.0f, 2.0f), v2(2.0f, 3.0f, 2.0f);
 			Vec3 result = v1 * v2;
@@ -141,7 +151,9 @@ namespace PathTracerTests
 
 		TEST_METHOD(Vec3DivVec3)
 		{
-			const float expectedX = 1.0f, expectedY = 1.5f, expectedZ = 3.0f;
+			const float expectedX = 1.0f;
+			const float expectedY = 1.5f;
+			const float expectedZ = 3.0f;
 
 			Vec3 v1(1.0f, 3.0f, 9.0f), v2(1.0f, 2.0f, 3.0f);
 			Vec3 result = v1 / v2;
@@ -153,7 +165,9 @@ namespace PathTracerTests
 
 		TEST_METHOD(Vec3MulFloat)
 		{
-			const float expectedX = 4.0f, expectedY = 6.0f, expectedZ = 12.0f;
+			const float expectedX = 4.0f;
+			const float expectedY = 6.0f;
+			const float expectedZ = 12.0f;
 
 			Vec3 v1(2.0f, 3.0f, 6.0f);
 			float scalar = 2.0f;
@@ -167,7 +181,9 @@ namespace PathTracerTests
 
 		TEST_METHOD(Vec3DivFloat)
 		{
-			const float expectedX = 1.0f, expectedY = 1.5f, expectedZ = 3.0f;
+			const float expectedX = 1.0f;
+			const float expectedY = 1.5f;
+			const float expectedZ = 3.0f;
 
 			Vec3 v1(2.0f, 3.0f, 6.0f);
 			float scalar = 2.0f;

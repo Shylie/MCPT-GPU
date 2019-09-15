@@ -4,7 +4,7 @@ namespace PathTracerNET
 {
 	internal class Program
 	{
-		private const int WIDTH = 1024, HEIGHT = 512, SAMPLES = 250, CHUNK_SIZE = 128;
+		private const int WIDTH = 1024, HEIGHT = 512, SAMPLES = 250, CHUNK_SIZE = 64;
 
 		private static void Main(string[] args)
 		{
