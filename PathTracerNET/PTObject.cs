@@ -35,6 +35,16 @@ namespace PathTracerNET
 			Kind = PTObjectKind.Invalid;
 		}
 
+		public PTObject Translate(Vec3 offset)
+		{
+			return Translation(offset, this);
+		}
+
+		public PTObject Rotate(float theta, Alignment alignment)
+		{
+			return Rotation(theta, alignment, this);
+		}
+
 		public PTObjectKind Kind { get; private set; } = PTObjectKind.Invalid;
 
 		private readonly PTObject[] children;
