@@ -89,6 +89,8 @@ namespace PathTracerTests
 			Assert::AreEqual(expectedNormalX, hRec.GetNormal().X, L"Normal X value");
 			Assert::AreEqual(expectedNormalY, hRec.GetNormal().Y, L"Normal Y value");
 			Assert::AreEqual(expectedNormalZ, hRec.GetNormal().Z, L"Normal Z value");
+
+			delete sphere;
 		}
 	};
 }

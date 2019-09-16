@@ -19,11 +19,15 @@ __global__ void destroyEnvironmentGPU_Rotation(Hittable** this_d)
 	}
 }
 
-Rotation::Rotation(float theta, Alignment alignment, Hittable** hittable_d) : theta(theta), cosTheta(cos(theta)), sinTheta(sin(theta)), alignment(alignment), hittable_d(hittable_d)
+Rotation::Rotation(float theta, Alignment alignment, Hittable* hittable) : theta(theta), cosTheta(cos(theta)), sinTheta(sin(theta)), alignment(alignment), hittable(hittable), hittable_d(hittable->GetPtrGPU())
 {
 #ifndef __CUDA_ARCH__
 	constructEnvironment();
 #endif
+}
+
+__device__ Rotation::Rotation(float theta, Alignment alignment, Hittable** hittable_d) : theta(theta), cosTheta(cos(theta)), sinTheta(sin(theta)), alignment(alignment), hittable_d(hittable_d)
+{
 }
 
 Rotation::~Rotation()
@@ -60,7 +64,11 @@ bool Rotation::Hit(const Ray3& ray, float tMin, float tMax, HitRecord& hRec) con
 		return false;
 	}
 	Ray3 rotatedRay = Ray3(origin, direction);
+#ifdef __CUDA_ARCH__
 	if ((*hittable_d)->Hit(rotatedRay, tMin, tMax, hRec))
+#else
+	if (hittable->Hit(rotatedRay, tMin, tMax, hRec))
+#endif
 	{
 		Vec3 p = hRec.GetPoint();
 		Vec3 n = hRec.GetNormal();

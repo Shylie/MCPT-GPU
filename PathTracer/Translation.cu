@@ -19,11 +19,15 @@ __global__ void destroyEnvironmentGPU_Translation(Hittable** this_d)
 	}
 }
 
-Translation::Translation(Vec3 offset, Hittable** hittable_d) : offset(offset), hittable_d(hittable_d)
+Translation::Translation(Vec3 offset, Hittable* hittable) : offset(offset), hittable(hittable), hittable_d(hittable->GetPtrGPU())
 {
 #ifndef __CUDA_ARCH__
 	constructEnvironment();
 #endif
+}
+
+__device__ Translation::Translation(Vec3 offset, Hittable** hittable_d) : offset(offset), hittable_d(hittable_d)
+{
 }
 
 Translation::~Translation()
@@ -36,7 +40,11 @@ Translation::~Translation()
 bool Translation::Hit(const Ray3& ray, float tMin, float tMax, HitRecord& hRec) const
 {
 	Ray3 moved = Ray3(ray.Origin() - offset, ray.Direction());
+#ifdef __CUDA_ARCH__
 	if ((*hittable_d)->Hit(moved, tMin, tMax, hRec))
+#else
+	if (hittable->Hit(moved, tMin, tMax, hRec))
+#endif
 	{
 		hRec.SetPoint(hRec.GetPoint() + offset);
 		return true;

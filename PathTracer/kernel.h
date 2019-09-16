@@ -249,12 +249,12 @@ extern "C"
 
 	API Hittable* ConstructTranslation(Vec3 offset, Hittable* hittable)
 	{
-		return new Translation(offset, hittable->GetPtrGPU());
+		return new Translation(offset, hittable);
 	}
 
 	API Hittable* ConstructRotation(float theta, Alignment alignment, Hittable* hittable)
 	{
-		return new Rotation(theta, alignment, hittable->GetPtrGPU());
+		return new Rotation(theta, alignment, hittable);
 	}
 
 	API Hittable* ConstructSphere(Vec3 center, float radius, Material* mat)
