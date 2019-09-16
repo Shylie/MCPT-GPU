@@ -13,21 +13,27 @@ namespace PathTracerNET
 			this.children = children;
 		}
 
-		public void Destroy()
+		public void Destroy(bool destroyChildren = true)
 		{
 			switch (Kind)
 			{
 				case PTObjectKind.Hittable:
-					foreach (PTObject child in children)
+					if (destroyChildren)
 					{
-						child.Destroy();
+						foreach (PTObject child in children)
+						{
+							child.Destroy();
+						}
 					}
 					DestroyHittable(ptr);
 					break;
 				case PTObjectKind.Material:
-					foreach (PTObject child in children)
+					if (destroyChildren)
 					{
-						child.Destroy();
+						foreach (PTObject child in children)
+						{
+							child.Destroy();
+						}
 					}
 					DestroyMaterial(ptr);
 					break;

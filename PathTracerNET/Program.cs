@@ -38,7 +38,6 @@ namespace PathTracerNET
 			Console.WriteLine("\n{0} ms", sw.ElapsedMilliseconds);
 
 			scene.Destroy();
-			cube.Destroy();
 		}
 	}
 }
