@@ -49,12 +49,12 @@
     <LinkIncremental>true</LinkIncremental>
     <EnableManagedIncrementalBuild>
     </EnableManagedIncrementalBuild>
-    <OutDir>$(SolutionDir)PathTracerNET\bin\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)PathTracer\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <EnableManagedIncrementalBuild>
     </EnableManagedIncrementalBuild>
-    <OutDir>$(SolutionDir)PathTracerNET\bin\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)PathTracer\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

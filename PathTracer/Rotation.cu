@@ -63,6 +63,12 @@ bool Rotation::Hit(const Ray3& ray, float tMin, float tMax, HitRecord& hRec) con
 	default:
 		return false;
 	}
+	if (hittable_d == nullptr) {
+		printf("Fuck 1");
+	}
+	if ((*hittable_d) == nullptr) {
+		printf("Fuck 2");
+	}
 	Ray3 rotatedRay = Ray3(origin, direction);
 #ifdef __CUDA_ARCH__
 	if ((*hittable_d)->Hit(rotatedRay, tMin, tMax, hRec))
