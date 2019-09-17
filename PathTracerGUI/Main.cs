@@ -53,7 +53,10 @@ namespace PathTracerGUI
 			AddObject("light", PTObject.Sphere(new Vec3(0f, 3f, 0f), 1.7f, GetMaterial("lightMaterial")));
 			AddObject("sphere", PTObject.Sphere(new Vec3(0f, -100.3f, 0f), 100f, GetMaterial("blueMatte")));
 			AddObject("cube", PTObject.RectangularPrism(-1f, 1f, 0.2f, 0.45f, -1f, 1f, GetMaterial("glass")));
-			AddObject("otherCube", PTObject.RectangularPrism(0f, 0.4f, 0f, 0.4f, 0f, 0.4f, GetMaterial("redMirror")));
+			AddObject("otherCube", PTObject.RectangularPrism(0f, 0.4f, 0f, 0.4f, 0f, 0.4f, GetMaterial("redMirror"))
+				.Rotate((float)Math.PI / 10.4f, PTObject.Alignment.X)
+				.Rotate((float)Math.PI / 12.8f, PTObject.Alignment.Z)
+				.Translate(new Vec3(-0.4f, 0.75f, -0.4f)));
 		}
 
 		private void BtnAddObj_Click(object sender, EventArgs e)
@@ -90,18 +93,29 @@ namespace PathTracerGUI
 			}
 
 
-			List<PTObject> objects = new List<PTObject>();
+			List<PTObject> activeObjects = new List<PTObject>();
 			foreach (string objName in listbxObjects.CheckedItems)
 			{
-				objects.Add(GetObject(objName));
+				activeObjects.Add(GetObject(objName));
 				
 			}
-			PTObject scene = PTObject.HittableList(objects.ToArray());
+			PTObject scene = PTObject.HittableList(activeObjects.ToArray());
 
 			System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 			sw.Start();
 			if (!PTObject.RenderSceneChunked(width, height, samples, chunkSize, fname, new Vec3(2f, 1.2f, -2f), new Vec3(-2f, 0f, 2f), new Vec3(0f, 1f, 0f), (float)Math.PI / 3f, (float)width / height, scene))
 			{
+				// all objects are invalidated if rendering fails.
+				foreach (string materialName in materials.Keys)
+				{
+					GetMaterial(materialName).Destroy();
+					listbxMaterials.Items.Remove(materialName);
+				}
+				foreach (string objectName in objects.Keys)
+				{
+					GetObject(objectName).Destroy();
+					listbxObjects.Items.Remove(objectName);
+				}
 				Console.WriteLine("\nRendering failed.");
 			}
 			sw.Stop();
