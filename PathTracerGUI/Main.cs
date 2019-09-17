@@ -50,10 +50,10 @@ namespace PathTracerGUI
 			AddMaterial("yellowMatte", PTObject.Lambertian(0.8f, 0.7f, 0.4f));
 			AddMaterial("redMirror", PTObject.Metal(0.99f, 0.7f, 0.4f, 0.08f));
 
-			AddObject("light", PTObject.Sphere(new Vec3(0f, 3f, 0f), 1.7f, getMaterial("lightMaterial")));
-			AddObject("sphere", PTObject.Sphere(new Vec3(0f, -100.3f, 0f), 100f, getMaterial("blueMatte")));
-			AddObject("cube", PTObject.RectangularPrism(-1f, 1f, 0.2f, 0.45f, -1f, 1f, getMaterial("glass")));
-			AddObject("otherCube", PTObject.RectangularPrism(0f, 0.4f, 0f, 0.4f, 0f, 0.4f, getMaterial("redMirror")));
+			AddObject("light", PTObject.Sphere(new Vec3(0f, 3f, 0f), 1.7f, GetMaterial("lightMaterial")));
+			AddObject("sphere", PTObject.Sphere(new Vec3(0f, -100.3f, 0f), 100f, GetMaterial("blueMatte")));
+			AddObject("cube", PTObject.RectangularPrism(-1f, 1f, 0.2f, 0.45f, -1f, 1f, GetMaterial("glass")));
+			AddObject("otherCube", PTObject.RectangularPrism(0f, 0.4f, 0f, 0.4f, 0f, 0.4f, GetMaterial("redMirror")));
 		}
 
 		private void BtnAddObj_Click(object sender, EventArgs e)
@@ -65,12 +65,12 @@ namespace PathTracerGUI
 		private void BtnRender_Click(object sender, EventArgs e)
 		{
 			pbarDuration.Visible = true;
-			string time = RenderScene();
-			//multithreading not working currently
-			//var t = Task.Run(() => time = RenderScene()); 
-			//t.Wait();
-			pbarDuration.Visible = false;
-			lblRenderTime.Text = time;
+			Task.Run(() =>
+			{
+				string time = RenderScene();
+				pbarDuration.Visible = false;
+				lblRenderTime.Text = time;
+			});
 		}
 
 		private string RenderScene()
