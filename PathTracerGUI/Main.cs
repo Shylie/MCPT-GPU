@@ -24,7 +24,7 @@ namespace PathTracerGUI
 			listbxMaterials.Items.Add(name);
 		}
 
-		public PTObject getMaterial(string name)
+		public PTObject GetMaterial(string name)
 		{
 			return materials[name];
 		}
