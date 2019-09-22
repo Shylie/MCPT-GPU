@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace PathTracerNET
 {
 	[StructLayout(LayoutKind.Sequential)]
-	internal struct Vec3
+	public struct Vec3
 	{
 		public Vec3(float val)
 		{

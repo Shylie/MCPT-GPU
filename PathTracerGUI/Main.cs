@@ -1,22 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Serialization;
+
+using PathTracerNET;
+using PathTracerNET.Hittables;
+using PathTracerNET.Hittables.Geometric;
+using PathTracerNET.Hittables.Modifier;
+using PathTracerNET.Hittables.Plane;
+using PathTracerNET.Hittables.SDF;
+using PathTracerNET.Materials;
 
 namespace PathTracerGUI
 {
 	internal partial class Main : Form
 	{
-
 		private Dictionary<string, PTObject> materials = new Dictionary<string, PTObject>();
-		private Dictionary<string, PTObject> objects = new Dictionary<string, PTObject>();
+		private Dictionary<string, PTObject> hittables = new Dictionary<string, PTObject>();
 
 		public void AddMaterial(string name, PTObject material)
 		{
@@ -29,51 +33,102 @@ namespace PathTracerGUI
 			return materials[name];
 		}
 
-		public void AddObject(string name, PTObject obj)
+		public void AddHittable(string name, PTObject hittable)
 		{
-			objects.Add(name, obj);
-			listbxObjects.Items.Add(name);
+			hittables.Add(name, hittable);
+			listbxHittables.Items.Add(name);
 		}
 
-		public PTObject GetObject(string name)
+		public PTObject GetHittable(string name)
 		{
-			return objects[name];
+			return hittables[name];
 		}
 
 		public Main()
 		{
 			InitializeComponent();
 
-			AddMaterial("lightMaterial", PTObject.DiffuseLight(3f, 3f, 3f));
-			AddMaterial("glass", PTObject.Dieletric(1f, 1f, 1f, 1.2f));
-			AddMaterial("blueMatte", PTObject.Lambertian(0.4f, 0.7f, 0.9f));
-			AddMaterial("yellowMatte", PTObject.Lambertian(0.8f, 0.7f, 0.4f));
-			AddMaterial("redMirror", PTObject.Metal(0.99f, 0.7f, 0.4f, 0.08f));
+			AddMaterial("lightMaterial", new DiffuseLight(3f, 3f, 3f));
+			AddMaterial("glass", new Dieletric(1f, 1f, 1f, 1.54f));
+			AddMaterial("blueMatte", new Lambertian(0.4f, 0.7f, 0.9f));
+			AddMaterial("yellowMatte", new Lambertian(0.8f, 0.7f, 0.4f));
+			AddMaterial("redMirror", new Metal(0.99f, 0.7f, 0.4f, 0.08f));
 
-			AddObject("light", PTObject.Sphere(new Vec3(0f, 3f, 0f), 1.7f, GetMaterial("lightMaterial")));
-			AddObject("sphere", PTObject.Sphere(new Vec3(0f, -100.3f, 0f), 100f, GetMaterial("blueMatte")));
-			AddObject("cube", PTObject.RectangularPrism(-1f, 1f, 0.2f, 0.45f, -1f, 1f, GetMaterial("glass")));
-			AddObject("otherCube", PTObject.RectangularPrism(0f, 0.4f, 0f, 0.4f, 0f, 0.4f, GetMaterial("redMirror"))
+			AddHittable("light", new Sphere(new Vec3(0f, 3f, 0f), 1.7f, GetMaterial("lightMaterial")));
+			AddHittable("sphere", new Sphere(new Vec3(0f, -100.3f, 0f), 100f, GetMaterial("blueMatte")));
+			AddHittable("glassBall", new Sphere(new Vec3(1f, 0.4f, 0f), 0.2f, GetMaterial("glass")));
+			AddHittable("plane", new RectangularPlane(-2f, -0.4f, 0.1f, 0.9f, 0f, PTObject.Alignment.X | PTObject.Alignment.Y, true, false, GetMaterial("redMirror"))
 				.Rotate((float)Math.PI / 10.4f, PTObject.Alignment.X)
 				.Rotate((float)Math.PI / 12.8f, PTObject.Alignment.Z)
-				.Translate(new Vec3(-0.4f, 0.75f, -0.4f)));
+				.Translate(new Vec3(-0.2f, 0f, -0.2f)));
 		}
 
 		private void BtnAddObj_Click(object sender, EventArgs e)
 		{
-			Form dlg1 = new Form();
-			dlg1.ShowDialog();
+			Dictionary<string, PTObject> temp = new Dictionary<string, PTObject>();
+			foreach (KeyValuePair<string, PTObject> pair in materials) temp.Add(pair.Key, pair.Value);
+			foreach (KeyValuePair<string, PTObject> pair in hittables) temp.Add(pair.Key, pair.Value);
+			PTObject ptObject = null;
+			switch (ptObjectTypeSelector.GetItemText(ptObjectTypeSelector.SelectedItem))
+			{
+				case "Sphere":
+					ptObject = Prompt<Sphere>.ShowDialog(temp);
+					break;
+				case "Rotation":
+					ptObject = Prompt<Rotation>.ShowDialog(temp);
+					break;
+				case "Translation":
+					ptObject = Prompt<Translation>.ShowDialog(temp);
+					break;
+				case "RectangularPlane":
+					ptObject = Prompt<RectangularPlane>.ShowDialog(temp);
+					break;
+				case "TriangularPlane":
+					ptObject = Prompt<TriangularPlane>.ShowDialog(temp);
+					break;
+				case "DistortedSphere":
+					ptObject = Prompt<DistortedSphere>.ShowDialog(temp);
+					break;
+				case "Dieletric":
+					ptObject = Prompt<Dieletric>.ShowDialog(temp);
+					break;
+				case "DiffuseLight":
+					ptObject = Prompt<DiffuseLight>.ShowDialog(temp);
+					break;
+				case "Lambertian":
+					ptObject = Prompt<Lambertian>.ShowDialog(temp);
+					break;
+				case "Metal":
+					ptObject = Prompt<Metal>.ShowDialog(temp);
+					break;
+			}
+			if (ptObject != null)
+			{
+				switch (ptObject.Kind)
+				{
+					case PTObject.PTObjectKind.Hittable:
+						AddHittable($"hittable thing {temp.Count}", ptObject);
+						break;
+					case PTObject.PTObjectKind.Material:
+						AddMaterial($"material thing {temp.Count}", ptObject);
+						break;
+				}
+			}
+			temp.Clear();
 		}
 
-		private void BtnRender_Click(object sender, EventArgs e)
+		private async void BtnRender_Click(object sender, EventArgs e)
 		{
 			pbarDuration.Visible = true;
-			Task.Run(() =>
+			lblRenderTime.Text = await Task.Run(() => RenderScene());
+			if (lblRenderTime.Text == "Rendering failed.")
 			{
-				string time = RenderScene();
-				pbarDuration.Visible = false;
-				lblRenderTime.Text = time;
-			});
+				listbxHittables.Items.Clear();
+				listbxMaterials.Items.Clear();
+				foreach (string hittableName in hittables.Keys) listbxHittables.Items.Add(hittableName);
+				foreach (string materialName in materials.Keys) listbxMaterials.Items.Add(materialName);
+			}
+			pbarDuration.Visible = false;
 		}
 
 		private string RenderScene()
@@ -92,14 +147,29 @@ namespace PathTracerGUI
 				fname = txtbxFileName.Text;
 			}
 
-
-			List<PTObject> activeObjects = new List<PTObject>();
-			foreach (string objName in listbxObjects.CheckedItems)
+			List<PTObject> activeHittables = new List<PTObject>();
+			foreach (string hittableName in listbxHittables.CheckedItems)
 			{
-				activeObjects.Add(GetObject(objName));
-				
+				activeHittables.Add(GetHittable(hittableName));
 			}
-			PTObject scene = PTObject.HittableList(activeObjects.ToArray());
+
+			XmlSerializer serializer = new XmlSerializer(typeof(PTObject[]));
+			
+			using (XmlWriter writer = XmlWriter.Create("autosave.xml"))
+			{
+				List<PTObject> temp = new List<PTObject>();
+				foreach (PTObject material in materials.Values)
+				{
+					temp.Add(material);
+				}
+				foreach (PTObject hittable in hittables.Values)
+				{
+					temp.Add(hittable);
+				}
+				serializer.Serialize(writer, temp.ToArray());
+			}
+
+			PTObject scene = new HittableList(activeHittables.ToArray());
 
 			System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 			sw.Start();
@@ -109,18 +179,37 @@ namespace PathTracerGUI
 				foreach (string materialName in materials.Keys)
 				{
 					GetMaterial(materialName).Destroy();
-					listbxMaterials.Items.Remove(materialName);
 				}
-				foreach (string objectName in objects.Keys)
+				materials.Clear();
+				foreach (string hittableName in hittables.Keys)
 				{
-					GetObject(objectName).Destroy();
-					listbxObjects.Items.Remove(objectName);
+					GetHittable(hittableName).Destroy();
 				}
-				Console.WriteLine("\nRendering failed.");
+				hittables.Clear();
+				scene.Destroy();
+
+				using (XmlReader reader = XmlReader.Create("autosave.xml"))
+				{
+					PTObject[] autosaved = serializer.Deserialize(reader) as PTObject[];
+					for (int i = 0; i < autosaved.Length; i++)
+					{
+						switch (autosaved[i].Kind)
+						{
+							case PTObject.PTObjectKind.Hittable:
+								hittables.Add(i.ToString(), autosaved[i]);
+								break;
+							case PTObject.PTObjectKind.Material:
+								materials.Add(i.ToString(), autosaved[i]);
+								break;
+						}
+					}
+				}
+
+				return "Rendering failed.";
 			}
 			sw.Stop();
 
-			scene.Destroy(false);
+			scene.Destroy();
 
 			Bitmap image = ReadBitmapFromPPM(Directory.GetCurrentDirectory() + "\\" + txtbxFileName.Text + ".ppm");
 			pboxPreview.Image = image;

@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4598CA0A-79B2-445F-B4AB-2323907A7149}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>PathTracerNET</RootNamespace>
     <AssemblyName>PathTracerNET</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -35,7 +35,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>PathTracerNET.Program</StartupObject>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -49,7 +50,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Hittables\Geometric\Sphere.cs" />
+    <Compile Include="Hittables\HittableList.cs" />
+    <Compile Include="Hittables\Modifier\Rotation.cs" />
+    <Compile Include="Hittables\Modifier\Translation.cs" />
+    <Compile Include="Hittables\Plane\RectangularPlane.cs" />
+    <Compile Include="Hittables\Plane\TriangularPlane.cs" />
+    <Compile Include="Hittables\SDF\DistortedSphere.cs" />
+    <Compile Include="Materials\Dieletric.cs" />
+    <Compile Include="Materials\DiffuseLight.cs" />
+    <Compile Include="Materials\Lambertian.cs" />
+    <Compile Include="Materials\Metal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PTObject.cs" />
     <Compile Include="Vec3.cs" />
@@ -57,8 +68,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(SolutionDir)PathTracer\bin\$(ConfigurationName)\*.*" "$(ProjectDir)$(OutDir)" /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(SolutionDir)PathTracer\bin\Release\*.*" "$(ProjectDir)$(OutDir)" /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -37,6 +37,9 @@
   <PropertyGroup>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>PathTracerGUI.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -51,30 +54,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="dialogs\Material.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="dialogs\Material.Designer.cs">
-      <DependentUpon>Material.cs</DependentUpon>
-    </Compile>
-    <Compile Include="dialogs\RectangularPrism.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="dialogs\RectangularPrism.Designer.cs">
-      <DependentUpon>RectangularPrism.cs</DependentUpon>
-    </Compile>
-    <Compile Include="dialogs\Sphere.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="dialogs\Sphere.Designer.cs">
-      <DependentUpon>Sphere.cs</DependentUpon>
-    </Compile>
-    <Compile Include="dialogs\TriangularPlane.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="dialogs\TriangularPlane.Designer.cs">
-      <DependentUpon>TriangularPlane.cs</DependentUpon>
-    </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,9 +61,8 @@
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="Prompt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PTObject.cs" />
-    <Compile Include="Vec3.cs" />
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -113,12 +91,18 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PathTracerNET\PathTracerNET.csproj">
+      <Project>{4598ca0a-79b2-445f-b4ab-2323907a7149}</Project>
+      <Name>PathTracerNET</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(SolutionDir)PathTracer\bin\$(ConfigurationName)\*.*" "$(ProjectDir)$(OutDir)" /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(SolutionDir)PathTracer\bin\Release\*.*" "$(ProjectDir)$(OutDir)" /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>

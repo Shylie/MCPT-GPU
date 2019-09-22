@@ -48,16 +48,17 @@
 			this.lblRenderTime = new System.Windows.Forms.Label();
 			this.pbarDuration = new System.Windows.Forms.ProgressBar();
 			this.renderProcess = new System.Diagnostics.Process();
-			this.listbxObjects = new System.Windows.Forms.CheckedListBox();
+			this.listbxHittables = new System.Windows.Forms.CheckedListBox();
+			this.ptObjectTypeSelector = new System.Windows.Forms.ComboBox();
 			((System.ComponentModel.ISupportInitialize)(this.pboxPreview)).BeginInit();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// pboxPreview
 			// 
-			this.pboxPreview.ImageLocation = "C:\\Users\\Buddylgreen\\Source\\Repos\\MCPT-GPU\\PathTracerGUI\\bin\\Release\\Test.ppm";
+			this.pboxPreview.ImageLocation = "";
 			this.pboxPreview.Location = new System.Drawing.Point(461, 8);
-			this.pboxPreview.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.pboxPreview.Margin = new System.Windows.Forms.Padding(2);
 			this.pboxPreview.Name = "pboxPreview";
 			this.pboxPreview.Size = new System.Drawing.Size(512, 512);
 			this.pboxPreview.TabIndex = 0;
@@ -65,10 +66,10 @@
 			// 
 			// btnRender
 			// 
-			this.btnRender.Location = new System.Drawing.Point(113, 383);
-			this.btnRender.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.btnRender.Location = new System.Drawing.Point(12, 383);
+			this.btnRender.Margin = new System.Windows.Forms.Padding(2);
 			this.btnRender.Name = "btnRender";
-			this.btnRender.Size = new System.Drawing.Size(68, 26);
+			this.btnRender.Size = new System.Drawing.Size(171, 26);
 			this.btnRender.TabIndex = 1;
 			this.btnRender.Text = "Render";
 			this.btnRender.UseVisualStyleBackColor = true;
@@ -78,18 +79,17 @@
 			// 
 			this.listbxMaterials.FormattingEnabled = true;
 			this.listbxMaterials.Location = new System.Drawing.Point(8, 8);
-			this.listbxMaterials.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.listbxMaterials.Margin = new System.Windows.Forms.Padding(2);
 			this.listbxMaterials.Name = "listbxMaterials";
 			this.listbxMaterials.Size = new System.Drawing.Size(175, 169);
 			this.listbxMaterials.TabIndex = 2;
 			// 
 			// btnAddObj
 			// 
-			this.btnAddObj.Enabled = false;
-			this.btnAddObj.Location = new System.Drawing.Point(8, 383);
-			this.btnAddObj.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.btnAddObj.Location = new System.Drawing.Point(189, 442);
+			this.btnAddObj.Margin = new System.Windows.Forms.Padding(1);
 			this.btnAddObj.Name = "btnAddObj";
-			this.btnAddObj.Size = new System.Drawing.Size(68, 26);
+			this.btnAddObj.Size = new System.Drawing.Size(68, 21);
 			this.btnAddObj.TabIndex = 3;
 			this.btnAddObj.Text = "Add Object";
 			this.btnAddObj.UseVisualStyleBackColor = true;
@@ -100,7 +100,7 @@
 			this.radioButton1.AutoSize = true;
 			this.radioButton1.Checked = true;
 			this.radioButton1.Location = new System.Drawing.Point(4, 49);
-			this.radioButton1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.radioButton1.Margin = new System.Windows.Forms.Padding(2);
 			this.radioButton1.Name = "radioButton1";
 			this.radioButton1.Size = new System.Drawing.Size(68, 17);
 			this.radioButton1.TabIndex = 4;
@@ -112,7 +112,7 @@
 			// 
 			this.radioButton2.AutoSize = true;
 			this.radioButton2.Location = new System.Drawing.Point(4, 68);
-			this.radioButton2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.radioButton2.Margin = new System.Windows.Forms.Padding(2);
 			this.radioButton2.Name = "radioButton2";
 			this.radioButton2.Size = new System.Drawing.Size(88, 17);
 			this.radioButton2.TabIndex = 5;
@@ -135,9 +135,9 @@
 			this.groupBox1.Controls.Add(this.radioButton1);
 			this.groupBox1.Controls.Add(this.radioButton2);
 			this.groupBox1.Location = new System.Drawing.Point(185, 8);
-			this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
 			this.groupBox1.Size = new System.Drawing.Size(271, 187);
 			this.groupBox1.TabIndex = 6;
 			this.groupBox1.TabStop = false;
@@ -146,7 +146,7 @@
 			// txtbxFileName
 			// 
 			this.txtbxFileName.Location = new System.Drawing.Point(71, 157);
-			this.txtbxFileName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.txtbxFileName.Margin = new System.Windows.Forms.Padding(2);
 			this.txtbxFileName.Name = "txtbxFileName";
 			this.txtbxFileName.Size = new System.Drawing.Size(68, 20);
 			this.txtbxFileName.TabIndex = 15;
@@ -165,7 +165,7 @@
 			// txtbxChunkSize
 			// 
 			this.txtbxChunkSize.Location = new System.Drawing.Point(201, 87);
-			this.txtbxChunkSize.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.txtbxChunkSize.Margin = new System.Windows.Forms.Padding(2);
 			this.txtbxChunkSize.Name = "txtbxChunkSize";
 			this.txtbxChunkSize.Size = new System.Drawing.Size(68, 20);
 			this.txtbxChunkSize.TabIndex = 13;
@@ -174,7 +174,7 @@
 			// txtbxSamples
 			// 
 			this.txtbxSamples.Location = new System.Drawing.Point(201, 66);
-			this.txtbxSamples.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.txtbxSamples.Margin = new System.Windows.Forms.Padding(2);
 			this.txtbxSamples.Name = "txtbxSamples";
 			this.txtbxSamples.Size = new System.Drawing.Size(68, 20);
 			this.txtbxSamples.TabIndex = 12;
@@ -183,7 +183,7 @@
 			// txtbxHeight
 			// 
 			this.txtbxHeight.Location = new System.Drawing.Point(201, 45);
-			this.txtbxHeight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.txtbxHeight.Margin = new System.Windows.Forms.Padding(2);
 			this.txtbxHeight.Name = "txtbxHeight";
 			this.txtbxHeight.Size = new System.Drawing.Size(68, 20);
 			this.txtbxHeight.TabIndex = 11;
@@ -192,7 +192,7 @@
 			// txtbxWidth
 			// 
 			this.txtbxWidth.Location = new System.Drawing.Point(201, 25);
-			this.txtbxWidth.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.txtbxWidth.Margin = new System.Windows.Forms.Padding(2);
 			this.txtbxWidth.Name = "txtbxWidth";
 			this.txtbxWidth.Size = new System.Drawing.Size(68, 20);
 			this.txtbxWidth.TabIndex = 10;
@@ -241,7 +241,7 @@
 			// lblRenderTime
 			// 
 			this.lblRenderTime.AutoSize = true;
-			this.lblRenderTime.Location = new System.Drawing.Point(111, 411);
+			this.lblRenderTime.Location = new System.Drawing.Point(11, 411);
 			this.lblRenderTime.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.lblRenderTime.Name = "lblRenderTime";
 			this.lblRenderTime.Size = new System.Drawing.Size(96, 13);
@@ -250,8 +250,8 @@
 			// 
 			// pbarDuration
 			// 
-			this.pbarDuration.Location = new System.Drawing.Point(185, 383);
-			this.pbarDuration.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.pbarDuration.Location = new System.Drawing.Point(189, 383);
+			this.pbarDuration.Margin = new System.Windows.Forms.Padding(2);
 			this.pbarDuration.MarqueeAnimationSpeed = 200;
 			this.pbarDuration.Name = "pbarDuration";
 			this.pbarDuration.Size = new System.Drawing.Size(194, 26);
@@ -270,21 +270,42 @@
 			this.renderProcess.StartInfo.UserName = "";
 			this.renderProcess.SynchronizingObject = this;
 			// 
-			// listbxObjects
+			// listbxHittables
 			// 
-			this.listbxObjects.FormattingEnabled = true;
-			this.listbxObjects.Location = new System.Drawing.Point(8, 205);
-			this.listbxObjects.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-			this.listbxObjects.Name = "listbxObjects";
-			this.listbxObjects.Size = new System.Drawing.Size(175, 139);
-			this.listbxObjects.TabIndex = 9;
+			this.listbxHittables.FormattingEnabled = true;
+			this.listbxHittables.Location = new System.Drawing.Point(8, 205);
+			this.listbxHittables.Margin = new System.Windows.Forms.Padding(2);
+			this.listbxHittables.Name = "listbxHittables";
+			this.listbxHittables.Size = new System.Drawing.Size(175, 139);
+			this.listbxHittables.TabIndex = 9;
+			// 
+			// ptObjectTypeSelector
+			// 
+			this.ptObjectTypeSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.ptObjectTypeSelector.FormattingEnabled = true;
+			this.ptObjectTypeSelector.Items.AddRange(new object[] {
+            "Sphere",
+            "Rotation",
+            "Translation",
+            "RectangularPlane",
+            "TriangularPlane",
+            "DistortedSphere",
+            "Dieletric",
+            "DiffuseLight",
+            "Lambertian",
+            "Metal"});
+			this.ptObjectTypeSelector.Location = new System.Drawing.Point(12, 442);
+			this.ptObjectTypeSelector.Name = "ptObjectTypeSelector";
+			this.ptObjectTypeSelector.Size = new System.Drawing.Size(171, 21);
+			this.ptObjectTypeSelector.TabIndex = 10;
 			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(981, 528);
-			this.Controls.Add(this.listbxObjects);
+			this.Controls.Add(this.ptObjectTypeSelector);
+			this.Controls.Add(this.listbxHittables);
 			this.Controls.Add(this.lblRenderTime);
 			this.Controls.Add(this.pbarDuration);
 			this.Controls.Add(this.groupBox1);
@@ -292,7 +313,7 @@
 			this.Controls.Add(this.listbxMaterials);
 			this.Controls.Add(this.btnRender);
 			this.Controls.Add(this.pboxPreview);
-			this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.Margin = new System.Windows.Forms.Padding(2);
 			this.Name = "Main";
 			this.Text = "Path Tracer";
 			((System.ComponentModel.ISupportInitialize)(this.pboxPreview)).EndInit();
@@ -324,8 +345,9 @@
         private System.Windows.Forms.Label lblRenderTime;
         private System.Windows.Forms.ProgressBar pbarDuration;
         private System.Diagnostics.Process renderProcess;
-        private System.Windows.Forms.CheckedListBox listbxObjects;
+        private System.Windows.Forms.CheckedListBox listbxHittables;
         private System.Windows.Forms.Button btnAddObj;
-    }
+		private System.Windows.Forms.ComboBox ptObjectTypeSelector;
+	}
 }
 
