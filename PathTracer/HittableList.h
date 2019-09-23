@@ -6,7 +6,8 @@
 class API HittableList : public Hittable
 {
 public:
-	__host__ __device__ HittableList(int numHittables, Hittable*** hittables_d);
+	__host__ HittableList(int numHittables, Hittable** hittables);
+	__device__ HittableList(int numHittables, Hittable*** hittables_d);
 	__host__ __device__ ~HittableList();
 
 	__host__ __device__ HittableList(const HittableList&) = delete;
@@ -16,6 +17,7 @@ public:
 
 protected:
 	int numHittables;
+	Hittable** hittables{ nullptr };
 	Hittable*** hittables_d{ nullptr };
 	Hittable*** device_hittables_d{ nullptr };
 

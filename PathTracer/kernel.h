@@ -239,10 +239,10 @@ extern "C"
 
 	API Hittable* ConstructHittableList(int numHittables, Hittable** hittables)
 	{
-		Hittable*** temp = new Hittable * *[numHittables];
+		Hittable** temp = new Hittable*[numHittables];
 		for (int i = 0; i < numHittables; i++)
 		{
-			temp[i] = hittables[i]->GetPtrGPU();
+			temp[i] = hittables[i];
 		}
 		return new HittableList(numHittables, temp);
 	}

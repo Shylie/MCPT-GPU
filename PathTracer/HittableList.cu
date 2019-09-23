@@ -19,11 +19,20 @@ __global__ void destroyEnvironmentGPU_HittableList(Hittable** this_d)
 	}
 }
 
-HittableList::HittableList(int numHittables, Hittable*** hittables_d) : numHittables(numHittables), hittables_d(hittables_d)
+HittableList::HittableList(int numHittables, Hittable** hittables) : numHittables(numHittables), hittables(hittables), hittables_d(new Hittable**[numHittables])
 {
 #ifndef __CUDA_ARCH__
+	for (int i = 0; i < numHittables; i++)
+	{
+		hittables_d[i] = hittables[i]->GetPtrGPU();
+	}
+
 	constructEnvironment();
 #endif
+}
+
+__device__ HittableList::HittableList(int numHittables, Hittable*** hittables_d) : numHittables(numHittables), hittables_d(hittables_d)
+{
 }
 
 HittableList::~HittableList()
