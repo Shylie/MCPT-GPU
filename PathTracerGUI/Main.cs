@@ -68,49 +68,49 @@ namespace PathTracerGUI
 			Dictionary<string, PTObject> temp = new Dictionary<string, PTObject>();
 			foreach (KeyValuePair<string, PTObject> pair in materials) temp.Add(pair.Key, pair.Value);
 			foreach (KeyValuePair<string, PTObject> pair in hittables) temp.Add(pair.Key, pair.Value);
-			PTObject ptObject = null;
+			(string name, PTObject obj) val = ("", null);
 			switch (ptObjectTypeSelector.GetItemText(ptObjectTypeSelector.SelectedItem))
 			{
 				case "Sphere":
-					ptObject = Prompt<Sphere>.ShowDialog(temp);
+					val = Prompt<Sphere>.ShowDialog(temp);
 					break;
 				case "Rotation":
-					ptObject = Prompt<Rotation>.ShowDialog(temp);
+					val = Prompt<Rotation>.ShowDialog(temp);
 					break;
 				case "Translation":
-					ptObject = Prompt<Translation>.ShowDialog(temp);
+					val = Prompt<Translation>.ShowDialog(temp);
 					break;
 				case "RectangularPlane":
-					ptObject = Prompt<RectangularPlane>.ShowDialog(temp);
+					val = Prompt<RectangularPlane>.ShowDialog(temp);
 					break;
 				case "TriangularPlane":
-					ptObject = Prompt<TriangularPlane>.ShowDialog(temp);
+					val = Prompt<TriangularPlane>.ShowDialog(temp);
 					break;
 				case "DistortedSphere":
-					ptObject = Prompt<DistortedSphere>.ShowDialog(temp);
+					val = Prompt<DistortedSphere>.ShowDialog(temp);
 					break;
 				case "Dieletric":
-					ptObject = Prompt<Dieletric>.ShowDialog(temp);
+					val = Prompt<Dieletric>.ShowDialog(temp);
 					break;
 				case "DiffuseLight":
-					ptObject = Prompt<DiffuseLight>.ShowDialog(temp);
+					val = Prompt<DiffuseLight>.ShowDialog(temp);
 					break;
 				case "Lambertian":
-					ptObject = Prompt<Lambertian>.ShowDialog(temp);
+					val = Prompt<Lambertian>.ShowDialog(temp);
 					break;
 				case "Metal":
-					ptObject = Prompt<Metal>.ShowDialog(temp);
+					val = Prompt<Metal>.ShowDialog(temp);
 					break;
 			}
-			if (ptObject != null)
+			if (val.obj != null && !temp.ContainsKey(val.name))
 			{
-				switch (ptObject.Kind)
+				switch (val.obj.Kind)
 				{
 					case PTObject.PTObjectKind.Hittable:
-						AddHittable($"hittable thing {temp.Count}", ptObject);
+						AddHittable(val.name, val.obj);
 						break;
 					case PTObject.PTObjectKind.Material:
-						AddMaterial($"material thing {temp.Count}", ptObject);
+						AddMaterial(val.name, val.obj);
 						break;
 				}
 			}
@@ -211,46 +211,47 @@ namespace PathTracerGUI
 
 			scene.Destroy();
 
-			Bitmap image = ReadBitmapFromPPM(Directory.GetCurrentDirectory() + "\\" + txtbxFileName.Text + ".ppm");
+			Bitmap image = ReadBitmapFromPPM(Directory.GetCurrentDirectory() + "\\" + fname + ".ppm");
 			pboxPreview.Image = image;
 			return $"Last Render Took: {sw.ElapsedMilliseconds} ms";
 		}
 
 		private static Bitmap ReadBitmapFromPPM(string file)
 		{
-			var reader = new BinaryReader(new FileStream(file, FileMode.Open));
-			if (reader.ReadChar() != 'P' || reader.ReadChar() != '6') return null;
-			reader.ReadChar(); // Eat newline
-			string widths = "";
-			string heights = "";
-			char temp;
-			while ((temp = reader.ReadChar()) != ' ')
+			using (BinaryReader reader = new BinaryReader(new FileStream(file, FileMode.Open)))
 			{
-				widths += temp;
-			}
-			while ((temp = reader.ReadChar()) >= '0' && temp <= '9')
-			{
-				heights += temp;
-			}
-			if (reader.ReadChar() != '2' || reader.ReadChar() != '5' || reader.ReadChar() != '5') return null;
-			reader.ReadChar(); // Eat the last newline
-			int width = int.Parse(widths);
-			int height = int.Parse(heights);
-			Bitmap bitmap = new Bitmap(width, height);
-			// Read in the pixels
-			for (int y = 0; y < height; y++)
-			{
-				for (int x = 0; x < width; x++)
+				if (reader.ReadChar() != 'P' || reader.ReadChar() != '6') return null;
+				reader.ReadChar(); // Eat newline
+				string widths = "";
+				string heights = "";
+				char temp;
+				while ((temp = reader.ReadChar()) != ' ')
 				{
-					int red = reader.ReadByte();
-					int green = reader.ReadByte();
-					int blue = reader.ReadByte();
-					Color color = Color.FromArgb(red, green, blue);
-					bitmap.SetPixel(x, y, color);
+					widths += temp;
 				}
+				while ((temp = reader.ReadChar()) >= '0' && temp <= '9')
+				{
+					heights += temp;
+				}
+				if (reader.ReadChar() != '2' || reader.ReadChar() != '5' || reader.ReadChar() != '5') return null;
+				reader.ReadChar(); // Eat the last newline
+				int width = int.Parse(widths);
+				int height = int.Parse(heights);
+				Bitmap bitmap = new Bitmap(width, height);
+				// Read in the pixels
+				for (int y = 0; y < height; y++)
+				{
+					for (int x = 0; x < width; x++)
+					{
+						int red = reader.ReadByte();
+						int green = reader.ReadByte();
+						int blue = reader.ReadByte();
+						Color color = Color.FromArgb(red, green, blue);
+						bitmap.SetPixel(x, y, color);
+					}
+				}
+				return bitmap;
 			}
-			reader.Close();
-			return bitmap;
 		}
 	}
 }

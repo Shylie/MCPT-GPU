@@ -9,9 +9,10 @@ namespace PathTracerGUI
 {
 	internal abstract class Prompt<T> where T : PTObject
 	{
-		public static T ShowDialog(Dictionary<string, PTObject> ptObjects)
+		public static (string name, T obj) ShowDialog(Dictionary<string, PTObject> ptObjects)
 		{
 			T value = null;
+			string name = "";
 			Form prompt = new Form
 			{
 				Width = 360
@@ -20,7 +21,7 @@ namespace PathTracerGUI
 			if (constructorInfo != null)
 			{
 				ParameterInfo[] parameterInfos = constructorInfo.GetParameters();
-				prompt.Height = 35 * parameterInfos.Length + 85;
+				prompt.Height = 35 * parameterInfos.Length + 115;
 				for (int i = 0; i < parameterInfos.Length; i++)
 				{
 					if (parameterInfos[i].ParameterType == typeof(float))
@@ -49,10 +50,12 @@ namespace PathTracerGUI
 					}
 					else if (parameterInfos[i].ParameterType.IsSubclassOf(typeof(PTObject)) || parameterInfos[i].ParameterType == typeof(PTObject))
 					{
-						TextBox ptbox = new TextBox() { Name = $"{i}", Text = parameterInfos[i].Name + " ID", Width = 60, Left = 15, Top = 35 * (i + 1) - 20 };
+						TextBox ptbox = new TextBox() { Name = $"{i}", Text = parameterInfos[i].Name + " ID", Width = 120, Left = 15, Top = 35 * (i + 1) - 20 };
 						prompt.Controls.Add(ptbox);
 					}
 				}
+				TextBox namebox = new TextBox() { Name = "name input", Width = 120, Left = 15, Top = prompt.Height - 105, Text = "ID" };
+				prompt.Controls.Add(namebox);
 				Button submit = new Button() { Left = 15, Top = prompt.Height - 70, Text = "Confirm" };
 				submit.Click += (sender, args) =>
 				{
@@ -110,6 +113,7 @@ namespace PathTracerGUI
 						}
 					}
 					value = constructorInfo.Invoke(pars) as T;
+					name = prompt.Controls["name input"].Text;
 					prompt.Close();
 				};
 				prompt.Controls.Add(submit);
@@ -120,7 +124,7 @@ namespace PathTracerGUI
 			{
 				prompt.Dispose();
 			}
-			return value;
+			return (name, value);
 		}
 	}
 }
