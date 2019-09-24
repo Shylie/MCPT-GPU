@@ -57,7 +57,7 @@ namespace PathTracerGUI
 			AddHittable("light", new Sphere(new Vec3(0f, 3f, 0f), 1.7f, GetMaterial("lightMaterial")));
 			AddHittable("sphere", new Sphere(new Vec3(0f, -100.3f, 0f), 100f, GetMaterial("blueMatte")));
 			AddHittable("glassBall", new Sphere(new Vec3(1f, 0.4f, 0f), 0.2f, GetMaterial("glass")));
-			AddHittable("plane", new RectangularPlane(-2f, -0.4f, 0.1f, 0.9f, 0f, PTObject.Alignment.X | PTObject.Alignment.Y, true, false, GetMaterial("redMirror"))
+			AddHittable("plane", new RectangularPlane(-2f, -0.4f, 0.1f, 0.9f, 0f, PTObject.Alignment.X | PTObject.Alignment.Y, true, false, GetMaterial("yellowMatte"))
 				.Rotate((float)Math.PI / 10.4f, PTObject.Alignment.X)
 				.Rotate((float)Math.PI / 12.8f, PTObject.Alignment.Z)
 				.Translate(new Vec3(-0.2f, 0f, -0.2f)));
@@ -171,9 +171,14 @@ namespace PathTracerGUI
 
 			PTObject scene = new HittableList(activeHittables.ToArray());
 
+			Vec3 lookFrom = new Vec3(2f, 1.2f, -2f);
+			Vec3 lookAt = new Vec3(-2f, 0f, 2f);
 			System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 			sw.Start();
-			if (!PTObject.RenderSceneChunked(width, height, samples, chunkSize, fname, new Vec3(2f, 1.2f, -2f), new Vec3(-2f, 0f, 2f), new Vec3(0f, 1f, 0f), (float)Math.PI / 3f, (float)width / height, scene))
+			if (!PTObject.RenderSceneChunked(
+				width, height, samples, chunkSize, fname,
+				lookFrom, lookAt, new Vec3(0f, 1f, 0f), (float)Math.PI / 3f, (float)width / height, 0f, (lookFrom - lookAt).Length,
+				scene))
 			{
 				// all objects are invalidated if rendering fails.
 				foreach (string materialName in materials.Keys)

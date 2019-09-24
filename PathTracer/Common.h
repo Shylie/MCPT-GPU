@@ -122,7 +122,7 @@ inline void saveImage(int width, int height, Vec3* colors, const char* fname)
 
 struct Camera
 {
-	__host__ __device__ Camera(Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect)
+	__host__ __device__ Camera(Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, float aperture, float focusDist) : lensRadius(aperture / 2.0f)
 	{
 		Vec3 u, v, w;
 		float hh = tan(vfov / 2.0f);
@@ -131,15 +131,26 @@ struct Camera
 		w = (lookFrom - lookAt).Normalized();
 		u = Vec3::Cross(vup, w).Normalized();
 		v = Vec3::Cross(w, u);
-		llc = origin - hw * u - hh * v - w;
-		horizontal = 2.0f * hw * u;
-		vertical = 2.0f * hh * v;
+		llc = origin - hw * focusDist * u - hh * focusDist * v - focusDist * w;
+		horizontal = 2.0f * hw * focusDist * u;
+		vertical = 2.0f * hh * focusDist * v;
 	}
 
-	__host__ __device__ inline Ray3 GetRay(float u, float v) const { return Ray3(origin, llc + u * horizontal + v * vertical - origin); }
+	__host__ __device__ inline Ray3 GetRay(unsigned int* seed, float u, float v) const
+	{
+		Vec3 rd = lensRadius * RandomInUnitDisk(seed);
+		Vec3 offset = u * rd.X + v * rd.Y;
+		return Ray3(origin + offset, llc + u * horizontal + v * vertical - origin - offset);
+	}
 
 private:
 	Vec3 origin, llc, horizontal, vertical;
+	float lensRadius;
+
+	__host__ __device__ Vec3 RandomInUnitDisk(unsigned int* seed) const
+	{
+		return (2.0f * Vec3(randXORShift(seed), randXORShift(seed), 0.0f) - Vec3(1.0f, 1.0f, 0.0f)).Normalized();
+	}
 };
 
 #endif

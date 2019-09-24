@@ -94,16 +94,16 @@ namespace PathTracerNET
 			Z = 1 << 2
 		}
 
-		public static bool RenderScene(int width, int height, int samples, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, PTObject scene)
+		public static bool RenderScene(int width, int height, int samples, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, float aperture, float lensRadius, PTObject scene)
 		{
 			if (scene.Kind != PTObjectKind.Hittable)
 			{
 				throw new ArgumentException("Invalid PTObjectKind: not a Hittable.", nameof(scene));
 			}
-			return RenderScene(width, height, samples, fname + ".ppm", lookFrom, lookAt, vup, vfov, aspect, scene.Pointer);
+			return RenderScene(width, height, samples, fname + ".ppm", lookFrom, lookAt, vup, vfov, aspect, aperture, lensRadius, scene.Pointer);
 		}
 
-		public static bool RenderSceneChunked(int width, int height, int samples, int chunkSize, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, PTObject scene)
+		public static bool RenderSceneChunked(int width, int height, int samples, int chunkSize, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, float aperture, float lensRadius, PTObject scene)
 		{
 			if (scene.Kind != PTObjectKind.Hittable)
 			{
@@ -113,14 +113,14 @@ namespace PathTracerNET
 			{
 				throw new ArgumentException("Invalid chunk size: not a multiple of 4.", nameof(chunkSize));
 			}
-			return RenderSceneChunked(width, height, samples, chunkSize, fname + ".ppm", lookFrom, lookAt, vup, vfov, aspect, scene.Pointer);
+			return RenderSceneChunked(width, height, samples, chunkSize, fname + ".ppm", lookFrom, lookAt, vup, vfov, aspect, aperture, lensRadius, scene.Pointer);
 		}
 
 		[DllImport("PathTracer.dll")]
-		private static extern bool RenderScene(int width, int height, int samples, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, IntPtr scene);
+		private static extern bool RenderScene(int width, int height, int samples, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, float aperture, float lensRadius, IntPtr scene);
 
 		[DllImport("PathTracer.dll")]
-		private static extern bool RenderSceneChunked(int width, int height, int samples, int chunkSize, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, IntPtr scene);
+		private static extern bool RenderSceneChunked(int width, int height, int samples, int chunkSize, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, float aperture, float lensRadius, IntPtr scene);
 
 		[DllImport("PathTracer.dll")]
 		protected static extern IntPtr ConstructHittableList(int numHittables, [MarshalAs(UnmanagedType.LPArray)] IntPtr[] hittables);

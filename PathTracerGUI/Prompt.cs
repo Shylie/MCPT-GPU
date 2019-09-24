@@ -15,6 +15,7 @@ namespace PathTracerGUI
 			string name = "";
 			Form prompt = new Form
 			{
+				Text = typeof(T).Name,
 				Width = 360
 			};
 			ConstructorInfo constructorInfo = typeof(T).GetConstructors().Where(ci => ci.GetParameters().Length > 0).First();
@@ -38,7 +39,7 @@ namespace PathTracerGUI
 					{
 						TextBox xbox = new TextBox() { Name = $"{i} x", Text = parameterInfos[i].Name + " X", Width = 60, Left = 15, Top = 35 * (i + 1) - 20 };
 						TextBox ybox = new TextBox() { Name = $"{i} y", Text = parameterInfos[i].Name + " Y", Width = 60, Left = 90, Top = 35 * (i + 1) - 20 };
-						TextBox zbox = new TextBox() { Name = $"{i} z", Text = parameterInfos[i].Name + "Z", Width = 60, Left = 165, Top = 35 * (i + 1) - 20 };
+						TextBox zbox = new TextBox() { Name = $"{i} z", Text = parameterInfos[i].Name + " Z", Width = 60, Left = 165, Top = 35 * (i + 1) - 20 };
 						prompt.Controls.Add(xbox);
 						prompt.Controls.Add(ybox);
 						prompt.Controls.Add(zbox);

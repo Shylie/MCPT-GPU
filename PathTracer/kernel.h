@@ -60,7 +60,7 @@ __global__ void renderGPU_All(Vec3* cols, int width, int height, int samples, Ca
 
 					float u = (i + randXORShift(seed) - 0.5f) / float(width), v = (j + randXORShift(seed) - 0.5f) / float(height);
 
-					Ray3 ray = cam.GetRay(u, v);
+					Ray3 ray = cam.GetRay(seed, u, v);
 					Vec3 attenuation, emitted, sum;
 					Vec3 multiplier = Vec3(1.0f);
 
@@ -103,7 +103,7 @@ __global__ void renderGPU_Chunk(Vec3* cols, int width, int height, int samples, 
 
 					float u = (i + randXORShift(seed) - 0.5f) / float(width), v = (j + randXORShift(seed) - 0.5f) / float(height);
 
-					Ray3 ray = cam.GetRay(u, v);
+					Ray3 ray = cam.GetRay(seed, u, v);
 					Vec3 attenuation, emitted, sum;
 					Vec3 multiplier = Vec3(1.0f);
 
@@ -225,15 +225,15 @@ bool renderChunked(int width, int height, int samples, int chunkSize, const char
 
 extern "C"
 {
-	API bool RenderScene(int width, int height, int samples, const char* fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, Hittable* scene)
+	API bool RenderScene(int width, int height, int samples, const char* fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, float aperture, float lensRadius, Hittable* scene)
 	{
-		Camera cam = Camera(lookFrom, lookAt, vup, vfov, aspect);
+		Camera cam = Camera(lookFrom, lookAt, vup, vfov, aspect, aperture, lensRadius);
 		return render(width, height, samples, fname, cam, scene->GetPtrGPU());
 	}
 
-	API bool RenderSceneChunked(int width, int height, int samples, int chunkSize, const char* fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, Hittable* scene)
+	API bool RenderSceneChunked(int width, int height, int samples, int chunkSize, const char* fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, float aperture, float lensRadius, Hittable* scene)
 	{
-		Camera cam = Camera(lookFrom, lookAt, vup, vfov, aspect);
+		Camera cam = Camera(lookFrom, lookAt, vup, vfov, aspect, aperture, lensRadius);
 		return renderChunked(width, height, samples, chunkSize, fname, cam, scene->GetPtrGPU());
 	}
 
