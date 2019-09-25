@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 namespace PathTracerNET.Hittables.Modifier
 {
@@ -24,8 +25,56 @@ namespace PathTracerNET.Hittables.Modifier
 			return ConstructRotation(Theta, Axis, Hittable.Pointer);
 		}
 
-		public float Theta { get; set; }
-		public Alignment Axis { get; set; }
-		public PTObject Hittable { get; set; }
+		public float Theta
+		{
+			get
+			{
+				return _theta;
+			}
+			set
+			{
+				_theta = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public Alignment Axis
+		{
+			get
+			{
+				return _axis;
+			}
+			set
+			{
+				_axis = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public PTObject Hittable
+		{
+			get
+			{
+				return _hittable;
+			}
+			set
+			{
+				if (_hittable != null) _hittable.Invalidated -= HittableInvalidated;
+				_hittable = value;
+				_hittable.Invalidated += HittableInvalidated;
+				if (Valid) Destroy();
+			}
+		}
+
+		[XmlIgnore]
+		private float _theta;
+
+		[XmlIgnore]
+		private Alignment _axis;
+
+		[XmlIgnore]
+		private PTObject _hittable;
+
+		private void HittableInvalidated(PTObject sender) => Destroy();
 	}
 }

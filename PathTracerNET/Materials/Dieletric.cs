@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 namespace PathTracerNET.Materials
 {
@@ -22,9 +23,59 @@ namespace PathTracerNET.Materials
 			return ConstructDielectric(R, G, B, RefractiveIndex);
 		}
 
-		public float R { get; set; }
-		public float G { get; set; }
-		public float B { get; set; }
-		public float RefractiveIndex { get; set; }
+		public float R
+		{
+			get
+			{
+				return _r;
+			}
+			set
+			{
+				_r = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public float G
+		{
+			get
+			{
+				return _g;
+			}
+			set
+			{
+				_g = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public float B
+		{
+			get
+			{
+				return _b;
+			}
+			set
+			{
+				_b = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public float RefractiveIndex
+		{
+			get
+			{
+				return _refractiveIndex;
+			}
+			set
+			{
+				_refractiveIndex = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		[XmlIgnore]
+		private float _r, _g, _b, _refractiveIndex;
 	}
 }

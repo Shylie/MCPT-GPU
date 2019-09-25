@@ -25,8 +25,20 @@ namespace PathTracerNET
 	[XmlInclude(typeof(HittableList))]
 	public abstract class PTObject
 	{
+		#region PROPERTIES
 		[XmlIgnore]
-		public bool Valid { get; protected set; } = false;
+		public bool Valid
+		{
+			get
+			{
+				return _valid;
+			}
+			set
+			{
+				if (_valid && !value) Invalidated?.Invoke(this);
+				_valid = value;
+			}
+		}
 
 		[XmlIgnore]
 		public abstract PTObjectKind Kind { get; }
@@ -48,10 +60,23 @@ namespace PathTracerNET
 				_pointer = value;
 			}
 		}
+		#endregion
 
+		#region FIELDS
 		[XmlIgnore]
 		private IntPtr _pointer = IntPtr.Zero;
 
+		[XmlIgnore]
+		private bool _valid = false;
+		#endregion
+
+		#region EVENTS
+		internal delegate void InvalidatedEvent(PTObject sender);
+
+		internal event InvalidatedEvent Invalidated;
+		#endregion
+
+		#region METHODS
 		internal abstract IntPtr Init();
 
 		public void Destroy()
@@ -77,7 +102,9 @@ namespace PathTracerNET
 		{
 			return new Rotation(theta, alignment, this);
 		}
+		#endregion
 
+		#region ENUMS
 		public enum PTObjectKind
 		{
 			Invalid,
@@ -93,7 +120,9 @@ namespace PathTracerNET
 			Y = 1 << 1,
 			Z = 1 << 2
 		}
+		#endregion
 
+		#region STATIC METHODS
 		public static bool RenderScene(int width, int height, int samples, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, float aperture, float lensRadius, PTObject scene)
 		{
 			if (scene.Kind != PTObjectKind.Hittable)
@@ -115,7 +144,9 @@ namespace PathTracerNET
 			}
 			return RenderSceneChunked(width, height, samples, chunkSize, fname + ".ppm", lookFrom, lookAt, vup, vfov, aspect, aperture, lensRadius, scene.Pointer);
 		}
+		#endregion
 
+		#region EXTERNAL METHODS
 		[DllImport("PathTracer.dll")]
 		private static extern bool RenderScene(int width, int height, int samples, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, float aperture, float lensRadius, IntPtr scene);
 
@@ -160,5 +191,6 @@ namespace PathTracerNET
 
 		[DllImport("PathTracer.dll")]
 		private static extern void DestroyMaterial(IntPtr ptr);
+		#endregion
 	}
 }

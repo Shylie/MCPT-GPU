@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 namespace PathTracerNET.Hittables.Plane
 {
@@ -38,14 +39,137 @@ namespace PathTracerNET.Hittables.Plane
 			return ConstructRectangularPlane(A1, A2, B1, B2, K, Plane, AutoNormal, InvertNormal, Material.Pointer);
 		}
 
-		public float A1 { get; set; }
-		public float A2 { get; set; }
-		public float B1 { get; set; }
-		public float B2 { get; set; }
-		public float K { get; set; }
-		public Alignment Plane { get; set; }
-		public bool AutoNormal { get; set; }
-		public bool InvertNormal { get; set; }
-		public PTObject Material { get; set; }
+		public float A1
+		{
+			get
+			{
+				return _a1;
+			}
+			set
+			{
+				_a1 = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public float A2
+		{
+			get
+			{
+				return _a2;
+			}
+			set
+			{
+				_a2 = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public float B1
+		{
+			get
+			{
+				return _b1;
+			}
+			set
+			{
+				_b1 = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public float B2
+		{
+			get
+			{
+				return _b2;
+			}
+			set
+			{
+				_b2 = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public float K
+		{
+			get
+			{
+				return _k;
+			}
+			set
+			{
+				_k = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public Alignment Plane
+		{
+			get
+			{
+				return _plane;
+			}
+			set
+			{
+				_plane = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public bool AutoNormal
+		{
+			get
+			{
+				return _autoNormal;
+			}
+			set
+			{
+				_autoNormal = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public bool InvertNormal
+		{
+			get
+			{
+				return _invertNormal;
+			}
+			set
+			{
+				_invertNormal = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public PTObject Material
+		{
+			get
+			{
+				return _material;
+			}
+			set
+			{
+				if (_material != null) _material.Invalidated -= MaterialInvalidated;
+				_material = value;
+				_material.Invalidated += MaterialInvalidated;
+				if (Valid) Destroy();
+			}
+		}
+
+		[XmlIgnore]
+		private float _a1, _a2, _b1, _b2, _k;
+
+		[XmlIgnore]
+		private Alignment _plane;
+
+		[XmlIgnore]
+		private bool _autoNormal, _invertNormal;
+
+		[XmlIgnore]
+		private PTObject _material;
+
+		private void MaterialInvalidated(PTObject sender) => Destroy();
 	}
 }

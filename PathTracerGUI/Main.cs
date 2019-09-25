@@ -72,34 +72,34 @@ namespace PathTracerGUI
 			switch (ptObjectTypeSelector.GetItemText(ptObjectTypeSelector.SelectedItem))
 			{
 				case "Sphere":
-					val = Prompt<Sphere>.ShowDialog(temp);
+					val = Prompt.ShowDialog<Sphere>(temp);
 					break;
 				case "Rotation":
-					val = Prompt<Rotation>.ShowDialog(temp);
+					val = Prompt.ShowDialog<Rotation>(temp);
 					break;
 				case "Translation":
-					val = Prompt<Translation>.ShowDialog(temp);
+					val = Prompt.ShowDialog<Translation>(temp);
 					break;
 				case "RectangularPlane":
-					val = Prompt<RectangularPlane>.ShowDialog(temp);
+					val = Prompt.ShowDialog<RectangularPlane>(temp);
 					break;
 				case "TriangularPlane":
-					val = Prompt<TriangularPlane>.ShowDialog(temp);
+					val = Prompt.ShowDialog<TriangularPlane>(temp);
 					break;
 				case "DistortedSphere":
-					val = Prompt<DistortedSphere>.ShowDialog(temp);
+					val = Prompt.ShowDialog<DistortedSphere>(temp);
 					break;
 				case "Dieletric":
-					val = Prompt<Dieletric>.ShowDialog(temp);
+					val = Prompt.ShowDialog<Dieletric>(temp);
 					break;
 				case "DiffuseLight":
-					val = Prompt<DiffuseLight>.ShowDialog(temp);
+					val = Prompt.ShowDialog<DiffuseLight>(temp);
 					break;
 				case "Lambertian":
-					val = Prompt<Lambertian>.ShowDialog(temp);
+					val = Prompt.ShowDialog<Lambertian>(temp);
 					break;
 				case "Metal":
-					val = Prompt<Metal>.ShowDialog(temp);
+					val = Prompt.ShowDialog<Metal>(temp);
 					break;
 			}
 			if (val.obj != null && !temp.ContainsKey(val.name))
@@ -114,7 +114,6 @@ namespace PathTracerGUI
 						break;
 				}
 			}
-			temp.Clear();
 		}
 
 		private async void BtnRender_Click(object sender, EventArgs e)
@@ -129,6 +128,44 @@ namespace PathTracerGUI
 				foreach (string materialName in materials.Keys) listbxMaterials.Items.Add(materialName);
 			}
 			pbarDuration.Visible = false;
+		}
+
+		private void ListbxMaterials_MouseUp(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right && sender is CheckedListBox checkedListBox)
+			{
+				int idx = checkedListBox.IndexFromPoint(e.Location);
+				if (idx >= 0)
+				{
+					Dictionary<string, PTObject> temp = new Dictionary<string, PTObject>();
+					foreach (KeyValuePair<string, PTObject> pair in materials) temp.Add(pair.Key, pair.Value);
+					foreach (KeyValuePair<string, PTObject> pair in hittables) temp.Add(pair.Key, pair.Value);
+					string name = Prompt.ShowDialog(GetMaterial(checkedListBox.Items[idx].ToString()), temp);
+					if (name == checkedListBox.Items[idx].ToString()) return;
+					materials.Add(name, materials[checkedListBox.Items[idx].ToString()]);
+					materials.Remove(checkedListBox.Items[idx].ToString());
+					checkedListBox.Items[idx] = name;
+				}
+			}
+		}
+
+		private void ListbxHittables_MouseUp(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right && sender is CheckedListBox checkedListBox)
+			{
+				int idx = checkedListBox.IndexFromPoint(e.Location);
+				if (idx >= 0)
+				{
+					Dictionary<string, PTObject> temp = new Dictionary<string, PTObject>();
+					foreach (KeyValuePair<string, PTObject> pair in materials) temp.Add(pair.Key, pair.Value);
+					foreach (KeyValuePair<string, PTObject> pair in hittables) temp.Add(pair.Key, pair.Value);
+					string name = Prompt.ShowDialog(GetHittable(checkedListBox.Items[idx].ToString()), temp);
+					if (name == checkedListBox.Items[idx].ToString()) return;
+					hittables.Add(name, hittables[checkedListBox.Items[idx].ToString()]);
+					hittables.Remove(checkedListBox.Items[idx].ToString());
+					checkedListBox.Items[idx] = name;
+				}
+			}
 		}
 
 		private string RenderScene()

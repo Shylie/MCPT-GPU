@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 namespace PathTracerNET.Hittables.Modifier
 {
@@ -22,7 +23,40 @@ namespace PathTracerNET.Hittables.Modifier
 			return ConstructTranslation(Offset, Hittable.Pointer);
 		}
 
-		public Vec3 Offset { get; set; }
-		public PTObject Hittable { get; set; }
+		public Vec3 Offset
+		{
+			get
+			{
+				return _offset;
+			}
+			set
+			{
+				_offset = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public PTObject Hittable
+		{
+			get
+			{
+				return _hittable;
+			}
+			set
+			{
+				if (_hittable != null) _hittable.Invalidated -= HittableInvalidated;
+				_hittable = value;
+				_hittable.Invalidated += HittableInvalidated;
+				if (Valid) Destroy();
+			}
+		}
+
+		[XmlIgnore]
+		private Vec3 _offset;
+
+		[XmlIgnore]
+		private PTObject _hittable;
+
+		private void HittableInvalidated(PTObject sender) => Destroy();
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 namespace PathTracerNET.Hittables.SDF
 {
@@ -25,10 +26,82 @@ namespace PathTracerNET.Hittables.SDF
 			return ConstructDistortedSphere(Center, Radius, Frequency, Amplitude, Material.Pointer);
 		}
 
-		public Vec3 Center { get; set; }
-		public float Radius { get; set; }
-		public float Frequency { get; set; }
-		public float Amplitude { get; set; }
-		public PTObject Material { get; set; }
+		public Vec3 Center
+		{
+			get
+			{
+				return _center;
+			}
+			set
+			{
+				_center = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public float Radius
+		{
+			get
+			{
+				return _radius;
+			}
+			set
+			{
+				_radius = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public float Frequency
+		{
+			get
+			{
+				return _frequency;
+			}
+			set
+			{
+				_frequency = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public float Amplitude
+		{
+			get
+			{
+				return _amplitude;
+			}
+			set
+			{
+				_amplitude = value;
+				if (Valid) Destroy();
+			}
+		}
+
+		public PTObject Material
+		{
+			get
+			{
+				return _material;
+			}
+			set
+			{
+				_material.Invalidated -= MaterialInvalidated;
+				_material = value;
+				_material.Invalidated += MaterialInvalidated;
+				if (Valid) Destroy();
+			}
+		}
+
+		[XmlIgnore]
+		private Vec3 _center;
+
+		[XmlIgnore]
+		private float _radius, _frequency, _amplitude;
+
+		[XmlIgnore]
+		private PTObject _material;
+
+		private void MaterialInvalidated(PTObject sender) => Destroy();
 	}
 }

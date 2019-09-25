@@ -83,6 +83,7 @@
 			this.listbxMaterials.Name = "listbxMaterials";
 			this.listbxMaterials.Size = new System.Drawing.Size(175, 169);
 			this.listbxMaterials.TabIndex = 2;
+			this.listbxMaterials.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ListbxMaterials_MouseUp);
 			// 
 			// btnAddObj
 			// 
@@ -278,6 +279,7 @@
 			this.listbxHittables.Name = "listbxHittables";
 			this.listbxHittables.Size = new System.Drawing.Size(175, 139);
 			this.listbxHittables.TabIndex = 9;
+			this.listbxHittables.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ListbxHittables_MouseUp);
 			// 
 			// ptObjectTypeSelector
 			// 
