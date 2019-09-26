@@ -84,12 +84,13 @@ namespace PathTracerNET
 			switch (Kind)
 			{
 				case PTObjectKind.Hittable:
-					DestroyHittable(Pointer);
+					DestroyHittable(_pointer);
 					break;
 				case PTObjectKind.Material:
-					DestroyMaterial(Pointer);
+					DestroyMaterial(_pointer);
 					break;
 			}
+			_pointer = IntPtr.Zero;
 			Valid = false;
 		}
 

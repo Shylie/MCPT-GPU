@@ -260,39 +260,42 @@ namespace PathTracerGUI
 
 		private static Bitmap ReadBitmapFromPPM(string file)
 		{
-			using (BinaryReader reader = new BinaryReader(new FileStream(file, FileMode.Open)))
+			using (FileStream fs = new FileStream(file, FileMode.Open))
 			{
-				if (reader.ReadChar() != 'P' || reader.ReadChar() != '6') return null;
-				reader.ReadChar(); // Eat newline
-				string widths = "";
-				string heights = "";
-				char temp;
-				while ((temp = reader.ReadChar()) != ' ')
+				using (BinaryReader reader = new BinaryReader(fs))
 				{
-					widths += temp;
-				}
-				while ((temp = reader.ReadChar()) >= '0' && temp <= '9')
-				{
-					heights += temp;
-				}
-				if (reader.ReadChar() != '2' || reader.ReadChar() != '5' || reader.ReadChar() != '5') return null;
-				reader.ReadChar(); // Eat the last newline
-				int width = int.Parse(widths);
-				int height = int.Parse(heights);
-				Bitmap bitmap = new Bitmap(width, height);
-				// Read in the pixels
-				for (int y = 0; y < height; y++)
-				{
-					for (int x = 0; x < width; x++)
+					if (reader.ReadChar() != 'P' || reader.ReadChar() != '6') return null;
+					reader.ReadChar(); // Eat newline
+					string widths = "";
+					string heights = "";
+					char temp;
+					while ((temp = reader.ReadChar()) != ' ')
 					{
-						int red = reader.ReadByte();
-						int green = reader.ReadByte();
-						int blue = reader.ReadByte();
-						Color color = Color.FromArgb(red, green, blue);
-						bitmap.SetPixel(x, y, color);
+						widths += temp;
 					}
+					while ((temp = reader.ReadChar()) >= '0' && temp <= '9')
+					{
+						heights += temp;
+					}
+					if (reader.ReadChar() != '2' || reader.ReadChar() != '5' || reader.ReadChar() != '5') return null;
+					reader.ReadChar(); // Eat the last newline
+					int width = int.Parse(widths);
+					int height = int.Parse(heights);
+					Bitmap bitmap = new Bitmap(width, height);
+					// Read in the pixels
+					for (int y = 0; y < height; y++)
+					{
+						for (int x = 0; x < width; x++)
+						{
+							int red = reader.ReadByte();
+							int green = reader.ReadByte();
+							int blue = reader.ReadByte();
+							Color color = Color.FromArgb(red, green, blue);
+							bitmap.SetPixel(x, y, color);
+						}
+					}
+					return bitmap;
 				}
-				return bitmap;
 			}
 		}
 	}
