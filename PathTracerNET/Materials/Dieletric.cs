@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace PathTracerNET.Materials
 {
 	[Serializable]
-	public sealed class Dieletric : PTObject
+	public sealed class Dieletric : Material
 	{
 		public Dieletric() { }
 
@@ -15,8 +15,6 @@ namespace PathTracerNET.Materials
 			B = b;
 			RefractiveIndex = refractiveIndex;
 		}
-
-		public override PTObjectKind Kind => PTObjectKind.Material;
 
 		internal override IntPtr Init()
 		{

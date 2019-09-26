@@ -19,27 +19,27 @@ namespace PathTracerGUI
 {
 	internal partial class Main : Form
 	{
-		private Dictionary<string, PTObject> materials = new Dictionary<string, PTObject>();
-		private Dictionary<string, PTObject> hittables = new Dictionary<string, PTObject>();
+		private Dictionary<string, Material> materials = new Dictionary<string, Material>();
+		private Dictionary<string, Hittable> hittables = new Dictionary<string, Hittable>();
 
-		public void AddMaterial(string name, PTObject material)
+		public void AddMaterial(string name, Material material)
 		{
 			materials.Add(name, material);
 			listbxMaterials.Items.Add(name);
 		}
 
-		public PTObject GetMaterial(string name)
+		public Material GetMaterial(string name)
 		{
 			return materials[name];
 		}
 
-		public void AddHittable(string name, PTObject hittable)
+		public void AddHittable(string name, Hittable hittable)
 		{
 			hittables.Add(name, hittable);
 			listbxHittables.Items.Add(name);
 		}
 
-		public PTObject GetHittable(string name)
+		public Hittable GetHittable(string name)
 		{
 			return hittables[name];
 		}
@@ -57,17 +57,13 @@ namespace PathTracerGUI
 			AddHittable("light", new Sphere(new Vec3(0f, 3f, 0f), 1.7f, GetMaterial("lightMaterial")));
 			AddHittable("sphere", new Sphere(new Vec3(0f, -100.3f, 0f), 100f, GetMaterial("blueMatte")));
 			AddHittable("glassBall", new Sphere(new Vec3(1f, 0.4f, 0f), 0.2f, GetMaterial("glass")));
-			AddHittable("plane", new RectangularPlane(-2f, -0.4f, 0.1f, 0.9f, 0f, PTObject.Alignment.X | PTObject.Alignment.Y, true, false, GetMaterial("yellowMatte"))
-				.Rotate((float)Math.PI / 10.4f, PTObject.Alignment.X)
-				.Rotate((float)Math.PI / 12.8f, PTObject.Alignment.Z)
-				.Translate(new Vec3(-0.2f, 0f, -0.2f)));
 		}
 
 		private void BtnAddObj_Click(object sender, EventArgs e)
 		{
 			Dictionary<string, PTObject> temp = new Dictionary<string, PTObject>();
-			foreach (KeyValuePair<string, PTObject> pair in materials) temp.Add(pair.Key, pair.Value);
-			foreach (KeyValuePair<string, PTObject> pair in hittables) temp.Add(pair.Key, pair.Value);
+			foreach (KeyValuePair<string, Material> pair in materials) temp.Add(pair.Key, pair.Value);
+			foreach (KeyValuePair<string, Hittable> pair in hittables) temp.Add(pair.Key, pair.Value);
 			(string name, PTObject obj) val = ("", null);
 			switch (ptObjectTypeSelector.GetItemText(ptObjectTypeSelector.SelectedItem))
 			{
@@ -107,10 +103,10 @@ namespace PathTracerGUI
 				switch (val.obj.Kind)
 				{
 					case PTObject.PTObjectKind.Hittable:
-						AddHittable(val.name, val.obj);
+						AddHittable(val.name, val.obj as Hittable);
 						break;
 					case PTObject.PTObjectKind.Material:
-						AddMaterial(val.name, val.obj);
+						AddMaterial(val.name, val.obj as Material);
 						break;
 				}
 			}
@@ -139,8 +135,8 @@ namespace PathTracerGUI
 				{
 					checkedListBox.SelectedIndex = idx;
 					Dictionary<string, PTObject> temp = new Dictionary<string, PTObject>();
-					foreach (KeyValuePair<string, PTObject> pair in materials) temp.Add(pair.Key, pair.Value);
-					foreach (KeyValuePair<string, PTObject> pair in hittables) temp.Add(pair.Key, pair.Value);
+					foreach (KeyValuePair<string, Material> pair in materials) temp.Add(pair.Key, pair.Value);
+					foreach (KeyValuePair<string, Hittable> pair in hittables) temp.Add(pair.Key, pair.Value);
 					string name = Prompt.ShowDialog(GetMaterial(checkedListBox.Items[idx].ToString()), temp);
 					if (name == checkedListBox.Items[idx].ToString()) return;
 					materials.Add(name, materials[checkedListBox.Items[idx].ToString()]);
@@ -159,8 +155,8 @@ namespace PathTracerGUI
 				{
 					checkedListBox.SelectedIndex = idx;
 					Dictionary<string, PTObject> temp = new Dictionary<string, PTObject>();
-					foreach (KeyValuePair<string, PTObject> pair in materials) temp.Add(pair.Key, pair.Value);
-					foreach (KeyValuePair<string, PTObject> pair in hittables) temp.Add(pair.Key, pair.Value);
+					foreach (KeyValuePair<string, Material> pair in materials) temp.Add(pair.Key, pair.Value);
+					foreach (KeyValuePair<string, Hittable> pair in hittables) temp.Add(pair.Key, pair.Value);
 					string name = Prompt.ShowDialog(GetHittable(checkedListBox.Items[idx].ToString()), temp);
 					if (name == checkedListBox.Items[idx].ToString()) return;
 					hittables.Add(name, hittables[checkedListBox.Items[idx].ToString()]);
@@ -186,7 +182,7 @@ namespace PathTracerGUI
 				fname = txtbxFileName.Text;
 			}
 
-			List<PTObject> activeHittables = new List<PTObject>();
+			List<Hittable> activeHittables = new List<Hittable>();
 			foreach (string hittableName in listbxHittables.CheckedItems)
 			{
 				activeHittables.Add(GetHittable(hittableName));
@@ -240,10 +236,10 @@ namespace PathTracerGUI
 						switch (autosaved[i].Kind)
 						{
 							case PTObject.PTObjectKind.Hittable:
-								hittables.Add(i.ToString(), autosaved[i]);
+								hittables.Add(i.ToString(), autosaved[i] as Hittable);
 								break;
 							case PTObject.PTObjectKind.Material:
-								materials.Add(i.ToString(), autosaved[i]);
+								materials.Add(i.ToString(), autosaved[i] as Material);
 								break;
 						}
 					}

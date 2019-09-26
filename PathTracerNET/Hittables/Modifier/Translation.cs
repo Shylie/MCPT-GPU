@@ -4,19 +4,17 @@ using System.Xml.Serialization;
 namespace PathTracerNET.Hittables.Modifier
 {
 	[Serializable]
-	public sealed class Translation : PTObject
+	public sealed class Translation : Hittable
 	{
 		public Translation() { }
 
-		public Translation(Vec3 offset, PTObject hittable)
+		public Translation(Vec3 offset, Hittable hittable)
 		{
 			if (hittable.Kind != PTObjectKind.Hittable) throw new ArgumentException("Invalid PTObjectKind: not a Hittable.", nameof(hittable));
 
 			Offset = offset;
 			Hittable = hittable;
 		}
-
-		public override PTObjectKind Kind => PTObjectKind.Hittable;
 
 		internal override IntPtr Init()
 		{
@@ -36,7 +34,7 @@ namespace PathTracerNET.Hittables.Modifier
 			}
 		}
 
-		public PTObject Hittable
+		public Hittable Hittable
 		{
 			get
 			{
@@ -55,7 +53,7 @@ namespace PathTracerNET.Hittables.Modifier
 		private Vec3 _offset;
 
 		[XmlIgnore]
-		private PTObject _hittable;
+		private Hittable _hittable;
 
 		private void HittableInvalidated(PTObject sender) => Destroy();
 	}

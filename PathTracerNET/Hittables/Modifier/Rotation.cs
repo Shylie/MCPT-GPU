@@ -4,21 +4,18 @@ using System.Xml.Serialization;
 namespace PathTracerNET.Hittables.Modifier
 {
 	[Serializable]
-	public sealed class Rotation : PTObject
+	public sealed class Rotation : Hittable
 	{
 		public Rotation() { }
 
-		public Rotation(float theta, Alignment axis, PTObject hittable)
+		public Rotation(float theta, Alignment axis, Hittable hittable)
 		{
 			if (axis != Alignment.X && axis != Alignment.Y && axis != Alignment.Z) throw new ArgumentException("Invalid Alignment: must be X, Y, or Z.", nameof(axis));
-			if (hittable.Kind != PTObjectKind.Hittable) throw new ArgumentException("Invalid PTObjectKind: not a Hittable.", nameof(hittable));
 
 			Theta = theta;
 			Axis = axis;
 			Hittable = hittable;
 		}
-
-		public override PTObjectKind Kind => PTObjectKind.Hittable;
 
 		internal override IntPtr Init()
 		{
@@ -51,7 +48,7 @@ namespace PathTracerNET.Hittables.Modifier
 			}
 		}
 
-		public PTObject Hittable
+		public Hittable Hittable
 		{
 			get
 			{
@@ -73,7 +70,7 @@ namespace PathTracerNET.Hittables.Modifier
 		private Alignment _axis;
 
 		[XmlIgnore]
-		private PTObject _hittable;
+		private Hittable _hittable;
 
 		private void HittableInvalidated(PTObject sender) => Destroy();
 	}

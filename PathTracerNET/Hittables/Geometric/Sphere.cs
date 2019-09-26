@@ -4,21 +4,16 @@ using System.Xml.Serialization;
 namespace PathTracerNET.Hittables.Geometric
 {
 	[Serializable]
-	public sealed class Sphere : PTObject
+	public sealed class Sphere : Hittable
 	{
 		public Sphere() { }
 
-		public Sphere(Vec3 center, float radius, PTObject material)
+		public Sphere(Vec3 center, float radius, Material material)
 		{
-			if (radius <= 0f) throw new ArgumentException("Negative or zero radius not allowed.", nameof(radius));
-			if (material.Kind != PTObjectKind.Material) throw new ArgumentException("Invalid PTObjectKind: not a Material.", nameof(material));
-
 			Center = center;
 			Radius = radius;
 			Material = material;
 		}
-
-		public override PTObjectKind Kind => PTObjectKind.Hittable;
 
 		internal override IntPtr Init()
 		{
@@ -51,7 +46,7 @@ namespace PathTracerNET.Hittables.Geometric
 			}
 		}
 
-		public PTObject Material
+		public Material Material
 		{
 			get
 			{
@@ -73,7 +68,7 @@ namespace PathTracerNET.Hittables.Geometric
 		private float _radius;
 
 		[XmlIgnore]
-		private PTObject _material;
+		private Material _material;
 
 		private void MaterialInvalidated(PTObject sender) => Destroy();
 	}

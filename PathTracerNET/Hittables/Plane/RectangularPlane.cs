@@ -4,11 +4,11 @@ using System.Xml.Serialization;
 namespace PathTracerNET.Hittables.Plane
 {
 	[Serializable]
-	public sealed class RectangularPlane : PTObject
+	public sealed class RectangularPlane : Hittable
 	{
 		public RectangularPlane() { }
 
-		public RectangularPlane(float a1, float a2, float b1, float b2, float k, Alignment plane, bool autoNormal, bool invertNormal, PTObject material)
+		public RectangularPlane(float a1, float a2, float b1, float b2, float k, Alignment plane, bool autoNormal, bool invertNormal, Material material)
 		{
 			switch (plane)
 			{
@@ -19,7 +19,6 @@ namespace PathTracerNET.Hittables.Plane
 				case Alignment.X | Alignment.Y | Alignment.Z:
 					throw new ArgumentException("Invalid alignment: must be XY, XZ, or YZ.", nameof(plane));
 			}
-			if (material.Kind != PTObjectKind.Material) throw new ArgumentException("Invalid PTObjectKind: not a Material.", nameof(material));
 
 			A1 = a1;
 			A2 = a2;
@@ -31,8 +30,6 @@ namespace PathTracerNET.Hittables.Plane
 			InvertNormal = invertNormal;
 			Material = material;
 		}
-
-		public override PTObjectKind Kind => PTObjectKind.Hittable;
 
 		internal override IntPtr Init()
 		{
@@ -143,7 +140,7 @@ namespace PathTracerNET.Hittables.Plane
 			}
 		}
 
-		public PTObject Material
+		public Material Material
 		{
 			get
 			{
@@ -168,7 +165,7 @@ namespace PathTracerNET.Hittables.Plane
 		private bool _autoNormal, _invertNormal;
 
 		[XmlIgnore]
-		private PTObject _material;
+		private Material _material;
 
 		private void MaterialInvalidated(PTObject sender) => Destroy();
 	}

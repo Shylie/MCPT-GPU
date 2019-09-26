@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Hittable.cs" />
     <Compile Include="Hittables\Geometric\Sphere.cs" />
     <Compile Include="Hittables\HittableList.cs" />
     <Compile Include="Hittables\Modifier\Rotation.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Hittables\Plane\RectangularPlane.cs" />
     <Compile Include="Hittables\Plane\TriangularPlane.cs" />
     <Compile Include="Hittables\SDF\DistortedSphere.cs" />
+    <Compile Include="Material.cs" />
     <Compile Include="Materials\Dieletric.cs" />
     <Compile Include="Materials\DiffuseLight.cs" />
     <Compile Include="Materials\Lambertian.cs" />

@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace PathTracerNET.Materials
 {
 	[Serializable]
-	public sealed class Metal : PTObject
+	public sealed class Metal : Material
 	{
 		public Metal() { }
 
@@ -15,8 +15,6 @@ namespace PathTracerNET.Materials
 			B = b;
 			Fuzz = fuzz;
 		}
-
-		public override PTObjectKind Kind => PTObjectKind.Material;
 
 		internal override IntPtr Init()
 		{

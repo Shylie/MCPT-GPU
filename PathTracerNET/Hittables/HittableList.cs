@@ -5,27 +5,21 @@ using System.Xml.Serialization;
 namespace PathTracerNET.Hittables
 {
 	[Serializable]
-	public sealed class HittableList : PTObject
+	public sealed class HittableList : Hittable
 	{
 		public HittableList() { }
 
-		public HittableList(params PTObject[] hittables)
+		public HittableList(params Hittable[] hittables)
 		{
-			foreach (PTObject hittable in hittables)
-			{
-				if (hittable.Kind != PTObjectKind.Hittable) throw new ArgumentException("Invalid PTObjectKind: not a Hittable.");
-			}
 			Hittables = hittables;
 		}
-
-		public override PTObjectKind Kind => PTObjectKind.Hittable;
 
 		internal override IntPtr Init()
 		{
 			return ConstructHittableList(Hittables.Length, Hittables.Select(hittable => hittable.Pointer).ToArray());
 		}
 
-		public PTObject[] Hittables
+		public Hittable[] Hittables
 		{
 			get
 			{
@@ -53,7 +47,7 @@ namespace PathTracerNET.Hittables
 		}
 
 		[XmlIgnore]
-		private PTObject[] _hittables;
+		private Hittable[] _hittables;
 
 		private void HittableInvalidated(PTObject sender) => Destroy();
 	}

@@ -93,16 +93,6 @@ namespace PathTracerNET
 			_pointer = IntPtr.Zero;
 			Valid = false;
 		}
-
-		public PTObject Translate(Vec3 offset)
-		{
-			return new Translation(offset, this);
-		}
-
-		public PTObject Rotate(float theta, Alignment alignment)
-		{
-			return new Rotation(theta, alignment, this);
-		}
 		#endregion
 
 		#region ENUMS

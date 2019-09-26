@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace PathTracerNET.Materials
 {
 	[Serializable]
-	public sealed class Lambertian : PTObject
+	public sealed class Lambertian : Material
 	{
 		public Lambertian() { }
 
@@ -14,8 +14,6 @@ namespace PathTracerNET.Materials
 			G = g;
 			B = b;
 		}
-
-		public override PTObjectKind Kind => PTObjectKind.Material;
 
 		internal override IntPtr Init()
 		{
