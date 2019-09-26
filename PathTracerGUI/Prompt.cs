@@ -12,6 +12,14 @@ namespace PathTracerGUI
 		public static string ShowDialog<T>(T obj, Dictionary<string, PTObject> ptObjects) where T : PTObject
 		{
 			string name = "";
+			foreach (string key in ptObjects.Keys)
+			{
+				if (ReferenceEquals(ptObjects[key], obj))
+				{
+					name = key;
+					break;
+				}
+			}
 			Form prompt = new Form
 			{
 				Text = obj.GetType().Name,
@@ -76,16 +84,7 @@ namespace PathTracerGUI
 						prompt.Controls.Add(ptbox);
 					}
 				}
-				string idtxt = "";
-				foreach (string key in ptObjects.Keys)
-				{
-					if (ReferenceEquals(ptObjects[key], obj))
-					{
-						idtxt = key;
-						break;
-					}
-				}
-				TextBox namebox = new TextBox() { Name = "name input", Width = 120, Left = 15, Top = prompt.Height - 105, Text = idtxt };
+				TextBox namebox = new TextBox() { Name = "name input", Width = 120, Left = 15, Top = prompt.Height - 105, Text = name };
 				prompt.Controls.Add(namebox);
 				Button submit = new Button() { Left = 15, Top = prompt.Height - 70, Text = "Confirm" };
 				submit.Click += (sender, args) =>
