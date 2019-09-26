@@ -108,33 +108,11 @@ namespace PathTracerGUI
 						}
 						else if (propertyInfos[i].PropertyType == typeof(PTObject.Alignment))
 						{
-							switch (prompt.Controls[$"{i}"].Text)
-							{
-								case "X":
-									propertyInfos[i].SetValue(obj, PTObject.Alignment.X);
-									break;
-								case "Y":
-									propertyInfos[i].SetValue(obj, PTObject.Alignment.Y);
-									break;
-								case "Z":
-									propertyInfos[i].SetValue(obj, PTObject.Alignment.Z);
-									break;
-								case "XY":
-									propertyInfos[i].SetValue(obj, PTObject.Alignment.X | PTObject.Alignment.Y);
-									break;
-								case "XZ":
-									propertyInfos[i].SetValue(obj, PTObject.Alignment.X | PTObject.Alignment.Z);
-									break;
-								case "YZ":
-									propertyInfos[i].SetValue(obj, PTObject.Alignment.Y | PTObject.Alignment.Z);
-									break;
-								case "XYZ":
-									propertyInfos[i].SetValue(obj, PTObject.Alignment.X | PTObject.Alignment.Y | PTObject.Alignment.Z);
-									break;
-								default:
-									propertyInfos[i].SetValue(obj, PTObject.Alignment.None);
-									break;
-							}
+							PTObject.Alignment alignment = PTObject.Alignment.None;
+							if (prompt.Controls[$"{i}"].Text.Contains("X")) alignment |= PTObject.Alignment.X;
+							if (prompt.Controls[$"{i}"].Text.Contains("Y")) alignment |= PTObject.Alignment.Y;
+							if (prompt.Controls[$"{i}"].Text.Contains("Z")) alignment |= PTObject.Alignment.Z;
+							propertyInfos[i].SetValue(obj, alignment);
 						}
 						else if (propertyInfos[i].PropertyType.IsSubclassOf(typeof(PTObject)) || propertyInfos[i].PropertyType == typeof(PTObject))
 						{

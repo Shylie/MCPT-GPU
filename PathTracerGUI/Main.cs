@@ -137,6 +137,7 @@ namespace PathTracerGUI
 				int idx = checkedListBox.IndexFromPoint(e.Location);
 				if (idx >= 0)
 				{
+					checkedListBox.SelectedIndex = idx;
 					Dictionary<string, PTObject> temp = new Dictionary<string, PTObject>();
 					foreach (KeyValuePair<string, PTObject> pair in materials) temp.Add(pair.Key, pair.Value);
 					foreach (KeyValuePair<string, PTObject> pair in hittables) temp.Add(pair.Key, pair.Value);
@@ -156,6 +157,7 @@ namespace PathTracerGUI
 				int idx = checkedListBox.IndexFromPoint(e.Location);
 				if (idx >= 0)
 				{
+					checkedListBox.SelectedIndex = idx;
 					Dictionary<string, PTObject> temp = new Dictionary<string, PTObject>();
 					foreach (KeyValuePair<string, PTObject> pair in materials) temp.Add(pair.Key, pair.Value);
 					foreach (KeyValuePair<string, PTObject> pair in hittables) temp.Add(pair.Key, pair.Value);
