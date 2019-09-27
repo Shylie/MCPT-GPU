@@ -25,6 +25,11 @@ namespace PathTracerNET
 	[XmlInclude(typeof(HittableList))]
 	public abstract class PTObject
 	{
+		~PTObject()
+		{
+			if (_pointer != IntPtr.Zero) Destroy();
+		}
+
 		#region PROPERTIES
 		[XmlIgnore]
 		public bool Valid
