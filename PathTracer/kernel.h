@@ -4,13 +4,11 @@
 #include "Common.h"
 
 #include "Hittable.h"
-#include "SDFHittable.h"
 #include "PlaneHittable.h"
 #include "Texture.h"
 #include "Material.h"
 
 #include "Sphere.h"
-#include "DistortedSphere.h"
 #include "RectangularPlane.h"
 #include "TriangularPlane.h"
 #include "Translation.h"
@@ -263,22 +261,17 @@ extern "C"
 
 	API Hittable* ConstructSphere(Vec3 center, float radius, Material* mat)
 	{
-		return new Sphere(center, radius, mat->GetPtrGPU());
+		return new Sphere(center, radius, mat);
 	}
 
 	API Hittable* ConstructRectangularPlane(float a1, float a2, float b1, float b2, float k, Alignment alignment, bool autoNormal, bool invertNormal, Material* mat)
 	{
-		return new RectangularPlane(a1, a2, b1, b2, k, alignment, autoNormal, invertNormal, mat->GetPtrGPU());
+		return new RectangularPlane(a1, a2, b1, b2, k, alignment, autoNormal, invertNormal, mat);
 	}
 
 	API Hittable* ConstructTriangularPlane(float a1, float b1, float a2, float b2, float a3, float b3, float k, Alignment alignment, bool autoNormal, bool invertNormal, Material* mat)
 	{
-		return new TriangularPlane(a1, b1, a2, b2, a3, b3, k, alignment, autoNormal, invertNormal, mat->GetPtrGPU());
-	}
-
-	API Hittable* ConstructDistortedSphere(Vec3 center, float radius, float frequency, float amplitude, Material* mat)
-	{
-		return new DistortedSphere(center, radius, frequency, amplitude, mat->GetPtrGPU());
+		return new TriangularPlane(a1, b1, a2, b2, a3, b3, k, alignment, autoNormal, invertNormal, mat);
 	}
 
 	API Texture* ConstructConstantTexture(float r, float g, float b)

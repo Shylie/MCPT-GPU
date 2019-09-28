@@ -11,7 +11,7 @@ namespace PathTracerTests
 	public:
 		TEST_METHOD(SphereCtor)
 		{
-			Hittable* sphere = new Sphere(Vec3(0.0f), 1.0f, nullptr);
+			Hittable* sphere = new Sphere(Vec3(0.0f), 1.0f, (Material*)nullptr);
 
 			Assert::IsNotNull(sphere->GetPtrGPU(), L"Device ptr non-null");
 
@@ -28,7 +28,7 @@ namespace PathTracerTests
 			const float expectedNormalY = -0.57735026918962576450914878050196f;
 			const float expectedNormalZ = -0.57735026918962576450914878050196f;
 
-			Hittable* sphere = new Sphere(Vec3(2.0f), 1.0f, nullptr);
+			Hittable* sphere = new Sphere(Vec3(2.0f), 1.0f, (Material*)nullptr);
 
 			HitRecord hRec;
 
@@ -50,7 +50,7 @@ namespace PathTracerTests
 
 		TEST_METHOD(SphereMissFromOutside)
 		{
-			Hittable* sphere = new Sphere(Vec3(2.0f), 1.0f, nullptr);
+			Hittable* sphere = new Sphere(Vec3(2.0f), 1.0f, (Material*)nullptr);
 
 			HitRecord hRec;
 
@@ -73,7 +73,7 @@ namespace PathTracerTests
 			const float expectedNormalY = 0.57735026918962576450914878050196f;
 			const float expectedNormalZ = 0.57735026918962576450914878050196f;
 
-			Hittable* sphere = new Sphere(Vec3(2.0f), 1.0f, nullptr);
+			Hittable* sphere = new Sphere(Vec3(2.0f), 1.0f, (Material*)nullptr);
 
 			HitRecord hRec;
 

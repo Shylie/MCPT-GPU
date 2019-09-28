@@ -19,11 +19,15 @@ __global__ void destroyEnvironmentGPU_Sphere(Hittable** this_d)
 	}
 }
 
-Sphere::Sphere(Vec3 center, float radius, Material** mat_d) : center(center), radius(radius), mat_d(mat_d)
+Sphere::Sphere(Vec3 center, float radius, Material* mat) : center(center), radius(radius), mat(mat), mat_d(mat != nullptr ? mat->GetPtrGPU() : nullptr)
 {
 #ifndef __CUDA_ARCH__
 	constructEnvironment();
 #endif
+}
+
+__device__ Sphere::Sphere(Vec3 center, float radius, Material** mat_d) : center(center), radius(radius), mat_d(mat_d)
+{
 }
 
 Sphere::~Sphere()
@@ -47,7 +51,11 @@ bool Sphere::Hit(const Ray3& ray, float tMin, float tMax, HitRecord& hRec) const
 			hRec.SetT(temp);
 			hRec.SetPoint(ray.PointAt(temp));
 			hRec.SetNormal(hRec.GetPoint() - center);
+#ifdef __CUDA_ARCH__
 			hRec.SetMaterial(mat_d);
+#else
+			hRec.SetMaterialHost(mat);
+#endif
 			return true;
 		}
 		temp = -b + sqrt(discriminant);
@@ -56,7 +64,11 @@ bool Sphere::Hit(const Ray3& ray, float tMin, float tMax, HitRecord& hRec) const
 			hRec.SetT(temp);
 			hRec.SetPoint(ray.PointAt(temp));
 			hRec.SetNormal(hRec.GetPoint() - center);
+#ifdef __CUDA_ARCH__
 			hRec.SetMaterial(mat_d);
+#else
+			hRec.SetMaterialHost(mat);
+#endif
 			return true;
 		}
 	}

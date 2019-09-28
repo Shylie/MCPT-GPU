@@ -6,7 +6,8 @@
 class API Sphere : public Hittable
 {
 public:
-	__host__ __device__ Sphere(Vec3 center, float radius, Material** mat_d);
+	__host__ Sphere(Vec3 center, float radius, Material* mat);
+	__device__ Sphere(Vec3 center, float radius, Material** mat_d);
 	__host__ __device__ ~Sphere();
 
 	__host__ __device__ Sphere(const Sphere&) = delete;
@@ -17,7 +18,8 @@ public:
 protected:
 	Vec3 center;
 	float radius;
-	Material** mat_d;
+	Material* mat{ nullptr };
+	Material** mat_d{ nullptr };
 
 	__host__ void constructEnvironment();
 	__host__ void destroyEnvironment();

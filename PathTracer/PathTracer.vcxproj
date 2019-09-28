@@ -99,7 +99,6 @@
     <CudaCompile Include="ConstantTexture.cu" />
     <CudaCompile Include="Dieletric.cu" />
     <CudaCompile Include="DiffuseLight.cu" />
-    <CudaCompile Include="DistortedSphere.cu" />
     <CudaCompile Include="HittableList.cu" />
     <CudaCompile Include="kernel.cu" />
     <CudaCompile Include="Lambertian.cu" />
@@ -107,7 +106,6 @@
     <CudaCompile Include="PlaneHittable.cu" />
     <CudaCompile Include="RectangularPlane.cu" />
     <CudaCompile Include="Rotation.cu" />
-    <CudaCompile Include="SDFHittable.cu" />
     <CudaCompile Include="Sphere.cu" />
     <CudaCompile Include="Translation.cu" />
     <CudaCompile Include="TriangularPlane.cu" />
@@ -118,7 +116,6 @@
     <ClInclude Include="ConstantTexture.h" />
     <ClInclude Include="Dielectric.h" />
     <ClInclude Include="DiffuseLight.h" />
-    <ClInclude Include="DistortedSphere.h" />
     <ClInclude Include="Hittable.h" />
     <ClInclude Include="HittableList.h" />
     <ClInclude Include="kernel.h" />
@@ -128,7 +125,6 @@
     <ClInclude Include="PlaneHittable.h" />
     <ClInclude Include="RectangularPlane.h" />
     <ClInclude Include="Rotation.h" />
-    <ClInclude Include="SDFHittable.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Translation.h" />

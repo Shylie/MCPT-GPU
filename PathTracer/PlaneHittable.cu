@@ -35,7 +35,11 @@ __host__ __device__ bool PlaneHittable::Hit(const Ray3& ray, float tMin, float t
 				hRec.SetNormal(Vec3(0.0f, 0.0f, 1.0f));
 			}
 		}
+#ifdef __CUDA_ARCH__
 		hRec.SetMaterial(mat_d);
+#else
+		hRec.SetMaterialHost(mat);
+#endif
 		return true;
 
 	case (X | Z):
@@ -67,7 +71,11 @@ __host__ __device__ bool PlaneHittable::Hit(const Ray3& ray, float tMin, float t
 				hRec.SetNormal(Vec3(0.0f, 1.0f, 0.0f));
 			}
 		}
+#ifdef __CUDA_ARCH__
 		hRec.SetMaterial(mat_d);
+#else
+		hRec.SetMaterialHost(mat);
+#endif
 		return true;
 
 	case (Y | Z):
@@ -99,7 +107,11 @@ __host__ __device__ bool PlaneHittable::Hit(const Ray3& ray, float tMin, float t
 				hRec.SetNormal(Vec3(1.0f, 0.0f, 0.0f));
 			}
 		}
+#ifdef __CUDA_ARCH__
 		hRec.SetMaterial(mat_d);
+#else
+		hRec.SetMaterialHost(mat);
+#endif
 		return true;
 
 	default:

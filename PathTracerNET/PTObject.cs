@@ -5,7 +5,6 @@ using System.Xml.Serialization;
 using PathTracerNET.Hittables;
 using PathTracerNET.Hittables.Geometric;
 using PathTracerNET.Hittables.Modifier;
-using PathTracerNET.Hittables.SDF;
 using PathTracerNET.Hittables.Plane;
 using PathTracerNET.Materials;
 using PathTracerNET.Textures;
@@ -24,7 +23,6 @@ namespace PathTracerNET
 	[XmlInclude(typeof(Translation))]
 	[XmlInclude(typeof(RectangularPlane))]
 	[XmlInclude(typeof(TriangularPlane))]
-	[XmlInclude(typeof(DistortedSphere))]
 	[XmlInclude(typeof(HittableList))]
 	public abstract class PTObject
 	{
@@ -170,9 +168,6 @@ namespace PathTracerNET
 
 		[DllImport("PathTracer.dll")]
 		protected static extern IntPtr ConstructTriangularPlane(float a1, float b1, float a2, float b2, float a3, float b3, float k, Alignment alignment, bool autoNormal, bool invertNormal, IntPtr mat);
-
-		[DllImport("PathTracer.dll")]
-		protected static extern IntPtr ConstructDistortedSphere(Vec3 center, float radius, float frequency, float amplitude, IntPtr mat);
 
 		[DllImport("PathTracer.dll")]
 		protected static extern IntPtr ConstructConstantTexture(float r, float g, float b);

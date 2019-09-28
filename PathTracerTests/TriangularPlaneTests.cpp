@@ -11,7 +11,7 @@ namespace PathTracerTests
 	public:
 		TEST_METHOD(TriangularPlaneCtor)
 		{
-			Hittable* triangularPlane = new TriangularPlane(0.0f, 1.0f, 1.0f, 2.0f, 2.0f, 1.0f, 0.0f, (Alignment)(X | Y), true, false, nullptr);
+			Hittable* triangularPlane = new TriangularPlane(0.0f, 1.0f, 1.0f, 2.0f, 2.0f, 1.0f, 0.0f, (Alignment)(X | Y), true, false, (Material*)nullptr);
 
 			Assert::IsNotNull(triangularPlane->GetPtrGPU());
 
@@ -31,7 +31,7 @@ namespace PathTracerTests
 			const float expectedBottomNormalY = -1.0f;
 			const float expectedBottomNormalZ = 0.0f;
 
-			Hittable* triangularPlane = new TriangularPlane(-2.0f, -2.0f, 0.0f, 2.0f, 2.0f, -2.0f, 0.0f, (Alignment)(X | Z), true, false, nullptr);
+			Hittable* triangularPlane = new TriangularPlane(-2.0f, -2.0f, 0.0f, 2.0f, 2.0f, -2.0f, 0.0f, (Alignment)(X | Z), true, false, (Material*)nullptr);
 
 			Vec3 originTop(0.0f, 1.0f, 0.0f);
 			Vec3 directionTop(0.0f, -1.0f, 0.0f);
@@ -83,7 +83,7 @@ namespace PathTracerTests
 			const float expectedBottomNormalY = 1.0f;
 			const float expectedBottomNormalZ = 0.0f;
 
-			Hittable* triangularPlane = new TriangularPlane(-2.0f, -2.0f, 0.0f, 2.0f, 2.0f, -2.0f, 0.0f, (Alignment)(X | Z), false, false, nullptr);
+			Hittable* triangularPlane = new TriangularPlane(-2.0f, -2.0f, 0.0f, 2.0f, 2.0f, -2.0f, 0.0f, (Alignment)(X | Z), false, false, (Material*)nullptr);
 
 			Vec3 originTop(0.0f, 1.0f, 0.0f);
 			Vec3 directionTop(0.0f, -1.0f, 0.0f);
@@ -135,7 +135,7 @@ namespace PathTracerTests
 			const float expectedBottomNormalY = -1.0f;
 			const float expectedBottomNormalZ = 0.0f;
 
-			Hittable* triangularPlane = new TriangularPlane(-2.0f, -2.0f, 0.0f, 2.0f, 2.0f, -2.0f, 0.0f, (Alignment)(X | Z), false, true, nullptr);
+			Hittable* triangularPlane = new TriangularPlane(-2.0f, -2.0f, 0.0f, 2.0f, 2.0f, -2.0f, 0.0f, (Alignment)(X | Z), false, true, (Material*)nullptr);
 
 			Vec3 originTop(0.0f, 1.0f, 0.0f);
 			Vec3 directionTop(0.0f, -1.0f, 0.0f);
@@ -176,7 +176,7 @@ namespace PathTracerTests
 
 		TEST_METHOD(TriangularPlaneMiss)
 		{
-			Hittable* triangularPlane = new TriangularPlane(2.0f, 2.0f, 4.0f, 4.0f, 6.0f, 2.0f, 2.0f, (Alignment)(X | Z), true, false, nullptr);
+			Hittable* triangularPlane = new TriangularPlane(2.0f, 2.0f, 4.0f, 4.0f, 6.0f, 2.0f, 2.0f, (Alignment)(X | Z), true, false, (Material*)nullptr);
 
 			Vec3 origin(2.5f, 0.0f, 3.5f);
 			Vec3 direction(0.0f, 1.0f, 0.0f);

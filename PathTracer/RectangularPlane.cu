@@ -19,11 +19,15 @@ __global__ void destroyEnvironmentGPU_RectangularPlane(Hittable** this_d)
 	}
 }
 
-RectangularPlane::RectangularPlane(float a1, float a2, float b1, float b2, float k, Alignment alignment, bool autoNormal, bool invertNormal, Material** mat_d) : a1(a1), a2(a2), b1(b1), b2(b2), PlaneHittable(k, alignment, autoNormal, invertNormal, mat_d)
+RectangularPlane::RectangularPlane(float a1, float a2, float b1, float b2, float k, Alignment alignment, bool autoNormal, bool invertNormal, Material* mat) : a1(a1), a2(a2), b1(b1), b2(b2), PlaneHittable(k, alignment, autoNormal, invertNormal, mat)
 {
 #ifndef __CUDA_ARCH__
 	constructEnvironment();
 #endif
+}
+
+__device__ RectangularPlane::RectangularPlane(float a1, float a2, float b1, float b2, float k, Alignment alignment, bool autoNormal, bool invertNormal, Material** mat_d) : a1(a1), a2(a2), b1(b1), b2(b2), PlaneHittable(k, alignment, autoNormal, invertNormal, mat_d)
+{
 }
 
 RectangularPlane::~RectangularPlane()

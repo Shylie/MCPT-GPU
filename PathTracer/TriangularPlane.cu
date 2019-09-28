@@ -19,11 +19,15 @@ __global__ void destroyEnvironmentGPU_TriangularPlane(Hittable** this_d)
 	}
 }
 
-TriangularPlane::TriangularPlane(float a1, float b1, float a2, float b2, float a3, float b3, float k, Alignment alignment, bool autoNormal, bool invertNormal, Material** mat_d) : a1(a1), b1(b1), a2(a2), b2(b2), a3(a3), b3(b3), PlaneHittable(k, alignment, autoNormal, invertNormal, mat_d)
+TriangularPlane::TriangularPlane(float a1, float b1, float a2, float b2, float a3, float b3, float k, Alignment alignment, bool autoNormal, bool invertNormal, Material* mat) : a1(a1), b1(b1), a2(a2), b2(b2), a3(a3), b3(b3), PlaneHittable(k, alignment, autoNormal, invertNormal, mat)
 {
 #ifndef __CUDA_ARCH__
 	constructEnvironment();
 #endif
+}
+
+__device__ TriangularPlane::TriangularPlane(float a1, float b1, float a2, float b2, float a3, float b3, float k, Alignment alignment, bool autoNormal, bool invertNormal, Material** mat_d) : a1(a1), b1(b1), a2(a2), b2(b2), a3(a3), b3(b3), PlaneHittable(k, alignment, autoNormal, invertNormal, mat_d)
+{
 }
 
 TriangularPlane::~TriangularPlane()

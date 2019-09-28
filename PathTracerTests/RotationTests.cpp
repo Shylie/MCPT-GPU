@@ -12,7 +12,7 @@ namespace PathTracerTests
 	public:
 		TEST_METHOD(RotationCtor)
 		{
-			Hittable* plane = new RectangularPlane(-1.0f, 1.0f, -1.0f, 1.0f, 0.0f, (Alignment)(X | Z), true, false, nullptr);
+			Hittable* plane = new RectangularPlane(-1.0f, 1.0f, -1.0f, 1.0f, 0.0f, (Alignment)(X | Z), true, false, (Material*)nullptr);
 			Hittable* rotated = new Rotation(3.1415926f / 4.0f, Y, plane);
 			
 			Assert::IsNotNull(rotated->GetPtrGPU());
@@ -31,7 +31,7 @@ namespace PathTracerTests
 			const float expectedNormalY = 0.0f;
 			const float expectedNormalZ = 0.0f;
 
-			Hittable* plane = new RectangularPlane(-1.0f, 1.0f, -1.0f, 1.0f, 0.0f, (Alignment)(Y | Z), true, false, nullptr);
+			Hittable* plane = new RectangularPlane(-1.0f, 1.0f, -1.0f, 1.0f, 0.0f, (Alignment)(Y | Z), true, false, (Material*)nullptr);
 			Hittable* rotated = new Rotation(3.1415926f / 4.0f, X, plane);
 
 			Ray3 rayMiss(Vec3(-1.0f, -0.75f, 0.75f), Vec3(1.0f, 0.0f, 0.0f));
@@ -68,7 +68,7 @@ namespace PathTracerTests
 			const float expectedNormalY = -1.0f;
 			const float expectedNormalZ = 0.0f;
 
-			Hittable* plane = new RectangularPlane(-1.0f, 1.0f, -1.0f, 1.0f, 0.0f, (Alignment)(X | Z), true, false, nullptr);
+			Hittable* plane = new RectangularPlane(-1.0f, 1.0f, -1.0f, 1.0f, 0.0f, (Alignment)(X | Z), true, false, (Material*)nullptr);
 			Hittable* rotated = new Rotation(3.1415926f / 4.0f, Y, plane);
 
 			Ray3 rayMiss(Vec3(-0.75f, -1.0f, 0.75f), Vec3(0.0f, 1.0f, 0.0f));
@@ -105,7 +105,7 @@ namespace PathTracerTests
 			const float expectedNormalY = 0.0f;
 			const float expectedNormalZ = -1.0f;
 
-			Hittable* plane = new RectangularPlane(-1.0f, 1.0f, -1.0f, 1.0f, 0.0f, (Alignment)(X | Y), true, false, nullptr);
+			Hittable* plane = new RectangularPlane(-1.0f, 1.0f, -1.0f, 1.0f, 0.0f, (Alignment)(X | Y), true, false, (Material*)nullptr);
 			Hittable* rotated = new Rotation(3.1415926f / 4.0f, Z, plane);
 
 			Ray3 rayMiss(Vec3(0.75f, 0.75f, -1.0f), Vec3(0.0f, 0.0f, 1.0f));

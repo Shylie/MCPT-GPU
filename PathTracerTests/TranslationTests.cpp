@@ -12,7 +12,7 @@ namespace PathTracerTests
 	public:
 		TEST_METHOD(TranslationCtor)
 		{
-			Hittable* sphere = new Sphere(Vec3(0.0f), 1.0f, nullptr);
+			Hittable* sphere = new Sphere(Vec3(0.0f), 1.0f, (Material*)nullptr);
 			Hittable* translated = new Translation(Vec3(1.0f), sphere);
 
 			Assert::IsNotNull(translated->GetPtrGPU());
@@ -31,7 +31,7 @@ namespace PathTracerTests
 			const float expectedNormalY = -0.57735026918962576450914878050196f;
 			const float expectedNormalZ = -0.57735026918962576450914878050196f;
 
-			Hittable* sphere = new Sphere(Vec3(2.0f), 1.0f, nullptr);
+			Hittable* sphere = new Sphere(Vec3(2.0f), 1.0f, (Material*)nullptr);
 			Hittable* translated = new Translation(Vec3(1.0f), sphere);
 
 			HitRecord hRec;
@@ -55,7 +55,7 @@ namespace PathTracerTests
 
 		TEST_METHOD(TranslationSphereMissFromOutside)
 		{
-			Hittable* sphere = new Sphere(Vec3(2.0f), 1.0f, nullptr);
+			Hittable* sphere = new Sphere(Vec3(2.0f), 1.0f, (Material*)nullptr);
 			Hittable* translation = new Translation(Vec3(-1.0f), sphere);
 
 			HitRecord hRec;
@@ -80,7 +80,7 @@ namespace PathTracerTests
 			const float expectedNormalY = 0.57735026918962576450914878050196f;
 			const float expectedNormalZ = 0.57735026918962576450914878050196f;
 
-			Hittable* sphere = new Sphere(Vec3(2.0f), 1.0f, nullptr);
+			Hittable* sphere = new Sphere(Vec3(2.0f), 1.0f, (Material*)nullptr);
 			Hittable* translated = new Translation(Vec3(0.5f), sphere);
 
 			HitRecord hRec;

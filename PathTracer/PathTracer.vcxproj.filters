@@ -17,12 +17,6 @@
     <CudaCompile Include="Dieletric.cu">
       <Filter>Materials</Filter>
     </CudaCompile>
-    <CudaCompile Include="SDFHittable.cu">
-      <Filter>Hittables</Filter>
-    </CudaCompile>
-    <CudaCompile Include="DistortedSphere.cu">
-      <Filter>Hittables\SDF Hittables</Filter>
-    </CudaCompile>
     <CudaCompile Include="PlaneHittable.cu">
       <Filter>Hittables</Filter>
     </CudaCompile>
@@ -67,12 +61,6 @@
     <ClInclude Include="Dielectric.h">
       <Filter>Materials</Filter>
     </ClInclude>
-    <ClInclude Include="SDFHittable.h">
-      <Filter>Hittables</Filter>
-    </ClInclude>
-    <ClInclude Include="DistortedSphere.h">
-      <Filter>Hittables\SDF Hittables</Filter>
-    </ClInclude>
     <ClInclude Include="PlaneHittable.h">
       <Filter>Hittables</Filter>
     </ClInclude>
@@ -106,9 +94,6 @@
     </Filter>
     <Filter Include="Materials">
       <UniqueIdentifier>{ee2cb41b-890c-4b1a-b416-9b792e51de81}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Hittables\SDF Hittables">
-      <UniqueIdentifier>{acc3ef09-e14f-450d-bfac-1e8dd4b9f2f2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Hittables\Modifier Hittables">
       <UniqueIdentifier>{7ca8c0b5-5c4e-4f30-b334-13ab192cfe76}</UniqueIdentifier>

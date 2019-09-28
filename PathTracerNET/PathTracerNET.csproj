@@ -60,7 +60,6 @@
     <Compile Include="Hittables\Modifier\Translation.cs" />
     <Compile Include="Hittables\Plane\RectangularPlane.cs" />
     <Compile Include="Hittables\Plane\TriangularPlane.cs" />
-    <Compile Include="Hittables\SDF\DistortedSphere.cs" />
     <Compile Include="Material.cs" />
     <Compile Include="Materials\Dieletric.cs" />
     <Compile Include="Materials\DiffuseLight.cs" />

@@ -12,7 +12,6 @@ using PathTracerNET.Hittables;
 using PathTracerNET.Hittables.Geometric;
 using PathTracerNET.Hittables.Modifier;
 using PathTracerNET.Hittables.Plane;
-using PathTracerNET.Hittables.SDF;
 using PathTracerNET.Materials;
 using PathTracerNET.Textures;
 
@@ -92,9 +91,6 @@ namespace PathTracerGUI
 					break;
 				case "TriangularPlane":
 					val = Prompt.ShowDialog<TriangularPlane>(temp);
-					break;
-				case "DistortedSphere":
-					val = Prompt.ShowDialog<DistortedSphere>(temp);
 					break;
 				case "Dieletric":
 					val = Prompt.ShowDialog<Dieletric>(temp);
