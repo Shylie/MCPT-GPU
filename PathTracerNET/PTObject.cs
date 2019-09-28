@@ -8,10 +8,13 @@ using PathTracerNET.Hittables.Modifier;
 using PathTracerNET.Hittables.SDF;
 using PathTracerNET.Hittables.Plane;
 using PathTracerNET.Materials;
+using PathTracerNET.Textures;
 
 namespace PathTracerNET
 {
 	[Serializable]
+	[XmlInclude(typeof(ConstantTexture))]
+	[XmlInclude(typeof(CheckerboardTexture))]
 	[XmlInclude(typeof(Dieletric))]
 	[XmlInclude(typeof(DiffuseLight))]
 	[XmlInclude(typeof(Lambertian))]
@@ -105,7 +108,8 @@ namespace PathTracerNET
 		{
 			Invalid,
 			Hittable,
-			Material
+			Material,
+			Texture
 		}
 
 		[Flags]
@@ -171,22 +175,31 @@ namespace PathTracerNET
 		protected static extern IntPtr ConstructDistortedSphere(Vec3 center, float radius, float frequency, float amplitude, IntPtr mat);
 
 		[DllImport("PathTracer.dll")]
-		protected static extern IntPtr ConstructLambertian(float r, float g, float b);
+		protected static extern IntPtr ConstructConstantTexture(float r, float g, float b);
 
 		[DllImport("PathTracer.dll")]
-		protected static extern IntPtr ConstructMetal(float r, float g, float b, float fuzz);
+		protected static extern IntPtr ConstructCheckerboardTexture(IntPtr a, IntPtr b, Vec3 offset, Vec3 frequency);
 
 		[DllImport("PathTracer.dll")]
-		protected static extern IntPtr ConstructDielectric(float r, float g, float b, float refractiveIndex);
+		protected static extern IntPtr ConstructLambertian(IntPtr texture);
 
 		[DllImport("PathTracer.dll")]
-		protected static extern IntPtr ConstructDiffuseLight(float r, float g, float b);
+		protected static extern IntPtr ConstructMetal(IntPtr texture, float fuzz);
+
+		[DllImport("PathTracer.dll")]
+		protected static extern IntPtr ConstructDielectric(IntPtr texture, float refractiveIndex);
+
+		[DllImport("PathTracer.dll")]
+		protected static extern IntPtr ConstructDiffuseLight(IntPtr texture);
 
 		[DllImport("PathTracer.dll")]
 		private static extern void DestroyHittable(IntPtr ptr);
 
 		[DllImport("PathTracer.dll")]
 		private static extern void DestroyMaterial(IntPtr ptr);
+
+		[DllImport("PathTracer.dll")]
+		private static extern void DestroyTexture(IntPtr ptr);
 		#endregion
 	}
 }

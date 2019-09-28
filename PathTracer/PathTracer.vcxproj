@@ -95,6 +95,8 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <CudaCompile Include="CheckerboardTexture.cu" />
+    <CudaCompile Include="ConstantTexture.cu" />
     <CudaCompile Include="Dieletric.cu" />
     <CudaCompile Include="DiffuseLight.cu" />
     <CudaCompile Include="DistortedSphere.cu" />
@@ -111,7 +113,9 @@
     <CudaCompile Include="TriangularPlane.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CheckerboardTexture.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="ConstantTexture.h" />
     <ClInclude Include="Dielectric.h" />
     <ClInclude Include="DiffuseLight.h" />
     <ClInclude Include="DistortedSphere.h" />
@@ -126,6 +130,7 @@
     <ClInclude Include="Rotation.h" />
     <ClInclude Include="SDFHittable.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Translation.h" />
     <ClInclude Include="TriangularPlane.h" />
   </ItemGroup>

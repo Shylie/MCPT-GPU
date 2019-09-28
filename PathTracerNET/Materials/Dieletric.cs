@@ -8,54 +8,28 @@ namespace PathTracerNET.Materials
 	{
 		public Dieletric() { }
 
-		public Dieletric(float r, float g, float b, float refractiveIndex)
+		public Dieletric(Texture texture, float refractiveIndex)
 		{
-			R = r;
-			G = g;
-			B = b;
+			Texture = texture;
 			RefractiveIndex = refractiveIndex;
 		}
 
 		internal override IntPtr Init()
 		{
-			return ConstructDielectric(R, G, B, RefractiveIndex);
+			return ConstructDielectric(Texture.Pointer, RefractiveIndex);
 		}
 
-		public float R
+		public Texture Texture
 		{
 			get
 			{
-				return _r;
+				return _texture;
 			}
 			set
 			{
-				_r = value;
-				if (Valid) Destroy();
-			}
-		}
-
-		public float G
-		{
-			get
-			{
-				return _g;
-			}
-			set
-			{
-				_g = value;
-				if (Valid) Destroy();
-			}
-		}
-
-		public float B
-		{
-			get
-			{
-				return _b;
-			}
-			set
-			{
-				_b = value;
+				if (_texture != null) _texture.Invalidated -= TextureInvalidated;
+				_texture = value;
+				_texture.Invalidated += TextureInvalidated;
 				if (Valid) Destroy();
 			}
 		}
@@ -74,6 +48,11 @@ namespace PathTracerNET.Materials
 		}
 
 		[XmlIgnore]
-		private float _r, _g, _b, _refractiveIndex;
+		private float _refractiveIndex;
+
+		[XmlIgnore]
+		private Texture _texture;
+
+		private void TextureInvalidated(PTObject sender) => Destroy();
 	}
 }

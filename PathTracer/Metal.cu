@@ -3,11 +3,11 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
-__global__ void constructEnvironmentGPU_Metal(Material** this_d, Vec3 albedo, float fuzz)
+__global__ void constructEnvironmentGPU_Metal(Material** this_d, Texture** texture_d, float fuzz)
 {
 	if (blockIdx.x * blockDim.x + threadIdx.x == 0)
 	{
-		(*this_d) = new Metal(albedo, fuzz);
+		(*this_d) = new Metal(texture_d, fuzz);
 	}
 }
 
@@ -19,11 +19,15 @@ __global__ void destroyEnvironmentGPU_Metal(Material** this_d)
 	}
 }
 
-Metal::Metal(Vec3 albedo, float fuzz) : albedo(albedo), fuzz(fuzz)
+Metal::Metal(Texture* texture, float fuzz) : texture(texture), texture_d(texture->GetPtrGPU()), fuzz(fuzz)
 {
 #ifndef __CUDA_ARCH__
 	constructEnvironment();
 #endif
+}
+
+__device__ Metal::Metal(Texture** texture_d, float fuzz) : texture_d(texture_d), fuzz(fuzz)
+{
 }
 
 Metal::~Metal()
@@ -37,7 +41,11 @@ __host__ __device__ bool Metal::Scatter(unsigned int* seed, Ray3& ray, const Vec
 {
 	Vec3 dir = Reflect(ray.Direction(), normal) + fuzz * Vec3::RandomUnitVector(seed);
 	ray = Ray3(point, dir);
-	attenuation = albedo;
+#ifdef __CUDA_ARCH__
+	attenuation = (*texture_d)->Value(seed, point);
+#else
+	attenuation = texture->Value(seed, point);
+#endif
 	return Vec3::Dot(dir, normal) > 0.0f;
 }
 
@@ -49,7 +57,7 @@ __host__ __device__ Vec3 Metal::Reflect(Vec3 v, Vec3 n) const
 __host__ void Metal::constructEnvironment()
 {
 	cudaMalloc(&this_d, sizeof(Material**));
-	constructEnvironmentGPU_Metal<<<1, 1>>>(this_d, albedo, fuzz);
+	constructEnvironmentGPU_Metal<<<1, 1>>>(this_d, texture_d, fuzz);
 	cudaDeviceSynchronize();
 }
 

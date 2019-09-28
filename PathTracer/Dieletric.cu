@@ -3,11 +3,11 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
-__global__ void constructEnvironmentGPU_Dieletric(Material** this_d, Vec3 albedo, float refractiveIndex)
+__global__ void constructEnvironmentGPU_Dieletric(Material** this_d, Texture** texture_d, float refractiveIndex)
 {
 	if (blockIdx.x * blockDim.x + threadIdx.x == 0)
 	{
-		(*this_d) = new Dieletric(albedo, refractiveIndex);
+		(*this_d) = new Dieletric(texture_d, refractiveIndex);
 	}
 }
 
@@ -19,11 +19,15 @@ __global__ void destroyEnvironmentGPU_Dieletric(Material** this_d)
 	}
 }
 
-Dieletric::Dieletric(Vec3 albedo, float refractiveIndex) : albedo(albedo), refractiveIndex(refractiveIndex)
+Dieletric::Dieletric(Texture* texture, float refractiveIndex) : texture(texture), texture_d(texture->GetPtrGPU()), refractiveIndex(refractiveIndex)
 {
 #ifndef __CUDA_ARCH__
 	constructEnvironment();
 #endif
+}
+
+__device__ Dieletric::Dieletric(Texture** texture_d, float refractiveIndex) : texture_d(texture_d), refractiveIndex(refractiveIndex)
+{
 }
 
 Dieletric::~Dieletric()
@@ -35,7 +39,11 @@ Dieletric::~Dieletric()
 
 __host__ __device__ bool Dieletric::Scatter(unsigned int* seed, Ray3& ray, const Vec3& point, const Vec3& normal, Vec3& attenuation) const
 {
-	attenuation = albedo;
+#ifdef __CUDA_ARCH__
+	attenuation = (*texture_d)->Value(seed, point);
+#else
+	attenuation = texture->Value(seed, point);
+#endif
 	Vec3 refracted;
 	if (Vec3::Dot(ray.Direction(), normal) > 0.0f)
 	{
@@ -90,7 +98,7 @@ __host__ __device__ float Dieletric::Schlick(float cosine) const
 __host__ void Dieletric::constructEnvironment()
 {
 	cudaMalloc(&this_d, sizeof(Material**));
-	constructEnvironmentGPU_Dieletric<<<1, 1>>>(this_d, albedo, refractiveIndex);
+	constructEnvironmentGPU_Dieletric<<<1, 1>>>(this_d, texture_d, refractiveIndex);
 	cudaDeviceSynchronize();
 }
 

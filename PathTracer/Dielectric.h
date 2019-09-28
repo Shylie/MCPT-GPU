@@ -2,11 +2,13 @@
 #define DIELETRIC_H
 
 #include "Material.h"
+#include "Texture.h"
 
 class API Dieletric : public Material
 {
 public:
-	__host__ __device__ Dieletric(Vec3 albedo, float refractiveIndex);
+	__host__ Dieletric(Texture* texture, float refractiveIndex);
+	__device__ Dieletric(Texture** texture_d, float refractiveIndex);
 	__host__ __device__ ~Dieletric();
 
 	__host__ __device__ Dieletric(const Dieletric&) = delete;
@@ -15,7 +17,8 @@ public:
 	__host__ __device__ virtual bool Scatter(unsigned int* seed, Ray3& ray, const Vec3& point, const Vec3& normal, Vec3& attenuation) const override;
 
 protected:
-	Vec3 albedo;
+	Texture* texture{ nullptr };
+	Texture** texture_d{ nullptr };
 	float refractiveIndex;
 
 	__host__ __device__ Vec3 Reflect(Vec3 v, Vec3 n) const;

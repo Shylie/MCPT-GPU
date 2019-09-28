@@ -50,6 +50,7 @@
 			this.renderProcess = new System.Diagnostics.Process();
 			this.listbxHittables = new System.Windows.Forms.CheckedListBox();
 			this.ptObjectTypeSelector = new System.Windows.Forms.ComboBox();
+			this.listbxTextures = new System.Windows.Forms.CheckedListBox();
 			((System.ComponentModel.ISupportInitialize)(this.pboxPreview)).BeginInit();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
@@ -78,10 +79,10 @@
 			// listbxMaterials
 			// 
 			this.listbxMaterials.FormattingEnabled = true;
-			this.listbxMaterials.Location = new System.Drawing.Point(8, 8);
+			this.listbxMaterials.Location = new System.Drawing.Point(8, 121);
 			this.listbxMaterials.Margin = new System.Windows.Forms.Padding(2);
 			this.listbxMaterials.Name = "listbxMaterials";
-			this.listbxMaterials.Size = new System.Drawing.Size(175, 169);
+			this.listbxMaterials.Size = new System.Drawing.Size(175, 109);
 			this.listbxMaterials.TabIndex = 2;
 			this.listbxMaterials.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ListbxMaterials_MouseUp);
 			// 
@@ -274,10 +275,10 @@
 			// listbxHittables
 			// 
 			this.listbxHittables.FormattingEnabled = true;
-			this.listbxHittables.Location = new System.Drawing.Point(8, 205);
+			this.listbxHittables.Location = new System.Drawing.Point(8, 234);
 			this.listbxHittables.Margin = new System.Windows.Forms.Padding(2);
 			this.listbxHittables.Name = "listbxHittables";
-			this.listbxHittables.Size = new System.Drawing.Size(175, 139);
+			this.listbxHittables.Size = new System.Drawing.Size(175, 124);
 			this.listbxHittables.TabIndex = 9;
 			this.listbxHittables.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ListbxHittables_MouseUp);
 			// 
@@ -291,21 +292,31 @@
             "Translation",
             "RectangularPlane",
             "TriangularPlane",
-            "DistortedSphere",
             "Dieletric",
             "DiffuseLight",
             "Lambertian",
-            "Metal"});
+            "Metal",
+            "ConstantTexture",
+            "CheckerboardTexture"});
 			this.ptObjectTypeSelector.Location = new System.Drawing.Point(12, 442);
 			this.ptObjectTypeSelector.Name = "ptObjectTypeSelector";
 			this.ptObjectTypeSelector.Size = new System.Drawing.Size(171, 21);
 			this.ptObjectTypeSelector.TabIndex = 10;
+			// 
+			// listbxTextures
+			// 
+			this.listbxTextures.Location = new System.Drawing.Point(8, 8);
+			this.listbxTextures.Name = "listbxTextures";
+			this.listbxTextures.Size = new System.Drawing.Size(175, 109);
+			this.listbxTextures.TabIndex = 0;
+			this.listbxTextures.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ListbxTextures_MouseUp);
 			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(981, 528);
+			this.Controls.Add(this.listbxTextures);
 			this.Controls.Add(this.ptObjectTypeSelector);
 			this.Controls.Add(this.listbxHittables);
 			this.Controls.Add(this.lblRenderTime);
@@ -350,6 +361,7 @@
         private System.Windows.Forms.CheckedListBox listbxHittables;
         private System.Windows.Forms.Button btnAddObj;
 		private System.Windows.Forms.ComboBox ptObjectTypeSelector;
+		private System.Windows.Forms.CheckedListBox listbxTextures;
 	}
 }
 

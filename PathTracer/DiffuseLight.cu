@@ -3,11 +3,11 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 
-__global__ void constructEnvironmentGPU_DiffuseLight(Material** this_d, Vec3 color)
+__global__ void constructEnvironmentGPU_DiffuseLight(Material** this_d, Texture** texture_d)
 {
 	if (blockIdx.x * blockDim.x + threadIdx.x == 0)
 	{
-		(*this_d) = new DiffuseLight(color);
+		(*this_d) = new DiffuseLight(texture_d);
 	}
 }
 
@@ -19,11 +19,15 @@ __global__ void destroyEnvironmentGPU_DiffuseLight(Material** this_d)
 	}
 }
 
-DiffuseLight::DiffuseLight(Vec3 color) : color(color)
+DiffuseLight::DiffuseLight(Texture* texture) : texture(texture), texture_d(texture->GetPtrGPU())
 {
 #ifndef __CUDA_ARCH__
 	constructEnvironment();
 #endif
+}
+
+__device__ DiffuseLight::DiffuseLight(Texture** texture_d) : texture_d(texture_d)
+{
 }
 
 DiffuseLight::~DiffuseLight()
@@ -33,15 +37,19 @@ DiffuseLight::~DiffuseLight()
 #endif
 }
 
-__host__ __device__ Vec3 DiffuseLight::Emit() const
+__host__ __device__ Vec3 DiffuseLight::Emit(unsigned int* seed, const Vec3& point) const
 {
-	return color;
+#ifdef __CUDA_ARCH__
+	return (*texture_d)->Value(seed, point);
+#else
+	return texture->Value(seed, point);
+#endif
 }
 
 __host__ void DiffuseLight::constructEnvironment()
 {
 	cudaMalloc(&this_d, sizeof(Material**));
-	constructEnvironmentGPU_DiffuseLight<<<1, 1>>>(this_d, color);
+	constructEnvironmentGPU_DiffuseLight<<<1, 1>>>(this_d, texture_d);
 	cudaDeviceSynchronize();
 }
 

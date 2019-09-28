@@ -6,6 +6,7 @@
 #include "Hittable.h"
 #include "SDFHittable.h"
 #include "PlaneHittable.h"
+#include "Texture.h"
 #include "Material.h"
 
 #include "Sphere.h"
@@ -15,6 +16,9 @@
 #include "Translation.h"
 #include "Rotation.h"
 #include "HittableList.h"
+
+#include "ConstantTexture.h"
+#include "CheckerboardTexture.h"
 
 #include "Lambertian.h"
 #include "Metal.h"
@@ -33,7 +37,7 @@ __device__ bool getColor(unsigned int* seed, Ray3& ray, Vec3& attenuation, Vec3&
 	{
 		if (hRec.GetMaterial() != nullptr)
 		{
-			emitted = (*hRec.GetMaterial())->Emit();
+			emitted = (*hRec.GetMaterial())->Emit(seed, hRec.GetPoint());
 			return (*hRec.GetMaterial())->Scatter(seed, ray, hRec.GetPoint(), hRec.GetNormal(), attenuation);
 		}
 	}
@@ -277,24 +281,34 @@ extern "C"
 		return new DistortedSphere(center, radius, frequency, amplitude, mat->GetPtrGPU());
 	}
 
-	API Material* ConstructLambertian(float r, float g, float b)
+	API Texture* ConstructConstantTexture(float r, float g, float b)
 	{
-		return new Lambertian(Vec3(r, g, b));
+		return new ConstantTexture(Vec3(r, g, b));
 	}
 
-	API Material* ConstructMetal(float r, float g, float b, float fuzz)
+	API Texture* ConstructCheckerboardTexture(Texture* a, Texture* b, Vec3 offset, Vec3 frequency)
 	{
-		return new Metal(Vec3(r, g, b), fuzz);
+		return new CheckerboardTexture(a, b, offset, frequency);
 	}
 
-	API Material* ConstructDielectric(float r, float g, float b, float refIdx)
+	API Material* ConstructLambertian(Texture* texture)
 	{
-		return new Dieletric(Vec3(r, g, b), refIdx);
+		return new Lambertian(texture);
 	}
 
-	API Material* ConstructDiffuseLight(float r, float g, float b)
+	API Material* ConstructMetal(Texture* texture, float fuzz)
 	{
-		return new DiffuseLight(Vec3(r, g, b));
+		return new Metal(texture, fuzz);
+	}
+
+	API Material* ConstructDielectric(Texture* texture, float refIdx)
+	{
+		return new Dieletric(texture, refIdx);
+	}
+
+	API Material* ConstructDiffuseLight(Texture* texture)
+	{
+		return new DiffuseLight(texture);
 	}
 
 	API void DestroyHittable(Hittable* ptr)
@@ -303,6 +317,11 @@ extern "C"
 	}
 
 	API void DestroyMaterial(Material* ptr)
+	{
+		delete ptr;
+	}
+
+	API void DestroyTexture(Texture* ptr)
 	{
 		delete ptr;
 	}

@@ -97,6 +97,21 @@ namespace PathTracerGUI
 						prompt.Controls.Add(mtlbl);
 						prompt.Controls.Add(mtbox);
 					}
+					else if (propertyInfos[i].PropertyType.IsSubclassOf(typeof(Texture)) || propertyInfos[i].PropertyType == typeof(Texture))
+					{
+						Label txlbl = new Label() { Text = propertyInfos[i].Name, Left = 15, Top = 70 * (i + 1) - 45 };
+						ComboBox txbox = new ComboBox() { Name = $"{i}", Width = 120, Left = 15, Top = 70 * (i + 1) - 20, DropDownStyle = ComboBoxStyle.DropDownList };
+						foreach (string key in ptObjects.Keys)
+						{
+							if (ptObjects[key] is Texture texture && !ReferenceEquals(obj, texture))
+							{
+								txbox.Items.Add(key);
+								if (ReferenceEquals(texture, propertyInfos[i].GetValue(obj))) txbox.SelectedItem = key;
+							}
+						}
+						prompt.Controls.Add(txlbl);
+						prompt.Controls.Add(txbox);
+					}
 					else if (propertyInfos[i].PropertyType.IsSubclassOf(typeof(PTObject)) || propertyInfos[i].PropertyType == typeof(PTObject))
 					{
 						Label ptlbl = new Label() { Text = propertyInfos[i].Name, Left = 15, Top = 70 * (i + 1) - 45 };
@@ -156,6 +171,13 @@ namespace PathTracerGUI
 							if ((prompt.Controls[$"{i}"] as ComboBox)?.SelectedItem is string key && ptObjects[key] is Material material)
 							{
 								propertyInfos[i].SetValue(obj, material);
+							}
+						}
+						else if (propertyInfos[i].PropertyType.IsSubclassOf(typeof(Texture)) || propertyInfos[i].PropertyType == typeof(Texture))
+						{
+							if ((prompt.Controls[$"{i}"] as ComboBox)?.SelectedItem is string key && ptObjects[key] is Texture texture)
+							{
+								propertyInfos[i].SetValue(obj, texture);
 							}
 						}
 						else if (propertyInfos[i].PropertyType.IsSubclassOf(typeof(PTObject)) || propertyInfos[i].PropertyType == typeof(PTObject))
@@ -242,6 +264,18 @@ namespace PathTracerGUI
 						}
 						prompt.Controls.Add(mtbox);
 					}
+					else if (parameterInfos[i].ParameterType.IsSubclassOf(typeof(Texture)) || parameterInfos[i].ParameterType == typeof(Texture))
+					{
+						ComboBox txbox = new ComboBox() { Name = $"{i}", Width = 120, Left = 15, Top = 35 * (i + 1) - 20, DropDownStyle = ComboBoxStyle.DropDownList };
+						foreach (string key in ptObjects.Keys)
+						{
+							if (ptObjects[key] is Texture)
+							{
+								txbox.Items.Add(key);
+							}
+						}
+						prompt.Controls.Add(txbox);
+					}
 					else if (parameterInfos[i].ParameterType.IsSubclassOf(typeof(PTObject)) || parameterInfos[i].ParameterType == typeof(PTObject))
 					{
 						TextBox ptbox = new TextBox() { Name = $"{i}", Text = parameterInfos[i].Name + " ID", Width = 120, Left = 15, Top = 35 * (i + 1) - 20 };
@@ -291,6 +325,13 @@ namespace PathTracerGUI
 							if ((prompt.Controls[$"{i}"] as ComboBox)?.SelectedItem is string key && ptObjects[key] is Material material)
 							{
 								pars[i] = material;
+							}
+						}
+						else if (parameterInfos[i].ParameterType.IsSubclassOf(typeof(Texture)) || parameterInfos[i].ParameterType == typeof(Texture))
+						{
+							if ((prompt.Controls[$"{i}"] as ComboBox)?.SelectedItem is string key && ptObjects[key] is Texture texture)
+							{
+								pars[i] = texture;
 							}
 						}
 						else if (parameterInfos[i].ParameterType.IsSubclassOf(typeof(PTObject)) || parameterInfos[i].ParameterType == typeof(PTObject))

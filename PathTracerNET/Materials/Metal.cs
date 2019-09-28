@@ -8,54 +8,28 @@ namespace PathTracerNET.Materials
 	{
 		public Metal() { }
 
-		public Metal(float r, float g, float b, float fuzz)
+		public Metal(Texture texture, float fuzz)
 		{
-			R = r;
-			G = g;
-			B = b;
+			Texture = texture;
 			Fuzz = fuzz;
 		}
 
 		internal override IntPtr Init()
 		{
-			return ConstructMetal(R, G, B, Fuzz);
+			return ConstructMetal(Texture.Pointer, Fuzz);
 		}
 
-		public float R
+		public Texture Texture
 		{
 			get
 			{
-				return _r;
+				return _texture;
 			}
 			set
 			{
-				_r = value;
-				if (Valid) Destroy();
-			}
-		}
-
-		public float G
-		{
-			get
-			{
-				return _g;
-			}
-			set
-			{
-				_g = value;
-				if (Valid) Destroy();
-			}
-		}
-
-		public float B
-		{
-			get
-			{
-				return _b;
-			}
-			set
-			{
-				_b = value;
+				if (_texture != null) _texture.Invalidated -= TextureInvalidated;
+				_texture = value;
+				_texture.Invalidated += TextureInvalidated;
 				if (Valid) Destroy();
 			}
 		}
@@ -74,6 +48,11 @@ namespace PathTracerNET.Materials
 		}
 
 		[XmlIgnore]
-		private float _r, _g, _b, _fuzz;
+		private Texture _texture;
+
+		[XmlIgnore]
+		private float _fuzz;
+
+		private void TextureInvalidated(PTObject sender) => Destroy();
 	}
 }

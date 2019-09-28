@@ -41,6 +41,12 @@
     <CudaCompile Include="Sphere.cu">
       <Filter>Hittables\Geometric Hittables</Filter>
     </CudaCompile>
+    <CudaCompile Include="ConstantTexture.cu">
+      <Filter>Textures</Filter>
+    </CudaCompile>
+    <CudaCompile Include="CheckerboardTexture.cu">
+      <Filter>Textures</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
@@ -86,6 +92,13 @@
     <ClInclude Include="Sphere.h">
       <Filter>Hittables\Geometric Hittables</Filter>
     </ClInclude>
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="ConstantTexture.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckerboardTexture.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Hittables">
@@ -105,6 +118,9 @@
     </Filter>
     <Filter Include="Hittables\Geometric Hittables">
       <UniqueIdentifier>{4960b491-3c44-4122-a803-9f47abe82eaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Textures">
+      <UniqueIdentifier>{827dee52-dabb-4060-8a0e-4cfc9cc3763c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -14,13 +14,23 @@ using PathTracerNET.Hittables.Modifier;
 using PathTracerNET.Hittables.Plane;
 using PathTracerNET.Hittables.SDF;
 using PathTracerNET.Materials;
+using PathTracerNET.Textures;
 
 namespace PathTracerGUI
 {
 	internal partial class Main : Form
 	{
-		private Dictionary<string, Material> materials = new Dictionary<string, Material>();
-		private Dictionary<string, Hittable> hittables = new Dictionary<string, Hittable>();
+		private readonly Dictionary<string, Texture> textures = new Dictionary<string, Texture>();
+		private readonly Dictionary<string, Material> materials = new Dictionary<string, Material>();
+		private readonly Dictionary<string, Hittable> hittables = new Dictionary<string, Hittable>();
+
+		public void AddTexture(string name, Texture texture)
+		{
+			textures.Add(name, texture);
+			listbxTextures.Items.Add(name);
+		}
+
+		public Texture GetTexture(string name) => textures[name];
 
 		public void AddMaterial(string name, Material material)
 		{
@@ -28,10 +38,7 @@ namespace PathTracerGUI
 			listbxMaterials.Items.Add(name);
 		}
 
-		public Material GetMaterial(string name)
-		{
-			return materials[name];
-		}
+		public Material GetMaterial(string name) => materials[name];
 
 		public void AddHittable(string name, Hittable hittable)
 		{
@@ -39,20 +46,23 @@ namespace PathTracerGUI
 			listbxHittables.Items.Add(name);
 		}
 
-		public Hittable GetHittable(string name)
-		{
-			return hittables[name];
-		}
+		public Hittable GetHittable(string name) => hittables[name];
 
 		public Main()
 		{
 			InitializeComponent();
 
-			AddMaterial("lightMaterial", new DiffuseLight(3f, 3f, 3f));
-			AddMaterial("glass", new Dieletric(1f, 1f, 1f, 1.54f));
-			AddMaterial("blueMatte", new Lambertian(0.4f, 0.7f, 0.9f));
-			AddMaterial("yellowMatte", new Lambertian(0.8f, 0.7f, 0.4f));
-			AddMaterial("redMirror", new Metal(0.99f, 0.7f, 0.4f, 0.08f));
+			AddTexture("brightWhite", new ConstantTexture(3f, 3f, 3f));
+			AddTexture("white", new ConstantTexture(1f, 1f, 1f));
+			AddTexture("blue", new ConstantTexture(0.4f, 0.7f, 0.9f));
+			AddTexture("yellow", new ConstantTexture(0.8f, 0.7f, 0.4f));
+			AddTexture("red", new ConstantTexture(0.99f, 0.56f, 0.4f));
+
+			AddMaterial("lightMaterial", new DiffuseLight(GetTexture("brightWhite")));
+			AddMaterial("glass", new Dieletric(GetTexture("white"), 1.54f));
+			AddMaterial("blueMatte", new Lambertian(GetTexture("blue")));
+			AddMaterial("yellowMatte", new Lambertian(GetTexture("yellow")));
+			AddMaterial("redMirror", new Metal(GetTexture("red"), 0.08f));
 
 			AddHittable("light", new Sphere(new Vec3(0f, 3f, 0f), 1.7f, GetMaterial("lightMaterial")));
 			AddHittable("sphere", new Sphere(new Vec3(0f, -100.3f, 0f), 100f, GetMaterial("blueMatte")));
@@ -62,6 +72,7 @@ namespace PathTracerGUI
 		private void BtnAddObj_Click(object sender, EventArgs e)
 		{
 			Dictionary<string, PTObject> temp = new Dictionary<string, PTObject>();
+			foreach (KeyValuePair<string, Texture> pair in textures) temp.Add(pair.Key, pair.Value);
 			foreach (KeyValuePair<string, Material> pair in materials) temp.Add(pair.Key, pair.Value);
 			foreach (KeyValuePair<string, Hittable> pair in hittables) temp.Add(pair.Key, pair.Value);
 			(string name, PTObject obj) val = ("", null);
@@ -97,6 +108,12 @@ namespace PathTracerGUI
 				case "Metal":
 					val = Prompt.ShowDialog<Metal>(temp);
 					break;
+				case "ConstantTexture":
+					val = Prompt.ShowDialog<ConstantTexture>(temp);
+					break;
+				case "CheckerboardTexture":
+					val = Prompt.ShowDialog<CheckerboardTexture>(temp);
+					break;
 			}
 			if (val.obj != null && !temp.ContainsKey(val.name))
 			{
@@ -107,6 +124,9 @@ namespace PathTracerGUI
 						break;
 					case PTObject.PTObjectKind.Material:
 						AddMaterial(val.name, val.obj as Material);
+						break;
+					case PTObject.PTObjectKind.Texture:
+						AddTexture(val.name, val.obj as Texture);
 						break;
 				}
 			}
@@ -135,6 +155,7 @@ namespace PathTracerGUI
 				{
 					checkedListBox.SelectedIndex = idx;
 					Dictionary<string, PTObject> temp = new Dictionary<string, PTObject>();
+					foreach (KeyValuePair<string, Texture> pair in textures) temp.Add(pair.Key, pair.Value);
 					foreach (KeyValuePair<string, Material> pair in materials) temp.Add(pair.Key, pair.Value);
 					foreach (KeyValuePair<string, Hittable> pair in hittables) temp.Add(pair.Key, pair.Value);
 					string name = Prompt.ShowDialog(GetMaterial(checkedListBox.Items[idx].ToString()), temp);
@@ -155,12 +176,34 @@ namespace PathTracerGUI
 				{
 					checkedListBox.SelectedIndex = idx;
 					Dictionary<string, PTObject> temp = new Dictionary<string, PTObject>();
+					foreach (KeyValuePair<string, Texture> pair in textures) temp.Add(pair.Key, pair.Value);
 					foreach (KeyValuePair<string, Material> pair in materials) temp.Add(pair.Key, pair.Value);
 					foreach (KeyValuePair<string, Hittable> pair in hittables) temp.Add(pair.Key, pair.Value);
 					string name = Prompt.ShowDialog(GetHittable(checkedListBox.Items[idx].ToString()), temp);
 					if (name == checkedListBox.Items[idx].ToString()) return;
 					hittables.Add(name, hittables[checkedListBox.Items[idx].ToString()]);
 					hittables.Remove(checkedListBox.Items[idx].ToString());
+					checkedListBox.Items[idx] = name;
+				}
+			}
+		}
+
+		private void ListbxTextures_MouseUp(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right && sender is CheckedListBox checkedListBox)
+			{
+				int idx = checkedListBox.IndexFromPoint(e.Location);
+				if (idx >= 0)
+				{
+					checkedListBox.SelectedIndex = idx;
+					Dictionary<string, PTObject> temp = new Dictionary<string, PTObject>();
+					foreach (KeyValuePair<string, Texture> pair in textures) temp.Add(pair.Key, pair.Value);
+					foreach (KeyValuePair<string, Material> pair in materials) temp.Add(pair.Key, pair.Value);
+					foreach (KeyValuePair<string, Hittable> pair in hittables) temp.Add(pair.Key, pair.Value);
+					string name = Prompt.ShowDialog(GetTexture(checkedListBox.Items[idx].ToString()), temp);
+					if (name == checkedListBox.Items[idx].ToString()) return;
+					textures.Add(name, textures[checkedListBox.Items[idx].ToString()]);
+					textures.Remove(checkedListBox.Items[idx].ToString());
 					checkedListBox.Items[idx] = name;
 				}
 			}

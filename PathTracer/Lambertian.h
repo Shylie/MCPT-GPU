@@ -2,11 +2,13 @@
 #define LAMBERTIAN_H
 
 #include "Material.h"
+#include "Texture.h"
 
 class API Lambertian : public Material
 {
 public:
-	__host__ __device__ Lambertian(Vec3 albedo);
+	__host__ Lambertian(Texture* texture);
+	__device__ Lambertian(Texture** texture_d);
 	__host__ __device__ ~Lambertian();
 
 	__host__ __device__ Lambertian(const Lambertian&) = delete;
@@ -15,7 +17,8 @@ public:
 	__host__ __device__ virtual bool Scatter(unsigned int* seed, Ray3& ray, const Vec3& point, const Vec3& normal, Vec3& attenuation) const override;
 
 protected:
-	Vec3 albedo;
+	Texture* texture{ nullptr };
+	Texture** texture_d{ nullptr };
 
 	__host__ void constructEnvironment();
 	__host__ void destroyEnvironment();

@@ -8,58 +8,34 @@ namespace PathTracerNET.Materials
 	{
 		public DiffuseLight() { }
 
-		public DiffuseLight(float r, float g, float b)
+		public DiffuseLight(Texture texture)
 		{
-			R = r;
-			G = g;
-			B = b;
+			Texture = texture;
 		}
 
 		internal override IntPtr Init()
 		{
-			return ConstructDiffuseLight(R, G, B);
+			return ConstructDiffuseLight(Texture.Pointer);
 		}
 
-		public float R
+		public Texture Texture
 		{
 			get
 			{
-				return _r;
+				return _texture;
 			}
 			set
 			{
-				_r = value;
-				if (Valid) Destroy();
-			}
-		}
-
-		public float G
-		{
-			get
-			{
-				return _g;
-			}
-			set
-			{
-				_g = value;
-				if (Valid) Destroy();
-			}
-		}
-
-		public float B
-		{
-			get
-			{
-				return _b;
-			}
-			set
-			{
-				_b = value;
+				if (_texture != null) _texture.Invalidated -= TextureInvalidated;
+				_texture = value;
+				_texture.Invalidated += TextureInvalidated;
 				if (Valid) Destroy();
 			}
 		}
 
 		[XmlIgnore]
-		private float _r, _g, _b;
+		private Texture _texture;
+
+		private void TextureInvalidated(PTObject sender) => Destroy();
 	}
 }
