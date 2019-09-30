@@ -37,14 +37,14 @@ Lambertian::~Lambertian()
 #endif
 }
 
-__host__ __device__ bool Lambertian::Scatter(unsigned int* seed, Ray3& ray, const Vec3& point, const Vec3& normal, Vec3& attenuation) const
+__host__ __device__ bool Lambertian::Scatter(unsigned int* seed, Ray3& ray, const HitRecord& hRec, Vec3& attenuation) const
 {
-	Vec3 dir = (normal + Vec3::RandomUnitVector(seed));
-	ray = Ray3(point, dir);
+	Vec3 dir = (hRec.GetNormal() + Vec3::RandomUnitVector(seed));
+	ray = Ray3(hRec.GetPoint(), dir);
 #ifdef __CUDA_ARCH__
-	attenuation = (*texture_d)->Value(seed, point);
+	attenuation = (*texture_d)->Value(seed, hRec.GetU(), hRec.GetV(), hRec.GetPoint());
 #else
-	attenuation = texture->Value(seed, point);
+	attenuation = texture->Value(seed, hRec.GetU(), hRec.GetV(), hRec.GetPoint());
 #endif
 	return true;
 }

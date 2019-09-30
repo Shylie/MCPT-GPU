@@ -14,7 +14,7 @@ public:
 	__host__ __device__ Dieletric(const Dieletric&) = delete;
 	__host__ __device__ Dieletric& operator=(const Dieletric&) = delete;
 
-	__host__ __device__ virtual bool Scatter(unsigned int* seed, Ray3& ray, const Vec3& point, const Vec3& normal, Vec3& attenuation) const override;
+	__host__ __device__ virtual bool Scatter(unsigned int* seed, Ray3& ray, const HitRecord& hRec, Vec3& attenuation) const override;
 
 protected:
 	Texture* texture{ nullptr };

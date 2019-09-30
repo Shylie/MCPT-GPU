@@ -1,7 +1,10 @@
 #include "Sphere.h"
+#include "Material.h"
 
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
+
+#define PI (3.1415927f)
 
 __global__ void constructEnvironmentGPU_Sphere(Hittable** this_d, Vec3 center, float radius, Material** mat_d)
 {
@@ -51,6 +54,8 @@ bool Sphere::Hit(const Ray3& ray, float tMin, float tMax, HitRecord& hRec) const
 			hRec.SetT(temp);
 			hRec.SetPoint(ray.PointAt(temp));
 			hRec.SetNormal(hRec.GetPoint() - center);
+			hRec.SetU(1.0f - (atan2(hRec.GetPoint().Z, hRec.GetPoint().X) + PI) / (2.0f * PI));
+			hRec.SetV((asin(hRec.GetPoint().Y) + PI / 2.0f) / PI);
 #ifdef __CUDA_ARCH__
 			hRec.SetMaterial(mat_d);
 #else
@@ -64,6 +69,8 @@ bool Sphere::Hit(const Ray3& ray, float tMin, float tMax, HitRecord& hRec) const
 			hRec.SetT(temp);
 			hRec.SetPoint(ray.PointAt(temp));
 			hRec.SetNormal(hRec.GetPoint() - center);
+			hRec.SetU(1.0f - (atan2(hRec.GetPoint().Z, hRec.GetPoint().X) + PI) / (2.0f * PI));
+			hRec.SetV((asin(hRec.GetPoint().Y) + PI / 2.0f) / PI);
 #ifdef __CUDA_ARCH__
 			hRec.SetMaterial(mat_d);
 #else

@@ -37,12 +37,12 @@ DiffuseLight::~DiffuseLight()
 #endif
 }
 
-__host__ __device__ Vec3 DiffuseLight::Emit(unsigned int* seed, const Vec3& point) const
+__host__ __device__ Vec3 DiffuseLight::Emit(unsigned int* seed, const HitRecord& hRec) const
 {
 #ifdef __CUDA_ARCH__
-	return (*texture_d)->Value(seed, point);
+	return (*texture_d)->Value(seed, hRec.GetU(), hRec.GetV(), hRec.GetPoint());
 #else
-	return texture->Value(seed, point);
+	return texture->Value(seed, hRec.GetU(), hRec.GetV(), hRec.GetPoint());
 #endif
 }
 

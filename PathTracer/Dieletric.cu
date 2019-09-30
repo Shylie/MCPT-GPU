@@ -37,37 +37,37 @@ Dieletric::~Dieletric()
 #endif
 }
 
-__host__ __device__ bool Dieletric::Scatter(unsigned int* seed, Ray3& ray, const Vec3& point, const Vec3& normal, Vec3& attenuation) const
+__host__ __device__ bool Dieletric::Scatter(unsigned int* seed, Ray3& ray, const HitRecord& hRec, Vec3& attenuation) const
 {
 #ifdef __CUDA_ARCH__
-	attenuation = (*texture_d)->Value(seed, point);
+	attenuation = (*texture_d)->Value(seed, hRec.GetU(), hRec.GetV(), hRec.GetPoint());
 #else
-	attenuation = texture->Value(seed, point);
+	attenuation = texture->Value(seed, hRec.GetU(), hRec.GetV(), hRec.GetPoint());
 #endif
 	Vec3 refracted;
-	if (Vec3::Dot(ray.Direction(), normal) > 0.0f)
+	if (Vec3::Dot(ray.Direction(), hRec.GetNormal()) > 0.0f)
 	{
-		if (randXORShift(seed) > refractiveIndex * Schlick(Vec3::Dot(ray.Direction(), normal)))
+		if (randXORShift(seed) > refractiveIndex * Schlick(Vec3::Dot(ray.Direction(), hRec.GetNormal())))
 		{
-			if (Refract(ray.Direction(), -normal, refractiveIndex, refracted))
+			if (Refract(ray.Direction(), -hRec.GetNormal(), refractiveIndex, refracted))
 			{
-				ray = Ray3(point, refracted);
+				ray = Ray3(hRec.GetPoint(), refracted);
 				return true;
 			}
 		}
 	}
 	else
 	{
-		if (randXORShift(seed) > refractiveIndex * Schlick(-Vec3::Dot(ray.Direction(), normal)))
+		if (randXORShift(seed) > refractiveIndex * Schlick(-Vec3::Dot(ray.Direction(), hRec.GetNormal())))
 		{
-			if (Refract(ray.Direction(), normal, 1.0f / refractiveIndex, refracted))
+			if (Refract(ray.Direction(), hRec.GetNormal(), 1.0f / refractiveIndex, refracted))
 			{
-				ray = Ray3(point, refracted);
+				ray = Ray3(hRec.GetPoint(), refracted);
 				return true;
 			}
 		}
 	}
-	ray = Ray3(point, Reflect(ray.Direction(), normal));
+	ray = Ray3(hRec.GetPoint(), Reflect(ray.Direction(), hRec.GetNormal()));
 	return true;
 }
 

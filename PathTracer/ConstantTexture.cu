@@ -33,7 +33,7 @@ ConstantTexture::~ConstantTexture()
 #endif
 }
 
-Vec3 ConstantTexture::Value(unsigned int* seed, const Vec3& pos) const
+Vec3 ConstantTexture::Value(unsigned int* seed, float u, float v, const Vec3& pos) const
 {
 	return color;
 }

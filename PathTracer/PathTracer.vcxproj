@@ -99,6 +99,7 @@
     <CudaCompile Include="ConstantTexture.cu" />
     <CudaCompile Include="Dieletric.cu" />
     <CudaCompile Include="DiffuseLight.cu" />
+    <CudaCompile Include="HitRecord.cu" />
     <CudaCompile Include="HittableList.cu" />
     <CudaCompile Include="kernel.cu" />
     <CudaCompile Include="Lambertian.cu" />
@@ -116,6 +117,7 @@
     <ClInclude Include="ConstantTexture.h" />
     <ClInclude Include="Dielectric.h" />
     <ClInclude Include="DiffuseLight.h" />
+    <ClInclude Include="HitRecord.h" />
     <ClInclude Include="Hittable.h" />
     <ClInclude Include="HittableList.h" />
     <ClInclude Include="kernel.h" />

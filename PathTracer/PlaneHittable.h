@@ -14,10 +14,9 @@ public:
 	__host__ __device__ PlaneHittable& operator=(const PlaneHittable&) = delete;
 
 	__host__ __device__ bool Hit(const Ray3& ray, float tMin, float tMax, HitRecord& hRec) const override;
-	__host__ __device__ virtual bool Hit(float a, float b) const = 0;
+	__host__ __device__ virtual bool Hit(float a, float b, float& u, float& v) const = 0;
 
 protected:
-
 	Material** mat_d{ nullptr };
 	Material* mat{ nullptr };
 	Alignment alignment;

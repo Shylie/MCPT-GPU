@@ -41,6 +41,7 @@
     <CudaCompile Include="CheckerboardTexture.cu">
       <Filter>Textures</Filter>
     </CudaCompile>
+    <CudaCompile Include="HitRecord.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
@@ -87,6 +88,7 @@
     <ClInclude Include="CheckerboardTexture.h">
       <Filter>Textures</Filter>
     </ClInclude>
+    <ClInclude Include="HitRecord.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Hittables">

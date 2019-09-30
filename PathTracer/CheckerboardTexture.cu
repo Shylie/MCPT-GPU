@@ -30,24 +30,24 @@ __device__ CheckerboardTexture::CheckerboardTexture(Texture** a_d, Texture** b_d
 {
 }
 
-Vec3 CheckerboardTexture::Value(unsigned int* seed, const Vec3& pos) const
+Vec3 CheckerboardTexture::Value(unsigned int* seed, float u, float v, const Vec3& pos) const
 {
 	Vec3 samplePos = (pos + offset) * frequency;
 	float sines = (sin(samplePos.X) * sin(samplePos.Y) * sin(samplePos.Z)) / 2.0f + 0.5f;
 	if (randXORShift(seed) < sines)
 	{
 #ifdef __CUDA_ARCH__
-		return (*a_d)->Value(seed, pos);
+		return (*a_d)->Value(seed, u, v, pos);
 #else
-		return a->Value(seed, pos);
+		return a->Value(seed, u, v, pos);
 #endif
 	}
 	else
 	{
 #ifdef __CUDA_ARCH__
-		return (*b_d)->Value(seed, pos);
+		return (*b_d)->Value(seed, u, v, pos);
 #else
-		return b->Value(seed, pos);
+		return b->Value(seed, u, v, pos);
 #endif
 	}
 }

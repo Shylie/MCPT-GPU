@@ -42,7 +42,7 @@ __host__ __device__ float sign(float ta, float tb, float p1a, float p1b, float p
 	return (ta - p2a) * (p1b - p2b) - (p1a - p2a) * (tb - p2b);
 }
 
-bool TriangularPlane::Hit(float a, float b) const
+bool TriangularPlane::Hit(float a, float b, float& u, float& v) const
 {
 	bool hasNegative = false, hasPositive = false;
 	if (sign(a, b, a1, b1, a2, b2) < 0.0f)
@@ -76,6 +76,8 @@ bool TriangularPlane::Hit(float a, float b) const
 
 	if (hasPositive && hasNegative) return false;
 
+	u = 0.0f;
+	v = 0.0f;
 	return true;
 }
 

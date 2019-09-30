@@ -12,7 +12,7 @@ public:
 	__host__ __device__ CheckerboardTexture(const CheckerboardTexture&) = delete;
 	__host__ __device__ CheckerboardTexture& operator=(const CheckerboardTexture&) = delete;
 
-	__host__ __device__ Vec3 Value(unsigned int* seed, const Vec3& pos) const override;
+	__host__ __device__ Vec3 Value(unsigned int* seed, float u, float v, const Vec3& pos) const override;
 
 protected:
 	Texture* a{ nullptr };

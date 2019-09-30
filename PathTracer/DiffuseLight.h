@@ -14,7 +14,7 @@ public:
 	__host__ __device__ DiffuseLight(const DiffuseLight&) = delete;
 	__host__ __device__ DiffuseLight& operator=(const DiffuseLight&) = delete;
 
-	__host__ __device__ virtual Vec3 Emit(unsigned int* seed, const Vec3& point) const override;
+	__host__ __device__ virtual Vec3 Emit(unsigned int* seed, const HitRecord& hRec) const override;
 
 protected:
 	Texture* texture{ nullptr };

@@ -37,9 +37,18 @@ RectangularPlane::~RectangularPlane()
 #endif
 }
 
-bool RectangularPlane::Hit(float a, float b) const
+bool RectangularPlane::Hit(float a, float b, float& u, float& v) const
 {
-	return a > a1 && a < a2 && b > b1 && b < b2;
+	if (a > a1 && a < a2 && b > b1 && b < b2)
+	{
+		u = (a - a1) / (a2 - a1);
+		v = (b - b1) / (b2 - b1);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void RectangularPlane::constructEnvironment()

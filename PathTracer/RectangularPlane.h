@@ -13,7 +13,7 @@ public:
 	__host__ __device__ RectangularPlane(const RectangularPlane&) = delete;
 	__host__ __device__ RectangularPlane& operator=(const RectangularPlane&) = delete;
 
-	__host__ __device__ bool Hit(float a, float b) const override;
+	__host__ __device__ bool Hit(float a, float b, float& u, float& v) const override;
 
 protected:
 

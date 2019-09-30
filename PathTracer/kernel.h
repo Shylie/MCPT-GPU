@@ -35,8 +35,8 @@ __device__ bool getColor(unsigned int* seed, Ray3& ray, Vec3& attenuation, Vec3&
 	{
 		if (hRec.GetMaterial() != nullptr)
 		{
-			emitted = (*hRec.GetMaterial())->Emit(seed, hRec.GetPoint());
-			return (*hRec.GetMaterial())->Scatter(seed, ray, hRec.GetPoint(), hRec.GetNormal(), attenuation);
+			emitted = (*hRec.GetMaterial())->Emit(seed, hRec);
+			return (*hRec.GetMaterial())->Scatter(seed, ray, hRec, attenuation);
 		}
 	}
 	attenuation = Vec3(0.0f);
