@@ -110,6 +110,9 @@ namespace PathTracerGUI
 				case "CheckerboardTexture":
 					val = Prompt.ShowDialog<CheckerboardTexture>(temp);
 					break;
+				case "NoiseTexture":
+					val = Prompt.ShowDialog<NoiseTexture>(temp);
+					break;
 			}
 			if (val.obj != null && !temp.ContainsKey(val.name))
 			{

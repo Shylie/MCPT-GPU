@@ -42,6 +42,9 @@
       <Filter>Textures</Filter>
     </CudaCompile>
     <CudaCompile Include="HitRecord.cu" />
+    <CudaCompile Include="NoiseTexture.cu">
+      <Filter>Textures</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h" />
@@ -89,6 +92,9 @@
       <Filter>Textures</Filter>
     </ClInclude>
     <ClInclude Include="HitRecord.h" />
+    <ClInclude Include="NoiseTexture.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Hittables">

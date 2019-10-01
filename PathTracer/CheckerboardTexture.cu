@@ -34,22 +34,11 @@ Vec3 CheckerboardTexture::Value(unsigned int* seed, float u, float v, const Vec3
 {
 	Vec3 samplePos = (pos + offset) * frequency;
 	float sines = (sin(samplePos.X) * sin(samplePos.Y) * sin(samplePos.Z)) / 2.0f + 0.5f;
-	if (randXORShift(seed) < sines)
-	{
 #ifdef __CUDA_ARCH__
-		return (*a_d)->Value(seed, u, v, pos);
+	return (*a_d)->Value(seed, u, v, pos) * sines + (*b_d)->Value(seed, u, v, pos) * (1.0f - sines);
 #else
-		return a->Value(seed, u, v, pos);
+	return a->Value(seed, u, v, pos) * sines + b->Value(seed, u, v, pos) * (1.0f - sines);
 #endif
-	}
-	else
-	{
-#ifdef __CUDA_ARCH__
-		return (*b_d)->Value(seed, u, v, pos);
-#else
-		return b->Value(seed, u, v, pos);
-#endif
-	}
 }
 
 void CheckerboardTexture::constructEnvironment()

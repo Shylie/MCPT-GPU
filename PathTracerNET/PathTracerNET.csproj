@@ -39,6 +39,9 @@
     </StartupObject>
   </PropertyGroup>
   <PropertyGroup>
+    <DisableFastUpToDateCheck>True</DisableFastUpToDateCheck>
+  </PropertyGroup>
+  <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
@@ -70,6 +73,7 @@
     <Compile Include="Texture.cs" />
     <Compile Include="Textures\CheckerboardTexture.cs" />
     <Compile Include="Textures\ConstantTexture.cs" />
+    <Compile Include="Textures\NoiseTexture.cs" />
     <Compile Include="Vec3.cs" />
   </ItemGroup>
   <ItemGroup>

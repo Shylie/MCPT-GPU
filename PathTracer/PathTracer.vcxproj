@@ -104,6 +104,7 @@
     <CudaCompile Include="kernel.cu" />
     <CudaCompile Include="Lambertian.cu" />
     <CudaCompile Include="Metal.cu" />
+    <CudaCompile Include="NoiseTexture.cu" />
     <CudaCompile Include="PlaneHittable.cu" />
     <CudaCompile Include="RectangularPlane.cu" />
     <CudaCompile Include="Rotation.cu" />
@@ -124,6 +125,7 @@
     <ClInclude Include="Lambertian.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Metal.h" />
+    <ClInclude Include="NoiseTexture.h" />
     <ClInclude Include="PlaneHittable.h" />
     <ClInclude Include="RectangularPlane.h" />
     <ClInclude Include="Rotation.h" />

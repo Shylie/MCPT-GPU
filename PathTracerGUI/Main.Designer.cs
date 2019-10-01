@@ -297,7 +297,8 @@
             "Lambertian",
             "Metal",
             "ConstantTexture",
-            "CheckerboardTexture"});
+            "CheckerboardTexture",
+            "NoiseTexture"});
 			this.ptObjectTypeSelector.Location = new System.Drawing.Point(12, 442);
 			this.ptObjectTypeSelector.Name = "ptObjectTypeSelector";
 			this.ptObjectTypeSelector.Size = new System.Drawing.Size(171, 21);

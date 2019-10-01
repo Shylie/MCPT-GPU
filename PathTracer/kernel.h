@@ -17,6 +17,7 @@
 
 #include "ConstantTexture.h"
 #include "CheckerboardTexture.h"
+#include "NoiseTexture.h"
 
 #include "Lambertian.h"
 #include "Metal.h"
@@ -282,6 +283,11 @@ extern "C"
 	API Texture* ConstructCheckerboardTexture(Texture* a, Texture* b, Vec3 offset, Vec3 frequency)
 	{
 		return new CheckerboardTexture(a, b, offset, frequency);
+	}
+
+	API Texture* ConstructNoiseTexture(int tiles)
+	{
+		return new NoiseTexture(tiles);
 	}
 
 	API Material* ConstructLambertian(Texture* texture)

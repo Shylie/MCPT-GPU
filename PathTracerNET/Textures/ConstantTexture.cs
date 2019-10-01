@@ -12,7 +12,6 @@ namespace PathTracerNET.Textures
 			R = r;
 			G = g;
 			B = b;
-
 		}
 
 		internal override IntPtr Init()

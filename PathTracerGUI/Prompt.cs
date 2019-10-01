@@ -31,19 +31,12 @@ namespace PathTracerGUI
 				prompt.Height = 70 * propertyInfos.Length + 115;
 				for (int i = 0; i < propertyInfos.Length; i++)
 				{
-					if (propertyInfos[i].PropertyType == typeof(float))
+					if (propertyInfos[i].PropertyType == typeof(float) || propertyInfos[i].PropertyType == typeof(int) || propertyInfos[i].PropertyType == typeof(bool))
 					{
-						Label floatlbl = new Label() { Text = propertyInfos[i].Name, Left = 15, Top = 70 * (i + 1) - 45 };
-						TextBox floatbox = new TextBox() { Name = $"{i}", Text = propertyInfos[i].GetValue(obj).ToString(), Width = 90, Left = 15, Top = 70 * (i + 1) - 20 };
-						prompt.Controls.Add(floatlbl);
-						prompt.Controls.Add(floatbox);
-					}
-					else if (propertyInfos[i].PropertyType == typeof(bool))
-					{
-						Label boollbl = new Label() { Text = propertyInfos[i].Name, Left = 15, Top = 70 * (i + 1) - 45 };
-						TextBox boolbox = new TextBox() { Name = $"{i}", Text = propertyInfos[i].GetValue(obj).ToString(), Width = 90, Left = 15, Top = 70 * (i + 1) - 20 };
-						prompt.Controls.Add(boollbl);
-						prompt.Controls.Add(boolbox);
+						Label lbl = new Label() { Text = propertyInfos[i].Name, Left = 15, Top = 70 * (i + 1) - 45 };
+						TextBox tbox = new TextBox() { Name = $"{i}", Text = propertyInfos[i].GetValue(obj).ToString(), Width = 90, Left = 15, Top = 70 * (i + 1) - 20 };
+						prompt.Controls.Add(lbl);
+						prompt.Controls.Add(tbox);
 					}
 					else if (propertyInfos[i].PropertyType == typeof(Vec3))
 					{
@@ -140,6 +133,10 @@ namespace PathTracerGUI
 						{
 							propertyInfos[i].SetValue(obj, float.Parse(prompt.Controls[$"{i}"].Text));
 						}
+						else if (propertyInfos[i].PropertyType == typeof(int))
+						{
+							propertyInfos[i].SetValue(obj, int.Parse(prompt.Controls[$"{i}"].Text));
+						}
 						else if (propertyInfos[i].PropertyType == typeof(bool))
 						{
 							propertyInfos[i].SetValue(obj, bool.Parse(prompt.Controls[$"{i}"].Text));
@@ -221,6 +218,11 @@ namespace PathTracerGUI
 						TextBox floatbox = new TextBox() { Name = $"{i}", Text = parameterInfos[i].Name, Width = 60, Left = 15, Top = 35 * (i + 1) - 20 };
 						prompt.Controls.Add(floatbox);
 					}
+					else if (parameterInfos[i].ParameterType == typeof(int))
+					{
+						TextBox intbox = new TextBox() { Name = $"{i}", Text = parameterInfos[i].Name, Width = 60, Left = 15, Top = 35 * (i + 1) - 20 };
+						prompt.Controls.Add(intbox);
+					}
 					else if (parameterInfos[i].ParameterType == typeof(bool))
 					{
 						TextBox boolbox = new TextBox() { Name = $"{i}", Text = parameterInfos[i].Name, Width = 60, Left = 15, Top = 35 * (i + 1) - 20 };
@@ -293,6 +295,10 @@ namespace PathTracerGUI
 						if (parameterInfos[i].ParameterType == typeof(float))
 						{
 							pars[i] = float.Parse(prompt.Controls[$"{i}"].Text);
+						}
+						else if (parameterInfos[i].ParameterType == typeof(int))
+						{
+							pars[i] = int.Parse(prompt.Controls[$"{i}"].Text);
 						}
 						else if (parameterInfos[i].ParameterType == typeof(bool))
 						{

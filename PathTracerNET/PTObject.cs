@@ -14,6 +14,7 @@ namespace PathTracerNET
 	[Serializable]
 	[XmlInclude(typeof(ConstantTexture))]
 	[XmlInclude(typeof(CheckerboardTexture))]
+	[XmlInclude(typeof(NoiseTexture))]
 	[XmlInclude(typeof(Dieletric))]
 	[XmlInclude(typeof(DiffuseLight))]
 	[XmlInclude(typeof(Lambertian))]
@@ -95,6 +96,9 @@ namespace PathTracerNET
 				case PTObjectKind.Material:
 					DestroyMaterial(_pointer);
 					break;
+				case PTObjectKind.Texture:
+					DestroyTexture(_pointer);
+					break;
 			}
 			_pointer = IntPtr.Zero;
 			Valid = false;
@@ -174,6 +178,9 @@ namespace PathTracerNET
 
 		[DllImport("PathTracer.dll")]
 		protected static extern IntPtr ConstructCheckerboardTexture(IntPtr a, IntPtr b, Vec3 offset, Vec3 frequency);
+
+		[DllImport("PathTracer.dll")]
+		protected static extern IntPtr ConstructNoiseTexture(int tiles);
 
 		[DllImport("PathTracer.dll")]
 		protected static extern IntPtr ConstructLambertian(IntPtr texture);
