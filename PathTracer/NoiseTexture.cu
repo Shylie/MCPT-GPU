@@ -115,6 +115,7 @@ float NoiseTexture::Turb(unsigned int* seed, float u, float v, const Vec3& pos, 
 
 void NoiseTexture::constructEnvironment()
 {
+	srand(1u); // reset seed for same results every time
 	for (int i = 0; i < tiles; i++)
 	{
 		float x = float(rand()) / RAND_MAX;
