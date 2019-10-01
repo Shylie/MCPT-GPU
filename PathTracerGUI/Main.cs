@@ -283,6 +283,9 @@ namespace PathTracerGUI
 							case PTObject.PTObjectKind.Material:
 								materials.Add(i.ToString(), autosaved[i] as Material);
 								break;
+							case PTObject.PTObjectKind.Texture:
+								textures.Add(i.ToString(), autosaved[i] as Texture);
+								break;
 						}
 					}
 				}
