@@ -258,6 +258,11 @@ namespace PathTracerGUI
 				scene))
 			{
 				// all objects are invalidated if rendering fails.
+				foreach (string textureName in textures.Keys)
+				{
+					GetTexture(textureName).Destroy();
+				}
+				textures.Clear();
 				foreach (string materialName in materials.Keys)
 				{
 					GetMaterial(materialName).Destroy();
