@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-using PathTracerNET.Expression;
-using PathTracerNET.Expression.Contexts;
-
 namespace PathTracerNET.Hittables.Modifier
 {
 	[Serializable]
@@ -11,46 +8,28 @@ namespace PathTracerNET.Hittables.Modifier
 	{
 		public Translation() { }
 
+		public Translation(Vec3 offset, Hittable hittable)
+		{
+			if (hittable.Kind != PTObjectKind.Hittable) throw new ArgumentException("Invalid PTObjectKind: not a Hittable.", nameof(hittable));
+
+			Offset = offset;
+			Hittable = hittable;
+		}
+
 		internal override IntPtr Init()
 		{
 			return ConstructTranslation(Offset, Hittable.Pointer);
 		}
 
-		public string OffsetXExpression
+		public Vec3 Offset
 		{
 			get
 			{
-				return _ox;
+				return _offset;
 			}
 			set
 			{
-				_ox = value;
-				if (Valid) Destroy();
-			}
-		}
-
-		public string OffsetYExpression
-		{
-			get
-			{
-				return _oy;
-			}
-			set
-			{
-				_oy = value;
-				if (Valid) Destroy();
-			}
-		}
-
-		public string OffsetZExpression
-		{
-			get
-			{
-				return _oz;
-			}
-			set
-			{
-				_oz = value;
+				_offset = value;
 				if (Valid) Destroy();
 			}
 		}
@@ -71,29 +50,10 @@ namespace PathTracerNET.Hittables.Modifier
 		}
 
 		[XmlIgnore]
-		private Vec3 Offset
-		{
-			get
-			{
-				AnimationContext context = new AnimationContext(Time);
-				float x = (float)Parser.Evaluate(OffsetXExpression, context);
-				float y = (float)Parser.Evaluate(OffsetYExpression, context);
-				float z = (float)Parser.Evaluate(OffsetZExpression, context);
-				return new Vec3(x, y, z);
-			}
-		}
-
-		[XmlIgnore]
-		private string _ox, _oy, _oz;
+		private Vec3 _offset;
 
 		[XmlIgnore]
 		private Hittable _hittable;
-
-		internal override void Recalculate(double time)
-		{
-			base.Recalculate(time);
-			_hittable?.Recalculate(time);
-		}
 
 		private void HittableInvalidated(PTObject sender) => Destroy();
 	}

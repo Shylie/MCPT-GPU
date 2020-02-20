@@ -40,7 +40,7 @@ namespace PathTracerNET
 			{
 				return _valid;
 			}
-			internal set
+			set
 			{
 				if (_valid && !value) Invalidated?.Invoke(this);
 				_valid = value;
@@ -67,8 +67,6 @@ namespace PathTracerNET
 				_pointer = value;
 			}
 		}
-
-		internal double Time { get; private set; }
 		#endregion
 
 		#region FIELDS
@@ -90,7 +88,6 @@ namespace PathTracerNET
 
 		public void Destroy()
 		{
-			if (!Valid && _pointer == IntPtr.Zero) return;
 			switch (Kind)
 			{
 				case PTObjectKind.Hittable:
@@ -105,12 +102,6 @@ namespace PathTracerNET
 			}
 			_pointer = IntPtr.Zero;
 			Valid = false;
-		}
-
-		internal virtual void Recalculate(double time)
-		{
-			Time = time;
-			Destroy();
 		}
 		#endregion
 
@@ -134,38 +125,26 @@ namespace PathTracerNET
 		#endregion
 
 		#region STATIC METHODS
-		public static bool RenderScene(int width, int height, int samples, double time, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, float aperture, float lensRadius, Hittable scene)
+		public static bool RenderScene(int width, int height, int samples, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, float aperture, float lensRadius, PTObject scene)
 		{
-			scene.Recalculate(time);
+			if (scene.Kind != PTObjectKind.Hittable)
+			{
+				throw new ArgumentException("Invalid PTObjectKind: not a Hittable.", nameof(scene));
+			}
 			return RenderScene(width, height, samples, fname + ".ppm", lookFrom, lookAt, vup, vfov, aspect, aperture, lensRadius, scene.Pointer);
 		}
 
-		public static bool RenderSceneChunked(int width, int height, int samples, int chunkSize, double time, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, float aperture, float lensRadius, Hittable scene)
+		public static bool RenderSceneChunked(int width, int height, int samples, int chunkSize, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, float aperture, float lensRadius, PTObject scene)
 		{
+			if (scene.Kind != PTObjectKind.Hittable)
+			{
+				throw new ArgumentException("Invalid PTObjectKind: not a Hittable.", nameof(scene));
+			}
 			if (chunkSize % 4 != 0)
 			{
 				throw new ArgumentException("Invalid chunk size: not a multiple of 4.", nameof(chunkSize));
 			}
-			scene.Recalculate(time);
 			return RenderSceneChunked(width, height, samples, chunkSize, fname + ".ppm", lookFrom, lookAt, vup, vfov, aspect, aperture, lensRadius, scene.Pointer);
-		}
-
-		public static bool RenderAnimatedScene(int width, int height, int samples, double timeStep, int numFrames, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, float aperture, float lensRadius, Hittable scene)
-		{
-			for (int i = 0; i < numFrames; i++)
-			{
-				if (!RenderScene(width, height, samples, timeStep * i, $"{fname}_{i}", lookFrom, lookAt, vup, vfov, aspect, aperture, lensRadius, scene)) return false;
-			}
-			return true;
-		}
-
-		public static bool RenderAnimatedSceneChunked(int width, int height, int samples, int chunkSize, double timeStep, int numFrames, string fname, Vec3 lookFrom, Vec3 lookAt, Vec3 vup, float vfov, float aspect, float aperture, float lensRadius, Hittable scene)
-		{
-			for (int i = 0; i < numFrames; i++)
-			{
-				if (!RenderSceneChunked(width, height, samples, chunkSize, timeStep * i, $"{fname}_{i}", lookFrom, lookAt, vup, vfov, aspect, aperture, lensRadius, scene)) return false;
-			}
-			return true;
 		}
 		#endregion
 

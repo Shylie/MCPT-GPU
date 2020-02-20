@@ -63,8 +63,9 @@ namespace PathTracerGUI
 			AddMaterial("yellowMatte", new Lambertian(GetTexture("yellow")));
 			AddMaterial("redMirror", new Metal(GetTexture("red"), 0.08f));
 
-			AddHittable("light", new Sphere() { CenterXExpression = "0", CenterYExpression = "3", CenterZExpression = "0", RadiusExpression = "1.7", Material = GetMaterial("lightMaterial") });
-			AddHittable("sphere", new Sphere() { CenterXExpression = "0", CenterYExpression = "-100.3", CenterZExpression = "0", RadiusExpression = "100", Material = GetMaterial("blueMatte") });
+			AddHittable("light", new Sphere(new Vec3(0f, 3f, 0f), 1.7f, GetMaterial("lightMaterial")));
+			AddHittable("sphere", new Sphere(new Vec3(0f, -100.3f, 0f), 100f, GetMaterial("blueMatte")));
+			AddHittable("glassBall", new Sphere(new Vec3(1f, 0.4f, 0f), 0.2f, GetMaterial("glass")));
 		}
 
 		private void BtnAddObj_Click(object sender, EventArgs e)
@@ -77,55 +78,43 @@ namespace PathTracerGUI
 			switch (ptObjectTypeSelector.GetItemText(ptObjectTypeSelector.SelectedItem))
 			{
 				case "Sphere":
-					val.obj = new Sphere();
-					val.name = Prompt.ShowDialog(val.obj, temp);
+					val = Prompt.ShowDialog<Sphere>(temp);
 					break;
 				case "Rotation":
-					val.obj = new Rotation();
-					val.name = Prompt.ShowDialog(val.obj, temp);
+					val = Prompt.ShowDialog<Rotation>(temp);
 					break;
 				case "Translation":
-					val.obj = new Translation();
-					val.name = Prompt.ShowDialog(val.obj, temp);
+					val = Prompt.ShowDialog<Translation>(temp);
 					break;
 				case "RectangularPlane":
-					val.obj = new RectangularPlane();
-					val.name = Prompt.ShowDialog(val.obj, temp);
+					val = Prompt.ShowDialog<RectangularPlane>(temp);
 					break;
 				case "TriangularPlane":
-					val.obj = new TriangularPlane();
-					val.name = Prompt.ShowDialog(val.obj, temp);
+					val = Prompt.ShowDialog<TriangularPlane>(temp);
 					break;
 				case "Dieletric":
-					val.obj = new Dieletric();
-					val.name = Prompt.ShowDialog(val.obj, temp);
+					val = Prompt.ShowDialog<Dieletric>(temp);
 					break;
 				case "DiffuseLight":
-					val.obj = new DiffuseLight();
-					val.name = Prompt.ShowDialog(val.obj, temp);
+					val = Prompt.ShowDialog<DiffuseLight>(temp);
 					break;
 				case "Lambertian":
-					val.obj = new Lambertian();
-					val.name = Prompt.ShowDialog(val.obj, temp);
+					val = Prompt.ShowDialog<Lambertian>(temp);
 					break;
 				case "Metal":
-					val.obj = new Metal();
-					val.name = Prompt.ShowDialog(val.obj, temp);
+					val = Prompt.ShowDialog<Metal>(temp);
 					break;
 				case "ConstantTexture":
-					val.obj = new ConstantTexture();
-					val.name = Prompt.ShowDialog(val.obj, temp);
+					val = Prompt.ShowDialog<ConstantTexture>(temp);
 					break;
 				case "CheckerboardTexture":
-					val.obj = new CheckerboardTexture();
-					val.name = Prompt.ShowDialog(val.obj, temp);
+					val = Prompt.ShowDialog<CheckerboardTexture>(temp);
 					break;
 				case "NoiseTexture":
-					val.obj = new NoiseTexture();
-					val.name = Prompt.ShowDialog(val.obj, temp);
+					val = Prompt.ShowDialog<NoiseTexture>(temp);
 					break;
 			}
-			if (val.obj != null && val.name != null &&  !temp.ContainsKey(val.name))
+			if (val.obj != null && !temp.ContainsKey(val.name))
 			{
 				switch (val.obj.Kind)
 				{
@@ -227,8 +216,6 @@ namespace PathTracerGUI
 			int width = int.Parse(txtbxWidth.Text);
 			int height = int.Parse(txtbxHeight.Text);
 			int samples = int.Parse(txtbxSamples.Text);
-			int frames = int.Parse(txtbxFrames.Text);
-			double timeStep = double.Parse(txtbxTimeStep.Text);
 			int chunkSize = int.Parse(txtbxChunkSize.Text);
 
 			string fname = "Test";
@@ -259,14 +246,14 @@ namespace PathTracerGUI
 				serializer.Serialize(writer, temp.ToArray());
 			}
 
-			Hittable scene = new HittableList(activeHittables.ToArray());
+			PTObject scene = new HittableList(activeHittables.ToArray());
 
 			Vec3 lookFrom = new Vec3(2f, 1.2f, -2f);
 			Vec3 lookAt = new Vec3(-2f, 0f, 2f);
 			System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 			sw.Start();
-			if (!PTObject.RenderAnimatedSceneChunked(
-				width, height, samples, chunkSize, timeStep, frames, fname,
+			if (!PTObject.RenderSceneChunked(
+				width, height, samples, chunkSize, fname,
 				lookFrom, lookAt, new Vec3(0f, 1f, 0f), (float)Math.PI / 3f, (float)width / height, 0f, (lookFrom - lookAt).Length,
 				scene))
 			{
@@ -314,9 +301,9 @@ namespace PathTracerGUI
 
 			scene.Destroy();
 
-			Bitmap image = ReadBitmapFromPPM(Directory.GetCurrentDirectory() + "\\" + fname + "_0.ppm");
+			Bitmap image = ReadBitmapFromPPM(Directory.GetCurrentDirectory() + "\\" + fname + ".ppm");
 			pboxPreview.Image = image;
-			return $"Last Render Took: {sw.ElapsedMilliseconds} ms\nAverage: {sw.ElapsedMilliseconds / (double)frames} ms / frame";
+			return $"Last Render Took: {sw.ElapsedMilliseconds} ms";
 		}
 
 		private static Bitmap ReadBitmapFromPPM(string file)

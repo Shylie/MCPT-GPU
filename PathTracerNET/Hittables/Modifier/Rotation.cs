@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-using PathTracerNET.Expression;
-using PathTracerNET.Expression.Contexts;
-
 namespace PathTracerNET.Hittables.Modifier
 {
 	[Serializable]
@@ -11,12 +8,21 @@ namespace PathTracerNET.Hittables.Modifier
 	{
 		public Rotation() { }
 
+		public Rotation(float theta, Alignment axis, Hittable hittable)
+		{
+			if (axis != Alignment.X && axis != Alignment.Y && axis != Alignment.Z) throw new ArgumentException("Invalid Alignment: must be X, Y, or Z.", nameof(axis));
+
+			Theta = theta;
+			Axis = axis;
+			Hittable = hittable;
+		}
+
 		internal override IntPtr Init()
 		{
 			return ConstructRotation(Theta, Axis, Hittable.Pointer);
 		}
 
-		public string ThetaExpression
+		public float Theta
 		{
 			get
 			{
@@ -58,28 +64,13 @@ namespace PathTracerNET.Hittables.Modifier
 		}
 
 		[XmlIgnore]
-		private float Theta
-		{
-			get
-			{
-				return (float)Parser.Evaluate(ThetaExpression, new AnimationContext(Time));
-			}
-		}
-
-		[XmlIgnore]
-		private string _theta;
+		private float _theta;
 
 		[XmlIgnore]
 		private Alignment _axis;
 
 		[XmlIgnore]
 		private Hittable _hittable;
-
-		internal override void Recalculate(double time)
-		{
-			base.Recalculate(time);
-			_hittable?.Recalculate(time);
-		}
 
 		private void HittableInvalidated(PTObject sender) => Destroy();
 	}

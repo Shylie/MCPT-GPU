@@ -49,15 +49,6 @@ namespace PathTracerNET.Hittables
 		[XmlIgnore]
 		private Hittable[] _hittables;
 
-		internal override void Recalculate(double time)
-		{
-			base.Recalculate(time);
-			foreach (Hittable hittable in _hittables)
-			{
-				hittable?.Recalculate(time);
-			}
-		}
-
 		private void HittableInvalidated(PTObject sender) => Destroy();
 	}
 }

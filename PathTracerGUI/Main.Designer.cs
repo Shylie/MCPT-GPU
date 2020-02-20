@@ -51,10 +51,6 @@
 			this.listbxHittables = new System.Windows.Forms.CheckedListBox();
 			this.ptObjectTypeSelector = new System.Windows.Forms.ComboBox();
 			this.listbxTextures = new System.Windows.Forms.CheckedListBox();
-			this.txtbxFrames = new System.Windows.Forms.TextBox();
-			this.txtbxTimeStep = new System.Windows.Forms.TextBox();
-			this.label6 = new System.Windows.Forms.Label();
-			this.label7 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.pboxPreview)).BeginInit();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
@@ -105,7 +101,7 @@
 			// 
 			this.radioButton1.AutoSize = true;
 			this.radioButton1.Checked = true;
-			this.radioButton1.Location = new System.Drawing.Point(3, 17);
+			this.radioButton1.Location = new System.Drawing.Point(4, 49);
 			this.radioButton1.Margin = new System.Windows.Forms.Padding(2);
 			this.radioButton1.Name = "radioButton1";
 			this.radioButton1.Size = new System.Drawing.Size(68, 17);
@@ -117,7 +113,7 @@
 			// radioButton2
 			// 
 			this.radioButton2.AutoSize = true;
-			this.radioButton2.Location = new System.Drawing.Point(3, 38);
+			this.radioButton2.Location = new System.Drawing.Point(4, 68);
 			this.radioButton2.Margin = new System.Windows.Forms.Padding(2);
 			this.radioButton2.Name = "radioButton2";
 			this.radioButton2.Size = new System.Drawing.Size(88, 17);
@@ -128,10 +124,6 @@
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.Add(this.label7);
-			this.groupBox1.Controls.Add(this.label6);
-			this.groupBox1.Controls.Add(this.txtbxTimeStep);
-			this.groupBox1.Controls.Add(this.txtbxFrames);
 			this.groupBox1.Controls.Add(this.txtbxFileName);
 			this.groupBox1.Controls.Add(this.label5);
 			this.groupBox1.Controls.Add(this.txtbxChunkSize);
@@ -155,7 +147,7 @@
 			// 
 			// txtbxFileName
 			// 
-			this.txtbxFileName.Location = new System.Drawing.Point(4, 163);
+			this.txtbxFileName.Location = new System.Drawing.Point(71, 157);
 			this.txtbxFileName.Margin = new System.Windows.Forms.Padding(2);
 			this.txtbxFileName.Name = "txtbxFileName";
 			this.txtbxFileName.Size = new System.Drawing.Size(68, 20);
@@ -165,7 +157,7 @@
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(4, 148);
+			this.label5.Location = new System.Drawing.Point(4, 159);
 			this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(54, 13);
@@ -174,16 +166,16 @@
 			// 
 			// txtbxChunkSize
 			// 
-			this.txtbxChunkSize.Location = new System.Drawing.Point(201, 149);
+			this.txtbxChunkSize.Location = new System.Drawing.Point(201, 87);
 			this.txtbxChunkSize.Margin = new System.Windows.Forms.Padding(2);
 			this.txtbxChunkSize.Name = "txtbxChunkSize";
 			this.txtbxChunkSize.Size = new System.Drawing.Size(68, 20);
 			this.txtbxChunkSize.TabIndex = 13;
-			this.txtbxChunkSize.Text = "64";
+			this.txtbxChunkSize.Text = "32";
 			// 
 			// txtbxSamples
 			// 
-			this.txtbxSamples.Location = new System.Drawing.Point(201, 73);
+			this.txtbxSamples.Location = new System.Drawing.Point(201, 66);
 			this.txtbxSamples.Margin = new System.Windows.Forms.Padding(2);
 			this.txtbxSamples.Name = "txtbxSamples";
 			this.txtbxSamples.Size = new System.Drawing.Size(68, 20);
@@ -192,7 +184,7 @@
 			// 
 			// txtbxHeight
 			// 
-			this.txtbxHeight.Location = new System.Drawing.Point(201, 49);
+			this.txtbxHeight.Location = new System.Drawing.Point(201, 45);
 			this.txtbxHeight.Margin = new System.Windows.Forms.Padding(2);
 			this.txtbxHeight.Name = "txtbxHeight";
 			this.txtbxHeight.Size = new System.Drawing.Size(68, 20);
@@ -211,7 +203,7 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(137, 152);
+			this.label4.Location = new System.Drawing.Point(137, 89);
 			this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(61, 13);
@@ -221,7 +213,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(150, 76);
+			this.label3.Location = new System.Drawing.Point(149, 68);
 			this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(47, 13);
@@ -231,7 +223,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(159, 52);
+			this.label2.Location = new System.Drawing.Point(159, 47);
 			this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(38, 13);
@@ -241,7 +233,7 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(162, 28);
+			this.label1.Location = new System.Drawing.Point(163, 27);
 			this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(35, 13);
@@ -320,40 +312,6 @@
 			this.listbxTextures.TabIndex = 0;
 			this.listbxTextures.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ListbxTextures_MouseUp);
 			// 
-			// txtbxFrames
-			// 
-			this.txtbxFrames.Location = new System.Drawing.Point(201, 98);
-			this.txtbxFrames.Name = "txtbxFrames";
-			this.txtbxFrames.Size = new System.Drawing.Size(68, 20);
-			this.txtbxFrames.TabIndex = 16;
-			this.txtbxFrames.Text = "1";
-			// 
-			// txtbxTimeStep
-			// 
-			this.txtbxTimeStep.Location = new System.Drawing.Point(201, 124);
-			this.txtbxTimeStep.Name = "txtbxTimeStep";
-			this.txtbxTimeStep.Size = new System.Drawing.Size(68, 20);
-			this.txtbxTimeStep.TabIndex = 17;
-			this.txtbxTimeStep.Text = "0.1";
-			// 
-			// label6
-			// 
-			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(156, 101);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(41, 13);
-			this.label6.TabIndex = 18;
-			this.label6.Text = "Frames";
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(142, 127);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(55, 13);
-			this.label7.TabIndex = 19;
-			this.label7.Text = "Time Step";
-			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -405,10 +363,6 @@
         private System.Windows.Forms.Button btnAddObj;
 		private System.Windows.Forms.ComboBox ptObjectTypeSelector;
 		private System.Windows.Forms.CheckedListBox listbxTextures;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.TextBox txtbxTimeStep;
-		private System.Windows.Forms.TextBox txtbxFrames;
-		private System.Windows.Forms.Label label7;
 	}
 }
 
